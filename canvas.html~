@@ -2,11 +2,9 @@
 <style>
   canvas {border-style:solid;}
 </style>
-<h1>Canvas demo</h1>
+<h1>Canvas test</h1>
 <canvas id="c" height=500 width=700>
 </canvas>
-
-<h1>End of canvas</h1>
 
 <script>
 var c = document.getElementById("c");
