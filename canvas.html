@@ -6,6 +6,8 @@
 <canvas id="c" height=500 width=700>
 </canvas>
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js?ver=1.4.0"></script>
+
 <script>
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
@@ -32,14 +34,14 @@ disc.prototype.erase = function() {
 }
 
 disc.prototype.moveleft = function() {
- this.x-= 5; 
- this.erase();
+ this.erase()
+ this.x+=-5; 
  this.draw();
 }
 
 disc.prototype.moveright = function() {
- this.x+=  5;
  this.erase();
+ this.x+=  5;
  this.draw();
 }
 
@@ -53,9 +55,9 @@ function animate() {
   d1.x = d1.x + dx;
   if ( d1.x>=500 || d1.x < 50)  { dx = dx * -1;}
   d1.draw();
-
 }
-
+$(document).ready(function(){
+   d1.draw()});
 
 
 </script>

@@ -31,6 +31,17 @@ disc.prototype.erase = function() {
   this.ctx.clearRect(this.x,this.y,this.w,this.h);
 }
 
+disc.prototype.moveleft = function() {
+ this.x-= 5; 
+ this.erase();
+ this.draw();
+}
+
+disc.prototype.moveright = function() {
+ this.x+=  5;
+ this.erase();
+ this.draw();
+}
 
 d1 = new disc(100,100,20,40,"#ff0000","#0000ff",ctx);
 
