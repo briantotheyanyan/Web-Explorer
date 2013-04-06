@@ -5,16 +5,25 @@
 <head>
 <script src="jquery-1.9.1.min.js"></script>
 </head>
-<canvas id="world" height=300 width=300></canvas>
+
+<canvas id="world" 
+height="300" width="300"
+style="border:1px solid #000000;"
+>
+
+</canvas>
 	
 
 <body>
 
 <h1> Testing </h1>
 
+<button id="button">Try it </button>
 
 <p id="demo2"> 123456 </p>
 
+<br><br>
+<p id="demo1"> demo1 </p>
 
 name: <input id ="name" />
 
@@ -27,6 +36,8 @@ name: <input id ="name" />
 var c = document.getElementById("world");
 var ctx = c.getContext("2d");
 
+var bounds = new Array();
+
 var bound = function(x,y,h,w,c,ctx)
 {
   this.x=x;
@@ -37,13 +48,12 @@ var bound = function(x,y,h,w,c,ctx)
   this.ctx=ctx;
 }
 
+
 bound.prototype.draw = function() 
 {
    this.ctx.fillStyle = this.c;
    this.ctx.fillRect(this.x,this.y,this.w,this.h);
 }   
-
-var w = new bound(10,10,30,30,"#0099FF",ctx);
 
 
 function getPWidth(obj)
@@ -54,23 +64,15 @@ function getPWidth(obj)
    return b;
 }
 
-function test()
-{
-   var name,resp;
-   name = document.getElementById("name").value;
-   switch(name)
-   {
-      case "eli":
-         resp = "goo eli";
-         break;
-      default:
-         resp = "nooo";
-   }
 
-   document.getElementById("demo2").innerHTML=resp;
-   
+function Collide(a,b){
+  return !(
+        ((a.y + a.height) < (b.y)) ||
+        (a.y > (b.y + b.height)) ||
+        ((a.x + a.width) < b.x) ||
+        (a.x > (b.x + b.width))
+    );
 }
-
 
 
 function getLoc(obj)
@@ -78,17 +80,33 @@ function getLoc(obj)
    // Need an algorithim to go through number of characters 
    //(including br's) and account for un-fixed width for p's
    
+   var loc = new Array();
    obj = "#"+obj;
-   console.log("x:" + $(obj).position().left);
-   console.log("y:" + $(obj).position().top);
-   console.log("height:" + $(obj).height());
-   console.log("width:" + $(obj).width());
+   loc[0] = $(obj).position().left,
+   loc[1] = $(obj).position().top;
+   loc[2] = $(obj).height();
+   loc[3] = $(obj).width();
+   return loc;
 }
 
 
+var elements = new Array();
+elements[0] = "demo1";
+elements[1] = "demo2";
+
+for (var i=0; i < elements.length ;i++)
+{
+console.log("Q");
+var dims = getLoc(elements[i])
+bounds.push(dims);
+
+
+
+		    
+}
+
 </script>
 
-<button id="button" onclick="getLoc(document.getElementById('name').value)">Try it </button>
 
 </body>
 </html>
