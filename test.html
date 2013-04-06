@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+<script src="jquery-1.9.1.min.js"></script>
+</head>
+<canvas id="world" height=300 width=300></canvas>
+	
+
+<body>
+
+<h1> Testing </h1>
+
+
+<p id="demo2"> 123456 </p>
+
+
+name: <input id ="name" />
+
+<br>
+
+
+<script>
+
+
+var c = document.getElementById("world");
+var ctx = c.getContext("2d");
+
+var bound = function(x,y,h,w,c,ctx)
+{
+  this.x=x;
+  this.y=y;
+  this.h=h;
+  this.w=w;
+  this.c=c;
+  this.ctx=ctx;
+}
+
+bound.prototype.draw = function() 
+{
+   this.ctx.fillStyle = this.c;
+   this.ctx.fillRect(this.x,this.y,this.w,this.h);
+}   
+
+var w = new bound(10,10,30,30,"#0099FF",ctx);
+
+
+function getPWidth(obj)
+{
+
+   var b = document.getElementById(obj).innerHTML.trim();
+   console.log(b.length);
+   return b;
+}
+
+function test()
+{
+   var name,resp;
+   name = document.getElementById("name").value;
+   switch(name)
+   {
+      case "eli":
+         resp = "goo eli";
+         break;
+      default:
+         resp = "nooo";
+   }
+
+   document.getElementById("demo2").innerHTML=resp;
+   
+}
+
+
+
+function getLoc(obj)
+{
+   // Need an algorithim to go through number of characters 
+   //(including br's) and account for un-fixed width for p's
+   
+   obj = "#"+obj;
+   console.log("x:" + $(obj).position().left);
+   console.log("y:" + $(obj).position().top);
+   console.log("height:" + $(obj).height());
+   console.log("width:" + $(obj).width());
+}
+
+
+</script>
+
+<button id="button" onclick="getLoc(document.getElementById('name').value)">Try it </button>
+
+</body>
+</html>
