@@ -14,6 +14,7 @@ var ctx = c.getContext("2d");
 
 var disc = function(x,y,h,w,c1,c2,ctx){
   this.verticalVelocity = 0;
+  this.horizantalVelocity = 5;
   this.x=x;
   this.y=y;
   this.h=h;
@@ -36,24 +37,42 @@ disc.prototype.erase = function() {
 
 disc.prototype.moveleft = function() {
  this.erase()
- this.x+=-5; 
+ this.x+=-this.horizantalVelocity; 
  this.draw();
 }
 
 disc.prototype.moveright = function() {
  this.erase();
- this.x+=  5;
+ this.x+= this.horizantalVelocity;
  this.draw();
 }
 
 disc.prototype.jump = function(){
    this.verticalVelocity = 5;
-   while(true){
+   while(this.verticalVelocity > 0){
     this.erase();
-    this.y = this.y - verticalVelocity;
-    verticalVelocity = verticalVelocity - 1;
+    this.y = this.y - this.verticalVelocity;
+    this.verticalVelocity = this.verticalVelocity - 1;
     this.draw();
 }}
+
+
+disc.prototype.collideUn = function(a){
+	if (((this.y + this.height - a.y) <= this.verticalVelocity) && (this.x >= a.x) && (this.x <= (a.x + a.width)))
+		{return true;}
+	return false;
+}
+
+disc.prototype.collideR = function(a){
+	if ((this.y + this.height)>=(a.y + a.height) && (this.y <= a.y) && ((a.x - this.x) < this.horizantalVelocity) && (a.x - this.x) > 0)){
+	return true;}
+	return false;
+}
+disc.prototype.collideL = function(a){
+	if ((this.y + this.height)>=(a.y + a.height) && (this.y <= a.y) && ((this.x - a.x) < this.horizantalVelocity) && (this.x - a.x) > 0)){
+	return true;}
+	return false;	
+}
 
 d1 = new disc(100,100,20,40,"#ff0000","#0000ff",ctx);
 

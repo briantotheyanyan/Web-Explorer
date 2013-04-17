@@ -64,12 +64,12 @@ disc.prototype.collideUn = function(a){
 }
 
 disc.prototype.collideR = function(a){
-	if ((this.y + this.height)>=(a.y + a.height) && (this.y <= a.y) && ((a.x - this.x) < this.horizantalVelocity) && (a.x - this.x) > 0)){
+	if ((this.y + this.height >= a.y + a.height) && (this.y <= a.y) && (a.x - this.x < this.horizantalVelocity) && (a.x - this.x > 0)){
 	return true;}
 	return false;
 }
 disc.prototype.collideL = function(a){
-	if ((this.y + this.height)>=(a.y + a.height) && (this.y <= a.y) && ((this.x - a.x) < this.horizantalVelocity) && (this.x - a.x) > 0)){
+	if ((this.y + this.height >= a.y + a.height) && (this.y <= a.y) && (this.x - a.x < this.horizantalVelocity) && (this.x - a.x > 0)){
 	return true;}
 	return false;	
 }
