@@ -52,9 +52,16 @@ disc.prototype.jump = function(){
    while(this.verticalVelocity > 0){
     this.erase();
     this.y = this.y - this.verticalVelocity;
-    this.verticalVelocity = this.verticalVelocity - 1;
-    this.draw();
+    sleep(100)
+    this.verticalVelocity -= 1;
+    this.draw()
 }}
+
+disc.prototype.fall = function() {
+   
+
+}
+
 
 
 disc.prototype.collideUn = function(a){
@@ -76,21 +83,38 @@ disc.prototype.collideL = function(a){
 
 d1 = new disc(100,100,20,40,"#ff0000","#0000ff",ctx);
 
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
 $(document).keypress(function(e) {
      if (e.which == 97){
           d1.moveleft();}
      if (e.which == 100){
           d1.moveright();}
      if (e.which == 119){
-          d1.jump();}})
+          d1.jump();
+	}
+     })
 
 var dx=1;
+
+
+
 function animate() {
   d1.erase();
   d1.x = d1.x + dx;
   if ( d1.x>=500 || d1.x < 50)  { dx = dx * -1;}
   d1.draw();
+  d1.jump();
 }
+
+
 $(document).ready(function(){
    d1.draw()});
 
