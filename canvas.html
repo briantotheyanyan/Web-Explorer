@@ -11,9 +11,9 @@
 <script>
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
-var verticalVelocity = 0;
 
 var disc = function(x,y,h,w,c1,c2,ctx){
+  this.verticalVelocity = 0;
   this.x=x;
   this.y=y;
   this.h=h;
@@ -47,7 +47,7 @@ disc.prototype.moveright = function() {
 }
 
 disc.prototype.jump = function(){
-   verticalVelocity = 5;
+   this.verticalVelocity = 5;
    while(true){
     this.erase();
     this.y = this.y - verticalVelocity;
