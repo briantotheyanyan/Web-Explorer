@@ -36,25 +36,29 @@ disc.prototype.erase = function() {
 }
 
 disc.prototype.moveleft = function() {
- this.erase()
- this.x+=-this.horizantalVelocity; 
+ this.erase();
+ this.x+=-5;
  this.draw();
 }
 
 disc.prototype.moveright = function() {
  this.erase();
- this.x+= this.horizantalVelocity;
+ this.x+=5; 
  this.draw();
 }
-
 disc.prototype.jump = function(){
    this.verticalVelocity = 5;
    while(this.verticalVelocity > 0){
-    this.erase();
-    this.y = this.y - this.verticalVelocity;
-    sleep(100)
+    for (var i = 0; i< this.verticalVelocity;i++)
+    {  this.erase();
+       this.y = this.y - 1;
+       sleep(10);
+       this.draw();
+    }
+    //this.erase();
+    //this.y = this.y - this.verticalVelocity;
+    //this.draw();
     this.verticalVelocity -= 1;
-    this.draw()
 }}
 
 disc.prototype.fall = function() {
