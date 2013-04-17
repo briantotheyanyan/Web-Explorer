@@ -55,6 +55,20 @@ disc.prototype.jump = function(){
     this.draw();
 }}
 
+
+disc.prototype.collideUn(a){
+	if (((this.y + this.height - a.y <= 1) && (this.y + this.height - a.y >= -1)) && ((this.x > a.x)&&(this.x < a.x+a.width)))
+		{ return true;}
+	return false;
+}
+
+function collideR(a,b){
+	
+}
+funtion collideL(a,b){
+	
+}
+
 d1 = new disc(100,100,20,40,"#ff0000","#0000ff",ctx);
 
 $(document).keypress(function(e) {
