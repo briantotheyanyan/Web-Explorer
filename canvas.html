@@ -56,16 +56,18 @@ disc.prototype.jump = function(){
 }}
 
 
-disc.prototype.collideUn(a){
-	if (((this.y + this.height - a.y <= 1) && (this.y + this.height - a.y >= -1)) && ((this.x > a.x)&&(this.x < a.x+a.width)))
-		{ return true;}
+disc.prototype.collideUn = function(a){
+	if (((this.y + this.height - a.y <= this.verticalVelocity) && (this.y + this.height - a.y >= -1)) && ((this.x > a.x)&&(this.x < a.x+a.width)))
+		{ 
+		this.verticalVelocity = 0;
+		this.y = a.y;									return true;}
 	return false;
 }
 
-function collideR(a,b){
+disc.prototype.collideR = function(a){
 	
 }
-funtion collideL(a,b){
+disc.prototype.collideL = function(a){
 	
 }
 
