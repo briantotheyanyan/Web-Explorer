@@ -23,9 +23,11 @@ style="border:1px solid #000000;"
 <p id="demo2"> 123456 </p>
 
 <br><br>
+
 <p id="demo1"> demo1 </p>
 
-name: <input id ="name" />
+
+name: <input id="name" /> </input>
 
 <br>
 
@@ -80,8 +82,7 @@ function getLoc(obj)
    // Need an algorithim to go through number of characters 
    //(including br's) and account for un-fixed width for p's
    
-   var loc = new Array();
-   obj = "#"+obj;
+   var loc = new Array();;
    loc[0] = $(obj).position().left,
    loc[1] = $(obj).position().top;
    loc[2] = $(obj).height();
@@ -91,8 +92,10 @@ function getLoc(obj)
 
 
 var elements = new Array();
-elements[0] = "demo1";
-elements[1] = "demo2";
+elements[0] = demo1;
+elements[1] = demo2;
+
+
 
 for (var i=0; i < elements.length ;i++)
 {
