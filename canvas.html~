@@ -47,7 +47,11 @@ disc.prototype.moveright = function() {
 
 d1 = new disc(100,100,20,40,"#ff0000","#0000ff",ctx);
 
-
+$(document).keypress(function(e) {
+     if (e.which == 97){
+          d1.moveleft();}
+     if (e.which == 100){
+          d1.moveright();}})
 
 var dx=1;
 function animate() {

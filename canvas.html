@@ -11,6 +11,7 @@
 <script>
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
+var verticalVelocity = 0;
 
 var disc = function(x,y,h,w,c1,c2,ctx){
   this.x=x;
@@ -45,13 +46,24 @@ disc.prototype.moveright = function() {
  this.draw();
 }
 
+disc.prototype.jump = function(){
+   verticalVelocity = 5;
+   while(true){
+    this.erase();
+    this.y = this.y - verticalVelocity;
+    verticalVelocity = verticalVelocity - 1;
+    this.draw();
+}}
+
 d1 = new disc(100,100,20,40,"#ff0000","#0000ff",ctx);
 
 $(document).keypress(function(e) {
      if (e.which == 97){
           d1.moveleft();}
      if (e.which == 100){
-          d1.moveright();}})
+          d1.moveright();}
+     if (e.which == 119){
+          d1.jump();}})
 
 var dx=1;
 function animate() {
