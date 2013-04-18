@@ -8,7 +8,7 @@
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js?ver=1.4.0"></script>
 
-<script type="text/javascript" src="/edges.js">
+<script> //How do we use edges.js?
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
 
@@ -63,12 +63,16 @@ disc.prototype.jump = function() {
 
 disc.prototype.fall = function() {
   this.verticalVelocity = -5;
-
-  for(var i = 0; i < data.length; i++) {
-  if(all[i].position()) {}
-  }
-   
+  while(!(this.y === 0)) {
+  
+     this.erase();
+     this.y = this.y + 1;
+     sleep(10);
+     this.draw();
+  
 }
+  this.verticalVelocity += 1;
+  }
 
 
 
