@@ -82,6 +82,7 @@ function getLoc(obj)
    // Need an algorithim to go through number of characters 
    //(including br's) and account for un-fixed width for p's
    
+   obj = "#" + obj;
    var loc = new Array();;
    loc[0] = $(obj).position().left,
    loc[1] = $(obj).position().top;
@@ -92,8 +93,10 @@ function getLoc(obj)
 
 
 var elements = new Array();
-elements[0] = demo1;
-elements[1] = demo2;
+elements[0] = JSON.stringify(demo1);
+elements[1] = "demo2"
+
+;
 
 
 
