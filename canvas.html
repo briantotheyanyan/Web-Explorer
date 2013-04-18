@@ -8,11 +8,11 @@
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js?ver=1.4.0"></script>
 
-<script>
+<script type="text/javascript" src="/edges.js">
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
 
-var disc = function(x,y,h,w,c1,c2,ctx){
+var disc = function(x,y,h,w,c1,c2,ctx) {
   this.verticalVelocity = 0;
   this.horizantalVelocity = 5;
   this.x=x;
@@ -46,7 +46,7 @@ disc.prototype.moveright = function() {
  this.x+=5; 
  this.draw();
 }
-disc.prototype.jump = function(){
+disc.prototype.jump = function() {
    this.verticalVelocity = 5;
    while(this.verticalVelocity > 0){
     for (var i = 0; i< this.verticalVelocity;i++)
@@ -62,8 +62,12 @@ disc.prototype.jump = function(){
 }}
 
 disc.prototype.fall = function() {
-   
+  this.verticalVelocity = -5;
 
+  for(var i = 0; i < data.length; i++) {
+  if(all[i].position()) {}
+  }
+   
 }
 
 
@@ -109,7 +113,6 @@ $(document).keypress(function(e) {
 var dx=1;
 
 
-
 function animate() {
   d1.erase();
   d1.x = d1.x + dx;
@@ -122,5 +125,7 @@ function animate() {
 $(document).ready(function(){
    d1.draw()});
 
+console.log(all[0]);
+console.log(all[1]);
 
 </script>
