@@ -80,7 +80,9 @@ function collideUn(a,b){ // a is the character, b is any DOM element on the scre
 	if (((a.y + a.height - b.y <= 1) && (a.y + a.height - b.y >= -1)) && ((a.x > b.x)&&(a.x < b.x+b.width)))
 		{ return true;}
 	return false;
+
 }
+
 
 function collideR(a,b){
 	
@@ -106,25 +108,21 @@ function getLoc(obj)
 }
 
 
-var elements = new Array();
-elements[0] = JSON.stringify(demo1);
-elements[1] = "demo2"
 
-;
+var all = $("*",document.body);
 
-
-
-for (var i=0; i < elements.length ;i++)
+for (var i = 0; i< all.length;i++)
 {
-console.log("Q");
-var dims = getLoc(elements[i])
-bounds.push(dims);
+									
+   console.log(all[i]);
+   var offset = $(all[i]).offset();
+   var x = offset.left;
+   var y = offset.top;
+   var height = $(all[i]).height();
+   var width = $(all[i]).width();
 
-
-
-		    
-}
-
+   console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
+}						
 </script>
 
 
