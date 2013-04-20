@@ -7,7 +7,7 @@
 </head>
 
 <canvas id="world" 
-height="300" width="300"
+height="1000" width="600"
 style="border:1px solid #000000;"
 >
 
@@ -16,7 +16,8 @@ style="border:1px solid #000000;"
 
 <body>
 
-<h1> Testing </h1>
+<br>
+
 
 <button id="button">Try it </button>
 
@@ -114,15 +115,24 @@ var all = $("*",document.body);
 for (var i = 0; i< all.length;i++)
 {
 									
-   console.log(all[i]);
+
    var offset = $(all[i]).offset();
    var x = offset.left;
    var y = offset.top;
    var height = $(all[i]).height();
    var width = $(all[i]).width();
+   
+   var scale = 3
+   if ( all[i].id != "world" && $(all[i]).type() != "script")
+   {
+      //console.log($(all[i]).type());
+      console.log(all[i]);
+      var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
+      it.draw();
+   }
+   //console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
 
-   console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
-}						
+}
 </script>
 
 
