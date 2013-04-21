@@ -117,6 +117,8 @@ $(document).keypress(function(e) {
           d1.moveright();}
      if (e.which == 119){
           d1.jump();
+          while(!d1.collideUn(platform)){d1.fall();}
+          d1.verticalVelocity == 0;
 	}
      })
 
@@ -133,7 +135,7 @@ function animate() {
 
 
 $(document).ready(function(){
-   while(!d1.collideUn(platform)){d1.fall();}
+   while(!d1.collideUn(platform)){//d1.fall();}
    d1.draw();
    platform.draw();
 });

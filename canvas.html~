@@ -24,6 +24,7 @@ var disc = function(x,y,h,w,c1,c2,ctx) {
   this.ctx=ctx;
 }
 
+
 disc.prototype.draw = function() {
   this.ctx.fillStyle=this.c1;
   this.ctx.fillRect(this.x,this.y,this.w,this.h/2);
@@ -62,7 +63,14 @@ disc.prototype.jump = function() {
 }}
 
 disc.prototype.fall = function() {
-  this.verticalVelocity = -5;
+  this.erase();
+  this.verticalVelocity = 5;
+  this.y = this.y + 5;
+  this.verticalVelocity += 1;
+  this.draw();
+
+
+  /*this.verticalVelocity = -5;
   while(!(this.y === 0)) {
   
      this.erase();
@@ -71,29 +79,27 @@ disc.prototype.fall = function() {
      this.draw();
   
 }
-  this.verticalVelocity += 1;
+  this.verticalVelocity += 1;*/
   }
 
 
 
 disc.prototype.collideUn = function(a){
-	if (((this.y + this.height - a.y) <= this.verticalVelocity) && (this.x >= a.x) && (this.x <= (a.x + a.width)))
-		{return true;}
-	return false;
-}
+	return ((this.x >= a.x) && (this.x <= (a.x + a.w)) && ((this.y + this.h + this.verticalVelocity) >= a.y));}
 
 disc.prototype.collideR = function(a){
-	if ((this.y + this.height >= a.y + a.height) && (this.y <= a.y) && (a.x - this.x < this.horizantalVelocity) && (a.x - this.x > 0)){
+	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (a.x - this.x < this.horizantalVelocity) && (a.x - this.x > 0)){
 	return true;}
 	return false;
 }
 disc.prototype.collideL = function(a){
-	if ((this.y + this.height >= a.y + a.height) && (this.y <= a.y) && (this.x - a.x < this.horizantalVelocity) && (this.x - a.x > 0)){
+	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (this.x - a.x < this.horizantalVelocity) && (this.x - a.x > 0)){
 	return true;}
 	return false;	
 }
 
 d1 = new disc(100,100,20,40,"#ff0000","#0000ff",ctx);
+platform = new disc(0,400,100,700,"#ff0000","#0000ff",ctx);
 
 function sleep(milliseconds) {
   var start = new Date().getTime();
@@ -127,9 +133,12 @@ function animate() {
 
 
 $(document).ready(function(){
-   d1.draw()});
+   while(!d1.collideUn(platform)){d1.fall();}
+   d1.draw();
+   platform.draw();
+});
 
-console.log(all[0]);
-console.log(all[1]);
+//console.log(all[0]);
+//console.log(all[1]);
 
 </script>
