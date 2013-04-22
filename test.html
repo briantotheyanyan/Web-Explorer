@@ -6,15 +6,30 @@
 <script src="jquery-1.9.1.min.js"></script>
 </head>
 
+
+
 <canvas id="world" 
-height="1000" width="600"
-style="border:1px solid #000000;"
+height="100%" width="100%"
+style="margin: 0px;
+       position:fixed;
+       top:0;
+       left0;"
 >
 
 </canvas>
-	
 
-<body>
+<script>	
+  function set_canvas(){
+     canvas = document.getElementById("world");
+     if (canvas.width < window.innerWidth)
+         canvas.width = window.innerWidth;
+     if (canvas.height < window.innerHeight)
+         canvas.height = window.innerHeight;
+}
+
+</script>
+         
+<body onresize="set_canvas()">
 
 <br>
 
@@ -109,6 +124,8 @@ function getLoc(obj)
 }
 
 
+function generate_bounds()
+{
 
 var all = $("*",document.body);
 
@@ -122,7 +139,7 @@ for (var i = 0; i< all.length;i++)
    var height = $(all[i]).height();
    var width = $(all[i]).width();
    
-   var scale = 3
+   var scale = 1
    if ( all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT")
    {
  
@@ -131,8 +148,9 @@ for (var i = 0; i< all.length;i++)
       it.draw();
    }
    //console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
-
 }
+}
+
 </script>
 
 
