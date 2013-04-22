@@ -9,7 +9,7 @@
 
 
 <canvas id="world" 
-height="100%" width="100%"
+height="100; width="500"
 style="margin: 0px;
        position:fixed;
        top:0;
@@ -26,10 +26,13 @@ style="margin: 0px;
      if (canvas.height < window.innerHeight)
          canvas.height = window.innerHeight;
 }
+generate_coboundaries();
+
+script <//console log("Intial Boundaries Created") </script>
 
 </script>
          
-<body onresize="set_canvas()">
+</body onresize="set_canvas() generate_canvas()">
 
 <br>
 
@@ -139,7 +142,7 @@ for (var i = 0; i< all.length;i++)
    var height = $(all[i]).height();
    var width = $(all[i]).width();
    
-   var scale = 1
+   var scale = .1
    if ( all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT")
    {
  
@@ -150,6 +153,8 @@ for (var i = 0; i< all.length;i++)
    //console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
 }
 }
+//
+generate_bounds();
 
 </script>
 
