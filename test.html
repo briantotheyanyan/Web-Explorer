@@ -27,7 +27,7 @@ style="margin:0px;
          canvas.width = window.innerWidth;
      if (canvas.height < window.innerHeight)
          canvas.height = window.innerHeight;
-    console.log("set_canvas")
+    console.log("set_canvas");
 }
 
 set_canvas();
@@ -148,8 +148,11 @@ for (var i = 0; i< all.length;i++)
    var scale = 1
    if ( all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT")
    {
- 
-      console.log(all[i]);
+		 
+      //console.log(all[i]);
+     // if($(all[i]).prop("tagName") == "P")
+       //  width = getPWidth(all[i]);
+       
       var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
       it.draw();
    }
