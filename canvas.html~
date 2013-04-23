@@ -11,6 +11,7 @@
 <script>
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
+var canvas = document.getElementById('c')
 
 
 var disc = function(x,y,h,w,dx,dy,ax,ay,c1,c2,ctx){
@@ -40,19 +41,34 @@ disc.prototype.erase = function() {
 
 d1 = new disc(50,100,20,40,0,0,0,0,"#ff0000","#0000ff",ctx);
 
+disc.prototype.collideUn = function(a){
+	return ((this.x >= a.x) && (this.x <= (a.x + a.w)) && ((this.y + this.h + this.verticalVelocity) >= a.y));}
+
+disc.prototype.collideR = function(a){
+	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (a.x - this.x < this.horizantalVelocity) && (a.x - this.x > 0)){
+	return true;}
+	return false;
+}
+disc.prototype.collideL = function(a){
+	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (this.x - a.x < this.horizantalVelocity) && (this.x - a.x > 0)){
+	return true;}
+	return false;	
+}
 
 $(document).keydown(
-	function(e) {
-		if (e.which == 97){
-			d1.ax=50;}
-		if (e.which == 100){
-			d1.ax=-50;}
+	function(e) {console.log(e.keyCode);
+		if (e.keyCode == 68){
+			d1.ax=5;
+                        animate();}
+		if (e.keyCode == 65){
+			d1.ax=-5;
+                        animate();}
 	}
 );
           
 $(document).keyup(
 	function(e) {
-		if (e.which == 97 || e.which == 100){
+		if (e.keyCode == 68 || e.keyCode == 65){
 			d1.ax=0;
 			d1.dx=0;
          }
@@ -61,12 +77,12 @@ $(document).keyup(
 
 
 function animate() {
+        d1.erase();
 	d1.dx = d1.dx + d1.ax;
 	d1.x = d1.x + d1.dx;
-	if ( d1.x>=500 || d1.x < 50)  { 
+	if ( (d1.x>=canvas.width - d1.dx && d1.dx > 0) || (d1.dx < 0 && d1.x < d1.dx * -1))  { 
 		d1.dx = d1.dx * -1;
 	}
-	d1.erase();
 	d1.draw();
 	console.log("aaaaa");
 }
@@ -77,5 +93,5 @@ $(document).ready(
 	}
 );
 
-setInterval(animate,20);
+//setInterval(animate,20);
 </script>

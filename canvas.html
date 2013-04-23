@@ -13,7 +13,6 @@ var c = document.getElementById("c");
 var ctx = c.getContext("2d");
 var canvas = document.getElementById('c')
 
-
 var disc = function(x,y,h,w,dx,dy,ax,ay,c1,c2,ctx){
   this.x=x;
   this.y=y;
@@ -39,7 +38,7 @@ disc.prototype.erase = function() {
   this.ctx.clearRect(this.x,this.y,this.w,this.h);
 }
 
-d1 = new disc(50,100,20,40,0,0,0,0,"#ff0000","#0000ff",ctx);
+d1 = new disc(50,100,20,40,0,0,0,5,"#ff0000","#0000ff",ctx);
 
 disc.prototype.collideUn = function(a){
 	return ((this.x >= a.x) && (this.x <= (a.x + a.w)) && ((this.y + this.h + this.verticalVelocity) >= a.y));}
@@ -63,6 +62,12 @@ $(document).keydown(
 		if (e.keyCode == 65){
 			d1.ax=-5;
                         animate();}
+                if (e.keyCode == 87){
+                        if (d1.dy = 0){
+                        d1.dy = 20;
+                        animate();
+}
+                 }
 	}
 );
           
