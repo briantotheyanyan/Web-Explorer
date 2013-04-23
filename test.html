@@ -35,14 +35,14 @@ set_canvas();
 </script>
 
                 
-<body onresize="set_canvas()" >                   
+<body onresize="set_canvas(); generate_bounds();">                   
 
 <br>
 
 
 <button id="button">Try it </button>
 
-<p id="demo2"> 123456 </p>
+<p id="demo2"> 1234567 </p>
 
 <br><br>
 
@@ -84,8 +84,7 @@ function getPWidth(obj)
 {
 
    var b = document.getElementById(obj).innerHTML.trim();
-   console.log(b.length);
-   return b;
+   var x = b.length;
 }
 
 
@@ -149,10 +148,13 @@ for (var i = 0; i< all.length;i++)
    if ( all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT")
    {
 		 
-      //console.log(all[i]);
-     // if($(all[i]).prop("tagName") == "P")
-       //  width = getPWidth(all[i]);
-       
+      console.log(all[i]);
+
+      if($(all[i]).prop("tagName") == "P")
+      {
+
+         width = getPWidth(all[i].id);
+      }
       var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
       it.draw();
    }
