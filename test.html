@@ -76,7 +76,6 @@ bound.prototype.draw = function()
 
 function getPWidth(obj)
 {
-
    var b = document.getElementById(obj).innerHTML.trim();
    console.log(b.length);
    return b;
@@ -124,31 +123,25 @@ function getLoc(obj)
 }
 
 
-function generate_bounds()
-{
-
-var all = $("*",document.body);
-
-for (var i = 0; i< all.length;i++)
-{
-									
-
-   var offset = $(all[i]).offset();
-   var x = offset.left;
-   var y = offset.top;
-   var height = $(all[i]).height();
-   var width = $(all[i]).width();
-   
-   var scale = 1
-   if ( all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT")
-   {
- 
-      console.log(all[i]);
-      var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
-      it.draw();
-   }
-   //console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
-}
+function generate_bounds(){
+	var all = $("*",document.body);
+	for (var i = 0; i< all.length;i++){
+		var offset = $(all[i]).offset();
+		var x = offset.left;
+		var y = offset.top;
+		var height = $(all[i]).height();
+		if(all[i].prop("tagName") != "P"){
+			var width = $(all[i]).width();
+		}else{
+			var width = getPWidth(all[i]);
+		var scale = 1
+		if (all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT"){
+			console.log(all[i]);
+			var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
+			it.draw();
+		}
+		//console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
+	}
 }
 
 </script>
