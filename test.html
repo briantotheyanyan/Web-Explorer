@@ -9,8 +9,8 @@
 
 
 <canvas id="world" 
-height="100; width="500"
-style="margin: 0px;
+height="100" width="500"
+style="margin:0px;
        position:fixed;
        top:0;
        left0;"
@@ -19,20 +19,23 @@ style="margin: 0px;
 </canvas>
 
 <script>	
-  function set_canvas(){
+  function set_canvas()
+{
+
      canvas = document.getElementById("world");
      if (canvas.width < window.innerWidth)
          canvas.width = window.innerWidth;
      if (canvas.height < window.innerHeight)
          canvas.height = window.innerHeight;
+    console.log("set_canvas")
 }
-generate_coboundaries();
 
-script <//console log("Intial Boundaries Created") </script>
+set_canvas();
 
 </script>
-         
-</body onresize="set_canvas() generate_canvas()">
+
+                
+<body onresize="set_canvas()" >                   
 
 <br>
 
@@ -142,7 +145,7 @@ for (var i = 0; i< all.length;i++)
    var height = $(all[i]).height();
    var width = $(all[i]).width();
    
-   var scale = .1
+   var scale = 1
    if ( all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT")
    {
  
@@ -150,10 +153,11 @@ for (var i = 0; i< all.length;i++)
       var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
       it.draw();
    }
+
    //console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
-}
-}
-//
+
+}}
+
 generate_bounds();
 
 </script>
