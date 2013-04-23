@@ -11,6 +11,7 @@
 <script>
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
+var canvas = document.getElementById('c')
 
 
 var disc = function(x,y,h,w,dx,dy,ax,ay,c1,c2,ctx){
@@ -66,7 +67,7 @@ function animate() {
         d1.erase();
 	d1.dx = d1.dx + d1.ax;
 	d1.x = d1.x + d1.dx;
-	if ( d1.x>=500 || d1.x < 50)  { 
+	if ( (d1.x>=canvas.width - d1.dx && d1.dx > 0) || (d1.dx < 0 && d1.x < d1.dx * -1))  { 
 		d1.dx = d1.dx * -1;
 	}
 	d1.draw();
