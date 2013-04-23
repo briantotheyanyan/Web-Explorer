@@ -41,6 +41,19 @@ disc.prototype.erase = function() {
 
 d1 = new disc(50,100,20,40,0,0,0,0,"#ff0000","#0000ff",ctx);
 
+disc.prototype.collideUn = function(a){
+	return ((this.x >= a.x) && (this.x <= (a.x + a.w)) && ((this.y + this.h + this.verticalVelocity) >= a.y));}
+
+disc.prototype.collideR = function(a){
+	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (a.x - this.x < this.horizantalVelocity) && (a.x - this.x > 0)){
+	return true;}
+	return false;
+}
+disc.prototype.collideL = function(a){
+	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (this.x - a.x < this.horizantalVelocity) && (this.x - a.x > 0)){
+	return true;}
+	return false;	
+}
 
 $(document).keydown(
 	function(e) {console.log(e.keyCode);
