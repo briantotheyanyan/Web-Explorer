@@ -84,7 +84,10 @@ function getPWidth(obj)
 {
 
    var b = document.getElementById(obj).innerHTML.trim();
-   var x = b.length;
+   var x = b.length*5
+   
+   
+
 }
 
 
@@ -157,6 +160,7 @@ for (var i = 0; i< all.length;i++)
       }
       var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
       it.draw();
+      bounds.push(it);
    }
 
    //console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
