@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 
 <html>
 
@@ -35,7 +35,7 @@ set_canvas();
 </script>
 
                 
-<body onresize="set_canvas(); generate_bounds();">                   
+<body onresize="set_canvas();generate_bounds()">          
 
 <br>
 
@@ -49,13 +49,16 @@ set_canvas();
 <p id="demo1"> demo1 </p>
 
 
-name: <input id="name" /> </input>
+name: <input id="name" > </input>
 
 <br>
 
 
 <script>
-
+function resizing(){
+ set_canvas();
+ generate_bounds();
+}
 
 var c = document.getElementById("world");
 var ctx = c.getContext("2d");
@@ -99,22 +102,6 @@ function Collide(a,b){ // a is the character, b is any DOM element on the screen
     );
 }
 
-function collideUn(a,b){ // a is the character, b is any DOM element on the screen
-	if (((a.y + a.height - b.y <= 1) && (a.y + a.height - b.y >= -1)) && ((a.x > b.x)&&(a.x < b.x+b.width)))
-		{ return true;}
-	return false;
-
-}
-
-
-function collideR(a,b){
-	
-}
-
-function collideL(a,b){
-	
-}
-
 
 function getLoc(obj)
 {
@@ -130,15 +117,13 @@ function getLoc(obj)
    return loc;
 }
 
-
-<<<<<<< HEAD
 function generate_bounds()
 {
 
-var all = $("*",document.body);
+ var all = $("*",document.body);
 
-for (var i = 0; i< all.length;i++)
-{
+ for (var i = 0; i< all.length;i++)
+ {
 									
 
    var offset = $(all[i]).offset();
@@ -147,7 +132,7 @@ for (var i = 0; i< all.length;i++)
    var height = $(all[i]).height();
    var width = $(all[i]).width();
    
-   var scale = 1
+   var scale = 1;
    if ( all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT")
    {
 		 
@@ -165,10 +150,8 @@ for (var i = 0; i< all.length;i++)
 
    //console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
 
-}}
-
-generate_bounds();
-=======
+ }
+}
 function generate_bounds(){
 	var all = $("*",document.body);
 	for (var i = 0; i< all.length;i++){
@@ -189,8 +172,7 @@ function generate_bounds(){
 		//console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
 	}
 }
->>>>>>> f4e61aedb35d09c4a0b7accd3090ac441631841d
-
+generate_bounds();
 </script>
 
 
