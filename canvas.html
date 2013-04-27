@@ -38,7 +38,7 @@ disc.prototype.erase = function() {
   this.ctx.clearRect(this.x,this.y,this.w,this.h);
 }
 
-d1 = new disc(50,100,20,40,0,0,0,5,"#ff0000","#0000ff",ctx);
+d1 = new disc(50,100,20,40,0,0,0,2,"#ff0000","#0000ff",ctx);
 
 disc.prototype.collideUn = function(a){
 	return ((this.x >= a.x) && (this.x <= (a.x + a.w)) && ((this.y + this.h + this.verticalVelocity) >= a.y));}
@@ -64,9 +64,7 @@ $(document).keydown(
 			d1.ax=-5;
 		}
         if (e.keyCode == 87){
-            if (d1.dy = 0){
-                d1.dy = 20;
-			}
+			d1.dy = -20;
 		}
 	}
 );
@@ -85,8 +83,14 @@ function animate() {
     d1.erase();
 	d1.dx = d1.dx + d1.ax;
 	d1.x = d1.x + d1.dx;
+	d1.dy = d1.dy + d1.ay;
+	d1.y = d1.y + d1.dy;
 	if ( (d1.x>=canvas.width - d1.dx && d1.dx > 0) || (d1.dx < 0 && d1.x < d1.dx * -1))  { 
 		d1.dx = d1.dx * -1;
+	}
+	if (d1.y >= canvas.height && d1.dy > 0){ 
+		d1.dy = 0;
+		d1.y = canvas.height-d1.h;
 	}
 	d1.draw();
 	console.log("aaaaa");
