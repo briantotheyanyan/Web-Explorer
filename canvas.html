@@ -88,7 +88,7 @@ function animate() {
 	if ( (d1.x>=canvas.width - d1.dx && d1.dx > 0) || (d1.dx < 0 && d1.x < d1.dx * -1))  { 
 		d1.dx = d1.dx * -1;
 	}
-	if (d1.y >= canvas.height && d1.dy > 0){ 
+	if (d1.y >= canvas.height-d1.h && d1.dy > 0){ 
 		d1.dy = 0;
 		d1.y = canvas.height-d1.h;
 	}
