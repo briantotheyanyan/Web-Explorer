@@ -55,19 +55,19 @@ disc.prototype.collideL = function(a){
 }
 
 $(document).keydown(
-	function(e) {console.log(e.keyCode);
+	function(e) {
+		console.log(e.keyCode);
 		if (e.keyCode == 68){
 			d1.ax=5;
-                        animate();}
+        }
 		if (e.keyCode == 65){
 			d1.ax=-5;
-                        animate();}
-                if (e.keyCode == 87){
-                        if (d1.dy = 0){
-                        d1.dy = 20;
-                        animate();
-}
-                 }
+		}
+        if (e.keyCode == 87){
+            if (d1.dy = 0){
+                d1.dy = 20;
+			}
+		}
 	}
 );
           
@@ -82,7 +82,7 @@ $(document).keyup(
 
 
 function animate() {
-        d1.erase();
+    d1.erase();
 	d1.dx = d1.dx + d1.ax;
 	d1.x = d1.x + d1.dx;
 	if ( (d1.x>=canvas.width - d1.dx && d1.dx > 0) || (d1.dx < 0 && d1.x < d1.dx * -1))  { 
@@ -95,8 +95,9 @@ function animate() {
 $(document).ready(
 	function(){
 		d1.draw();
+		setInterval(animate,20);
 	}
 );
 
-//setInterval(animate,20);
+
 </script>
