@@ -56,7 +56,7 @@ disc.prototype.collideL = function(a){
 $(document).keydown(
 	function(e) {
 		console.log(e.keyCode);
-		if (e.keyCode == 68){
+		if (e.keyCode == 68 && d1.x != canvas.width-d1.w){
 			if(d1.dx<10){
 				if(!d1.falling){ 
 					d1.ax=2;
@@ -65,7 +65,7 @@ $(document).keydown(
 				}
 			}
 		}				
-		if (e.keyCode == 65){
+		if (e.keyCode == 65 && d1.x !=0){
 			if(d1.dx>-10){
 				if(!d1.falling){ 
 					d1.ax=-2;
@@ -103,8 +103,15 @@ function animate() {
 	d1.x = d1.x + d1.dx;
 	d1.dy = d1.dy + d1.ay;
 	d1.y = d1.y + d1.dy;
-	if ( (d1.x>=canvas.width - d1.dx && d1.dx > 0) || (d1.dx < 0 && d1.x < d1.dx * -1))  { 
-		d1.dx = d1.dx * -1;
+	if (d1.x + d1.dx >= canvas.width && d1.dx > 0)  { 
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = canvas.width-d1.w;
+	}
+	if (d1.x + d1.dx <= 0 && d1.dx < 0){
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = 0;
 	}
 	if (d1.y >= canvas.height-d1.h && d1.dy > 0){ 
 		d1.dy = 0;
