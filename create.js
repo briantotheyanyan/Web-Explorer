@@ -84,8 +84,9 @@ function generate_bounds()
 	var height = $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
   
-   //SCALE IS ADJUSTABLE
-   var scale = 1
+        //SCALE IS ADJUSTABLE
+        var scale = 1
+	
 	if ( all[i].id != "c" && $(all[i]).prop("tagName") != "SCRIPT")
 	{
 	    console.log(all[i]);
@@ -306,4 +307,4 @@ $(document).ready(
 
 
 
-generate_bounds();
+//generate_bounds();
