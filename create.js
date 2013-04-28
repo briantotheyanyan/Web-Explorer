@@ -3,6 +3,12 @@
 // 
 //
 
+var script = document.createElement('script');
+script.src = "http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js";
+script.type = "text/javascript";
+
+document.getElementsByTagName('head')[0].appendChild(script);
+
 ////////////////////////////
 // CANVAS //////////////////
 ////////////////////////////
@@ -142,16 +148,15 @@ function Collide(a,b){ // a is the character, b is any DOM element on the screen
     );
 }
 
-function collideUn(a,b){ // a is the character, b is any DOM element on the screen
-    if (((a.y + a.height - b.y <= 1) && (a.y + a.height - b.y >= -1)) && ((a.x > b.x)&&(a.x < \
-											b.x+b.width)))
-    { return true;}
-    return false;
-
+function collideUn(a,b){
+ // a is the character, b is any DOM element on the screen
+    if (((a.y + a.height - b.y <= 1) && (a.y + a.height - b.y >= -1)) && ((a.x > b.x)&&(a.x < b.x+b.width)))
+{ 
+return true;
+}
+return false;
 }
 
 
-
-
 create_canvas();
-
+generate_bounds();
