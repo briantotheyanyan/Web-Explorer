@@ -14,7 +14,6 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 ////////////////////////////
 
 create_canvas();
-var ctx;
 
 function create_canvas()
 {
@@ -26,7 +25,8 @@ function create_canvas()
     world.height = window.innerHeight;
     world.width = window.innerWidth;
     document.body.appendChild(world);
-    ctx = world.getContext("2d");
+    this.ctx = world.getContext("2d");
+    this.bounds = new Array();
 }
 
 function set_canvas()
@@ -62,7 +62,7 @@ function getPWidth(obj)
 {
     //GET WIDTH OF TEXT ELEMENT
     var b = document.getElementById(obj).innerHTML.trim();
-
+    
 }
 
 
