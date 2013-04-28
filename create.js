@@ -13,7 +13,6 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 // CANVAS //////////////////
 ////////////////////////////
 
-create_canvas();
 
 function create_canvas()
 {
@@ -27,6 +26,7 @@ function create_canvas()
     document.body.appendChild(world);
     this.ctx = world.getContext("2d");
     this.bounds = new Array();
+    return ctx;
 }
 
 function set_canvas()
