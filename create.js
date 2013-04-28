@@ -161,6 +161,119 @@ return true;
 return false;
 }
 
+var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
+  this.x=x;
+  this.y=y;
+  this.h=h;
+  this.w=w;
+  this.dx=dx;
+  this.dy=dy;
+  this.ax=ax
+  this.ay=ay;
+  this.falling=falling;
+  this.slowing=slowing;
+  this.c1=c1;
+  this.ctx=ctx;
+}
+
+disc.prototype.draw = function() {
+  this.ctx.fillStyle=this.c1;
+  this.ctx.fillRect(this.x,this.y,this.w,this.h);
+}
+
+disc.prototype.erase = function() {
+  this.ctx.clearRect(this.x,this.y,this.w,this.h);
+}
+
+disc.prototype.collideUn = function(a){
+	return ((this.x >= a.x) && (this.x <= (a.x + a.w)) && ((this.y + this.h + this.verticalVelocity) >= a.y));}
+
+disc.prototype.collideR = function(a){
+	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (a.x - this.x < this.horizantalVelocity) && (a.x - this.x > 0)){
+	return true;}
+	return false;
+}
+disc.prototype.collideL = function(a){
+	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (this.x - a.x < this.horizantalVelocity) && (this.x - a.x > 0)){
+	return true;}
+	return false;	
+}
+
+$(document).keydown(
+	function(e) {
+		console.log(e.keyCode);
+		if (e.keyCode == 68 && d1.x != canvas.width-d1.w){
+			if(d1.dx<10){
+				if(!d1.falling){ 
+					d1.ax=2;
+				}else{
+					d1.ax=1;
+				}
+			}
+		}				
+		if (e.keyCode == 65 && d1.x !=0){
+			if(d1.dx>-10){
+				if(!d1.falling){ 
+					d1.ax=-2;
+				}else{
+					d1.ax=-1;
+				}
+			}
+		}
+        if (e.keyCode == 87){
+			if (d1.dy == 0){
+				d1.dy = -25;
+				d1.falling=true;
+			}
+		}
+	}
+);
+
+$(document).keyup(
+	function(e) {
+		if (e.keyCode == 68 || e.keyCode == 65){
+			d1.ax=-1*(d1.ax / Math.abs(d1.ax));
+			d1.slowing=true;
+        }
+    }
+);
+
+function animate() {
+    d1.erase();
+	if(d1.slowing && d1.dx == 0){
+		d1.slowing = false;
+		d1.ax = 0;
+	}
+	d1.dx = d1.dx + d1.ax;
+	d1.x = d1.x + d1.dx;
+	d1.dy = d1.dy + d1.ay;
+	d1.y = d1.y + d1.dy;
+	if (d1.x + d1.dx >= canvas.width && d1.dx > 0)  { 
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = canvas.width-d1.w;
+	}
+	if (d1.x + d1.dx <= 0 && d1.dx < 0){
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = 0;
+	}
+	if (d1.y >= canvas.height-d1.h && d1.dy > 0){ 
+		d1.dy = 0;
+		d1.y = canvas.height-d1.h;
+		d1.falling=false;
+	}
+	d1.draw();
+	//console.log("aaaaa");
+}
+
+$(document).ready(
+	function(){
+		d1.draw();
+		setInterval(animate,20);
+	}
+);
+
 
 create_canvas();
 generate_bounds();
