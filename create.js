@@ -29,6 +29,7 @@ function create_canvas()
     return ctx;
 }
 
+
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
 
@@ -260,8 +261,9 @@ $(document).keyup(
 );
 
 ////////////////
-// ANIMATE 
+// ANIMATE ////
 ///////////////
+
 function animate() {
     d1.erase();
 	if(d1.slowing && d1.dx == 0){
@@ -301,5 +303,5 @@ $(document).ready(
 );
 
 
-//create_canvas();
+
 generate_bounds();
