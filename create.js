@@ -29,10 +29,13 @@ function create_canvas()
     return ctx;
 }
 
+var ctx = create_canvas();
+var canvas = document.getElementById("c");
+
 function set_canvas()
 {
     //set for every on resize
-    canvas = document.getElementById("world");
+    canvas = document.getElementById("c");
     if (canvas.width < window.innerWidth)
         canvas.width = window.innerWidth;
     if (canvas.height < window.innerHeight)
@@ -161,6 +164,10 @@ return true;
 return false;
 }
 
+//////////////////////////
+// DISC / CHARACTER //////
+/////////////////////////
+
 var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
   this.x=x;
   this.y=y;
@@ -175,6 +182,14 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
   this.c1=c1;
   this.ctx=ctx;
 }
+
+///////////////////////
+// INSTANTIATE DISC HERE
+
+d1  = new disc(50,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
+
+///////////////////////
+
 
 disc.prototype.draw = function() {
   this.ctx.fillStyle=this.c1;
@@ -198,6 +213,11 @@ disc.prototype.collideL = function(a){
 	return true;}
 	return false;	
 }
+
+////////////////////////
+///MOVEMENT ////////////
+///////////////////////
+
 
 $(document).keydown(
 	function(e) {
@@ -229,6 +249,7 @@ $(document).keydown(
 	}
 );
 
+
 $(document).keyup(
 	function(e) {
 		if (e.keyCode == 68 || e.keyCode == 65){
@@ -238,6 +259,9 @@ $(document).keyup(
     }
 );
 
+////////////////
+// ANIMATE 
+///////////////
 function animate() {
     d1.erase();
 	if(d1.slowing && d1.dx == 0){
@@ -267,6 +291,8 @@ function animate() {
 	//console.log("aaaaa");
 }
 
+
+
 $(document).ready(
 	function(){
 		d1.draw();
@@ -275,5 +301,5 @@ $(document).ready(
 );
 
 
-create_canvas();
+//create_canvas();
 generate_bounds();
