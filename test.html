@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 
 <html>
 
@@ -35,7 +35,7 @@ set_canvas();
 </script>
 
                 
-<body onresize="set_canvas();generate_bounds()">          
+<body onresize="set_canvas(); generate_bounds();">                   
 
 <br>
 
@@ -49,16 +49,13 @@ set_canvas();
 <p id="demo1"> demo1 </p>
 
 
-name: <input id="name" > </input>
+name: <input id="name" /> </input>
 
 <br>
 
 
 <script>
-function resizing(){
- set_canvas();
- generate_bounds();
-}
+
 
 var c = document.getElementById("world");
 var ctx = c.getContext("2d");
@@ -85,11 +82,8 @@ bound.prototype.draw = function()
 
 function getPWidth(obj)
 {
-   var b = document.getElementById(obj).innerHTML.trim();
-   var x = b.length*5
+   var b = document.getElementById(obj).innerHTML.trim(); 
    
-   
-
 }
 
 
@@ -100,6 +94,22 @@ function Collide(a,b){ // a is the character, b is any DOM element on the screen
         ((a.x + a.width) < b.x) ||
         (a.x > (b.x + b.width))
     );
+}
+
+function collideUn(a,b){ // a is the character, b is any DOM element on the screen
+	if (((a.y + a.height - b.y <= 1) && (a.y + a.height - b.y >= -1)) && ((a.x > b.x)&&(a.x < b.x+b.width)))
+		{ return true;}
+	return false;
+
+}
+
+
+function collideR(a,b){
+	
+}
+
+function collideL(a,b){
+	
 }
 
 
@@ -117,22 +127,24 @@ function getLoc(obj)
    return loc;
 }
 
+
+
 function generate_bounds()
 {
 
- var all = $("*",document.body);
+var all = $("*",document.body);
 
- for (var i = 0; i< all.length;i++)
- {
+for (var i = 0; i< all.length;i++)
+{
 									
 
    var offset = $(all[i]).offset();
    var x = offset.left;
    var y = offset.top;
-   var height = $(all[i]).height();
-   var width = $(all[i]).width();
+   var height = $(all[i]).outerHeight();
+   var width = $(all[i]).outerWidth();
    
-   var scale = 1;
+   var scale = 1
    if ( all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT")
    {
 		 
@@ -144,35 +156,27 @@ function generate_bounds()
          width = getPWidth(all[i].id);
       }
       var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
-      it.draw();
+      //it.draw();
+      if ( !(it.w == 0 || it.h == 0))
       bounds.push(it);
    }
 
    //console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
 
- }
-}
-function generate_bounds(){
-	var all = $("*",document.body);
-	for (var i = 0; i< all.length;i++){
-		var offset = $(all[i]).offset();
-		var x = offset.left;
-		var y = offset.top;
-		var height = $(all[i]).height();
-		if(all[i].prop("tagName") != "P"){
-			var width = $(all[i]).width();
-		}else{
-			var width = getPWidth(all[i]);
-		var scale = 1
-		if (all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT"){
-			console.log(all[i]);
-			var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
-			it.draw();
-		}
-		//console.log("x:"+x+" y:"+y+" height:"+height+" width"+width);
-	}
-}
+}}
+
 generate_bounds();
+
+function draw_bounds(){
+   for (var i = 0; i < bounds.length; i++)
+       bounds[i].draw();
+}
+
+function get_bounds(){
+return bounds;
+
+}
+
 </script>
 
 
