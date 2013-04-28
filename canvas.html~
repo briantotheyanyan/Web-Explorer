@@ -3,86 +3,41 @@
   canvas {border-style:solid;}
 </style>
 <h1>Canvas test</h1>
-<canvas id="c" height=500 width=700>
+<canvas id="c" height=500 width=1900>
 </canvas>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js?ver=1.4.0"></script>
 
-<script> //How do we use edges.js?
+<script>
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
+var canvas = document.getElementById('c')
 
-var disc = function(x,y,h,w,c1,c2,ctx) {
-  this.verticalVelocity = 0;
-  this.horizantalVelocity = 5;
+var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
   this.x=x;
   this.y=y;
   this.h=h;
   this.w=w;
+  this.dx=dx;
+  this.dy=dy;
+  this.ax=ax
+  this.ay=ay;
+  this.falling=falling;
+  this.slowing=slowing;
   this.c1=c1;
-  this.c2=c2;
   this.ctx=ctx;
 }
 
-
 disc.prototype.draw = function() {
   this.ctx.fillStyle=this.c1;
-  this.ctx.fillRect(this.x,this.y,this.w,this.h/2);
-  this.ctx.fillStyle=this.c2;
-  this.ctx.fillRect(this.x,this.y+this.h/2,this.w,this.h/2);
+  this.ctx.fillRect(this.x,this.y,this.w,this.h);
 }
 
 disc.prototype.erase = function() {
   this.ctx.clearRect(this.x,this.y,this.w,this.h);
 }
 
-disc.prototype.moveleft = function() {
- this.erase();
- this.x+=-5;
- this.draw();
-}
-
-disc.prototype.moveright = function() {
- this.erase();
- this.x+=5; 
- this.draw();
-}
-disc.prototype.jump = function() {
-   this.verticalVelocity = 5;
-   while(this.verticalVelocity > 0){
-    for (var i = 0; i< this.verticalVelocity;i++)
-    {  this.erase();
-       this.y = this.y - 1;
-       sleep(10);
-       this.draw();
-    }
-    //this.erase();
-    //this.y = this.y - this.verticalVelocity;
-    //this.draw();
-    this.verticalVelocity -= 1;
-}}
-
-disc.prototype.fall = function() {
-  this.erase();
-  this.verticalVelocity = 5;
-  this.y = this.y + 5;
-  this.verticalVelocity += 1;
-  this.draw();
-
-
-  /*this.verticalVelocity = -5;
-  while(!(this.y === 0)) {
-  
-     this.erase();
-     this.y = this.y + 1;
-     sleep(10);
-     this.draw();
-  
-}
-  this.verticalVelocity += 1;*/
-  }
-
-
+d1 = new disc(50,100,20,40,0,0,0,2,true,false,"#ff0000",ctx);
 
 disc.prototype.collideUn = function(a){
 	return ((this.x >= a.x) && (this.x <= (a.x + a.w)) && ((this.y + this.h + this.verticalVelocity) >= a.y));}
@@ -98,47 +53,81 @@ disc.prototype.collideL = function(a){
 	return false;	
 }
 
-d1 = new disc(100,100,20,40,"#ff0000","#0000ff",ctx);
-platform = new disc(0,400,100,700,"#ff0000","#0000ff",ctx);
-
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-}
-
-$(document).keypress(function(e) {
-     if (e.which == 97){
-          d1.moveleft();}
-     if (e.which == 100){
-          d1.moveright();}
-     if (e.which == 119){
-          d1.jump();
+$(document).keydown(
+	function(e) {
+		console.log(e.keyCode);
+		if (e.keyCode == 68 && d1.x != canvas.width-d1.w){
+			if(d1.dx<10){
+				if(!d1.falling){ 
+					d1.ax=2;
+				}else{
+					d1.ax=1;
+				}
+			}
+		}				
+		if (e.keyCode == 65 && d1.x !=0){
+			if(d1.dx>-10){
+				if(!d1.falling){ 
+					d1.ax=-2;
+				}else{
+					d1.ax=-1;
+				}
+			}
+		}
+        if (e.keyCode == 87){
+			if (d1.dy == 0){
+				d1.dy = -25;
+				d1.falling=true;
+			}
+		}
 	}
-     })
-
-var dx=1;
+);
+          
+$(document).keyup(
+	function(e) {
+		if (e.keyCode == 68 || e.keyCode == 65){
+			d1.ax=-1*(d1.ax / Math.abs(d1.ax));
+			d1.slowing=true;
+        }
+    }
+);
 
 
 function animate() {
-  d1.erase();
-  d1.x = d1.x + dx;
-  if ( d1.x>=500 || d1.x < 50)  { dx = dx * -1;}
-  d1.draw();
-  d1.jump();
+    d1.erase();
+	if(d1.slowing && d1.dx == 0){
+		d1.slowing = false;
+		d1.ax = 0;
+	}
+	d1.dx = d1.dx + d1.ax;
+	d1.x = d1.x + d1.dx;
+	d1.dy = d1.dy + d1.ay;
+	d1.y = d1.y + d1.dy;
+	if (d1.x + d1.dx >= canvas.width && d1.dx > 0)  { 
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = canvas.width-d1.w;
+	}
+	if (d1.x + d1.dx <= 0 && d1.dx < 0){
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = 0;
+	}
+	if (d1.y >= canvas.height-d1.h && d1.dy > 0){ 
+		d1.dy = 0;
+		d1.y = canvas.height-d1.h;
+		d1.falling=false;
+	}
+	d1.draw();
+	//console.log("aaaaa");
 }
 
+$(document).ready(
+	function(){
+		d1.draw();
+		setInterval(animate,20);
+	}
+);
 
-$(document).ready(function(){
-   while(!d1.collideUn(platform)){d1.fall();}
-   d1.draw();
-   platform.draw();
-});
-
-//console.log(all[0]);
-//console.log(all[1]);
 
 </script>
