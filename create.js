@@ -29,7 +29,7 @@ function create_canvas()
     return ctx;
 }
 
-
+//VARIABLES 
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
 
@@ -70,27 +70,24 @@ function getPWidth(obj)
 }
 
 
+
 function generate_bounds()
 {
-
+    //THIS IS USED TO READ HTML ELEMENTS AND CREATE BOUNDS . THEY ARE ADDED TO AN ARRAY
     var all = $("*",document.body);
 
     for (var i = 0; i< all.length;i++)
     {
-
-
 	var offset = $(all[i]).offset();
 	var x = offset.left;
 	var y = offset.top;
 	var height = $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
   
-
    //SCALE IS ADJUSTABLE
    var scale = 1
-	if ( all[i].id != "world" && $(all[i]).prop("tagName") != "SCRIPT")
+	if ( all[i].id != "c" && $(all[i]).prop("tagName") != "SCRIPT")
 	{
-
 	    console.log(all[i]);
 
 	    if($(all[i]).prop("tagName") == "P")
@@ -166,7 +163,7 @@ return false;
 }
 
 //////////////////////////
-// DISC / CHARACTER //////
+// DISC  CHARACTER //////
 /////////////////////////
 
 var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
@@ -186,9 +183,10 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
 
 ///////////////////////
 // INSTANTIATE DISC HERE
-
-d1  = new disc(50,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
-
+//
+d1 = new disc(50,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
+//
+//
 ///////////////////////
 
 
@@ -196,6 +194,10 @@ disc.prototype.draw = function() {
   this.ctx.fillStyle=this.c1;
   this.ctx.fillRect(this.x,this.y,this.w,this.h);
 }
+
+////////////////
+//DISC COLLISION
+////////////////
 
 disc.prototype.erase = function() {
   this.ctx.clearRect(this.x,this.y,this.w,this.h);
@@ -215,8 +217,8 @@ disc.prototype.collideL = function(a){
 	return false;	
 }
 
-////////////////////////
-///MOVEMENT ////////////
+///////////////////////
+///MOVEMENT ///////////
 ///////////////////////
 
 
