@@ -20,16 +20,20 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 // CANVAS //////////////////
 ////////////////////////////
 
+create_canvas();
+var ctx;
+
 function create_canvas()
 {
     //generate a canvas that has the dimensions of the window
     //this is what will overlay the image of the background
     
     var world = document.createElement('canvas');
+    world.id = 'c';
     world.height = window.innerHeight;
     world.width = window.innerWidth;
     document.body.appendChild(world);
-    
+    ctx = world.getContext("2d");
 }
 
 function set_canvas()
