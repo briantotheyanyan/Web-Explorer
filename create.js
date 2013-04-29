@@ -192,19 +192,20 @@ disc.prototype.collideUn = function(){
 disc.prototype.collideR = function(){
     var listofBounds = get_bounds();
     for(var i = 0;i<listofBounds.length;i++){
-	if(((this.y >= listofBounds[i].y) || (this.y + this.h <= listofBounds[i].y + listofBounds[i].h)) && (this.x + this.w + this.dx >= listofBounds[i].x))
-	{return true;}
+	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h) && (this.x + this.w + this.dx >= listofBounds[i].x)){
+	    return true;
+	}
     }
     return false;
 }
 disc.prototype.collideL = function(){
     var listofBounds = get_bounds();
-    for(var i = 0; i<listofBounds.length;i++)
-    {
-	if(((this.y >= listofBounds[i].y) || (this.y + this.h <= listofBounds[i].y + listofBounds[i].h)) && (this.x + this.dx <= listofBounds[i].x + listofBounds[i].w))
-	{return true;}
+    for(var i = 0; i<listofBounds.length;i++){
+	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h) && (this.x + this.dx <= listofBounds[i].x + listofBounds[i].w)){
+	    return true;
     }
     return false;
+    }
 }
 
 ///////////////////////
