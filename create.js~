@@ -287,17 +287,23 @@ function animate() {
     if (d1.y >= canvas.height) {
 		d1.dy = 0
 	}
-    if (d1.falling && d1.collideUn){
-	d1.falling = false;
-	d1.dy = 0;
+    if (d1.falling){
+	if(d1.collideUn()){
+	    d1.falling = false;
+	    d1.dy = 0;
+	}
     }
-    if (d1.dx < 0 && d1.collideL){
-	d1.slowing = false;
-	d1.dx = 0;
+    if (d1.dx < 0){
+	if (d1.collideL()){
+	    d1.slowing = false;
+	    d1.dx = 0;
+	}
     }
-    if (d1.dx > 0 && d1.collideR){
-	d1.slowing = false;
-	d1.dx = 0;
+    if (d1.dx > 0){
+	if (d1.collideR()){
+	    d1.slowing = false;
+	    d1.dx = 0;
+	}
     }
 	
 	d1.draw();
