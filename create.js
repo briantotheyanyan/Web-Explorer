@@ -184,7 +184,7 @@ disc.prototype.erase = function() {
 disc.prototype.collideUn = function(){
     var listofBounds = get_bounds();
     for(var i = 0;i<listofBounds.length;i++){
-        if ((this.x >= listofBounds[i].x) && (this.x <= (listofBounds[i].x + listofBounds[i].w)) && ((this.y + this.h + this.dy) <= listofBounds[i].y))
+        if ((this.x >= listofBounds[i].x) && (this.x+this.h <= (listofBounds[i].x + listofBounds[i].w)) && ((this.y + this.h + this.dy) >= listofBounds[i].y))
 	{return true;}
     }
     return false;
