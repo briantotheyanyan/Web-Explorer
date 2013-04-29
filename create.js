@@ -140,27 +140,6 @@ function get_bounds(){
 
 }
 
-/////////////////////////
-// COLLISION ////////////
-/////////////////////////
-
-function Collide(a,b){ // a is the character, b is any DOM element on the screen
-    return !(
-        ((a.y + a.height) < (b.y)) ||
-	    (a.y > (b.y + b.height)) ||
-	    ((a.x + a.width) < b.x) ||
-            (a.x > (b.x + b.width))
-    );
-}
-
-function collideUn(a,b){
- // a is the character, b is any DOM element on the screen
-    if (((a.y + a.height - b.y <= 1) && (a.y + a.height - b.y >= -1)) && ((a.x > b.x)&&(a.x < b.x+b.width)))
-{ 
-return true;
-}
-return false;
-}
 
 //////////////////////////
 // DISC  CHARACTER //////
