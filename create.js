@@ -281,12 +281,31 @@ function animate() {
 		d1.y = canvas.height-d1.h;
 		d1.falling=false;
 	}
-	if ((d1.x <= 0) || d1.x >= canvas.width) {
+    if ((d1.x <= 0) || d1.x >= canvas.width) {
 		d1.dx = 0 - d1.dx
 	} 
-	if (d1.y >= canvas.height) {
+    if (d1.y >= canvas.height) {
 		d1.dy = 0
 	}
+    if (d1.falling){
+	if(d1.collideUn()){
+	    d1.falling = false;
+	    d1.dy = 0;
+	}
+    }
+    if (d1.dx < 0){
+	if (d1.collideL()){
+	    d1.slowing = false;
+	    d1.dx = 0;
+	}
+    }
+    if (d1.dx > 0){
+	if (d1.collideR()){
+	    d1.slowing = false;
+	    d1.dx = 0;
+	}
+    }
+	
 	d1.draw();
 	//console.log("aaaaa");
 }
