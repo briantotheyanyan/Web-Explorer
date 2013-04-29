@@ -281,6 +281,12 @@ function animate() {
 		d1.y = canvas.height-d1.h;
 		d1.falling=false;
 	}
+	if ((d1.x <= 0) || d1.x >= canvas.width) {
+		d1.dx = 0 - d1.dx
+	} 
+	if (d1.y >= canvas.height) {
+		d1.dy = 0
+	}
 	d1.draw();
 	//console.log("aaaaa");
 }
