@@ -52,7 +52,6 @@ function getLoc(obj)
 {
    // Need an algorithim to go through number of characters
    //(including br's) and account for un-fixed width for p's
-
     obj = "#" + obj;
     var loc = new Array();;
     loc[0] = $(obj).position().left,
@@ -185,7 +184,6 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
 ///////////////////////
 // INSTANTIATE DISC HERE
 //
-d1 = new disc(50,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 //
 //
 ///////////////////////
@@ -204,18 +202,28 @@ disc.prototype.erase = function() {
   this.ctx.clearRect(this.x,this.y,this.w,this.h);
 }
 
-disc.prototype.collideUn = function(a){
-	return ((this.x >= a.x) && (this.x <= (a.x + a.w)) && ((this.y + this.h + this.verticalVelocity) >= a.y));}
-
-disc.prototype.collideR = function(a){
-	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (a.x - this.x < this.horizantalVelocity) && (a.x - this.x > 0)){
-	return true;}
-	return false;
+disc.prototype.collideUn = function(){
+    var listofBounds = get_bounds();
+    for(var i = 0;i<listofBounds.length;i++){
+        if ((this.x >= listofBounds[i].x) && (this.x <= (listofBounds[i].x + listofBounds[i].w)) && ((this.y + this.h + this.dy) <= listofBounds[i].y))
+	{return true;}
+    }
+    return false;
 }
-disc.prototype.collideL = function(a){
-	if ((this.y + this.h >= a.y + a.h) && (this.y <= a.y) && (this.x - a.x < this.horizantalVelocity) && (this.x - a.x > 0)){
-	return true;}
-	return false;	
+disc.prototype.collideR = function(){
+    var listofBounds = get_bounds();
+    for(var i = 0;i<listofBounds.length;i++){
+
+    }
+    return false;
+}
+disc.prototype.collideL = function(){
+    var listofBounds = get_bounds();
+    for(var i = 0; i<listofBounds.length;i++)
+    {
+
+    }
+    return false;
 }
 
 ///////////////////////
@@ -300,6 +308,8 @@ function animate() {
 
 $(document).ready(
 	function(){
+	    generate_bounds();
+	    d1 = new disc(50,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 		d1.draw();
 		setInterval(animate,20);
 	}
