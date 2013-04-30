@@ -23,7 +23,16 @@ function create_canvas()
     world.id = 'c';
     world.height = window.innerHeight;
     world.width = window.innerWidth;
+    
+    world.style.margin = "0px;";
+    world.style.position = "fixed;";
+    world.style.top = "0";
+    world.style.left = "0";
+    
+    
+    
     document.body.appendChild(world);
+  
     this.ctx = world.getContext("2d");
     this.bounds = new Array();
     return ctx;
@@ -236,7 +245,7 @@ $(document).keydown(
 		}
         if (e.keyCode == 87){
 			if (d1.dy == 0){
-				d1.dy = -25;
+				d1.dy = -50;
 				d1.falling=true;
 			}
 		}
