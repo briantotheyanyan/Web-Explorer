@@ -182,10 +182,18 @@ disc.prototype.erase = function() {
 }
 
 disc.prototype.collideUn = function(){
+	
     var listofBounds = get_bounds();
+   
     for(var i = 0; i < listofBounds.length; i++){
-        if ( (this.x >= listofBounds[i].x) && (this.x + this.w <= (listofBounds[i].x + listofBounds[i].w)) && 
-        	((this.y + this.h + this.dy) <= listofBounds[i].y) 
+    	
+    	var platleftcorner = listofBounds[i].x;
+        var platheight = listofBounds[i].y;
+    	var platwidth = listofBounds[i].w;
+    
+    	
+        if ( (this.x >= platleftcorner) && (this.x + this.w <= (platleftcorner + platwidth)) && 
+        	((this.y + this.h + this.dy) <= platheight) 
         )
 	{return true;}
     }
