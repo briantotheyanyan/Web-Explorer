@@ -243,6 +243,26 @@ $(document).keydown(
 	}
 );
 
+$(document).keypress(function(e){
+    if (e.keyCode == 65){
+	if (d1.collideL()){
+	    d1.dx = 0;
+	     d1.ax = 0;
+	     d1.slowing = false;
+	}
+    }
+
+    if (e.keyCode == 68){
+	if(d1.collideR()){
+	    d1.dx = 0;
+	    d1.ax = 0;
+	    d1.slowing = false;
+	}
+    }
+});
+	    
+
+
 
 $(document).keyup(
 	function(e) {
@@ -288,6 +308,8 @@ function animate() {
     if (d1.y >= canvas.height) {
 		d1.dy = 0
 	}
+
+// the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
 	if(d1.collideUn()){
 	    d1.falling = false;
@@ -307,7 +329,8 @@ function animate() {
 	}
     }
 	
-	d1.draw();
+    d1.draw();
+    draw_bounds();
 	//console.log("aaaaa");
 }
 
