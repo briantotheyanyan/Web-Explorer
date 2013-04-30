@@ -305,11 +305,10 @@ function animate() {
 	}
 
 // the next 3 if statements deal with collision to objects on screen, still flawed
-    if (d1.dy >= 0){
+    if (d1.dy >= 0 && d1.falling){
 	if(d1.collideUn()){
 	    d1.falling = false;
 	    d1.dy = 0;
-	    d1.ay = 0;
 	}
     }
     if (d1.dx < 0){

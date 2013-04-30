@@ -193,9 +193,9 @@ disc.prototype.erase = function() {
 disc.prototype.collideUn = function(){
     var listofBounds = get_bounds();
     for(var i = 0;i<listofBounds.length;i++){
-        if ((this.x >= listofBounds[i].x) && (this.x+this.w <= (listofBounds[i].x + listofBounds[i].w)) && ((this.y + this.h + this.dy) <= listofBounds[i].y) && d1.dy <= listofBounds[i].y)
+        if ((this.x >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w) && (this.y + this.h + this.dy >= listofBounds[i].y) &&(this.y + this.h >= listofBounds[i].y)) 
 	{
-	    console.log(listofBounds[i]);
+	    //console.log(listofBounds[i]);
 	    return true;
 	}
     }
@@ -205,6 +205,7 @@ disc.prototype.collideR = function(){
     var listofBounds = get_bounds();
     for(var i = 0;i<listofBounds.length;i++){
 	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h) && (this.x + this.w + this.dx >= listofBounds[i].x)&&(this.x <= listofBounds[i].x + listofBounds[i].w)){
+	    this.y = listofBounds[i].y - this.h
 	    return true;
 	}
     }
@@ -248,8 +249,9 @@ $(document).keydown(
 		}
         if (e.keyCode == 87){
 			if (d1.dy == 0){
-				d1.dy = -50;
-				d1.falling=true;
+			    d1.ay = 2;
+			    d1.dy = -50;
+			    d1.falling=true;
 			}
 		}
 	}
@@ -309,6 +311,7 @@ function animate() {
 	if(d1.collideUn()){
 	    d1.falling = false;
 	    d1.dy = 0;
+	    d1.ay = 0;
 	}
     }
     if (d1.dx < 0){
@@ -337,7 +340,7 @@ $(document).ready(
 	function(){
 	    generate_bounds();
 	    draw_bounds();
-	    d1 = new disc(0,0,20,40,0,0,0,2,true,false,"#ff0000", ctx);
+	    d1 = new disc(0,200,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 		d1.draw();
 		setInterval(animate,20);
 	}
