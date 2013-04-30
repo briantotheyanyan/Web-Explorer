@@ -192,8 +192,8 @@ disc.prototype.collideUn = function(){
     	var platwidth = listofBounds[i].w;
     
     	
-        if ( (this.x >= platleftcorner) && (this.x + this.w <= (platleftcorner + platwidth)) && 
-        	((this.y + this.h + this.dy) <= platheight) 
+        if ( (this.x >= platleftcorner) && (this.x + this.w <= (platleftcorner + platwidth)) //&& 
+        	//((this.y + this.h + this.dy) <= platheight) 
         )
 	{return true;}
     }
