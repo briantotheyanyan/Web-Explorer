@@ -319,6 +319,12 @@ function animate() {
 	    d1.slowing = false;
 	    d1.dx = 0;
 	    d1.ax = 0;
+	    
+	}
+	if(!d1.collideUn()){
+	    d1.falling = false;
+	    d1.dy = 0;
+	    d1.ay = 2;
 	}
     }
     if (d1.dx > 0){
@@ -326,6 +332,11 @@ function animate() {
 	    d1.slowing = false;
 	    d1.dx = 0;
 	    d1.ax = 0;
+	}
+	if(!d1.collideUn()){
+	    d1.falling = false;
+	    d1.dy = 0;
+	    d1.ay = 2;
 	}
     }
 	
