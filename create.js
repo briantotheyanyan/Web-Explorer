@@ -193,8 +193,11 @@ disc.prototype.erase = function() {
 disc.prototype.collideUn = function(){
     var listofBounds = get_bounds();
     for(var i = 0;i<listofBounds.length;i++){
-        if ((this.x >= listofBounds[i].x) && (this.x+this.w <= (listofBounds[i].x + listofBounds[i].w)) && ((this.y + this.h + this.dy) <= listofBounds[i].y))
-	{return true;}
+        if ((this.x >= listofBounds[i].x) && (this.x+this.w <= (listofBounds[i].x + listofBounds[i].w)) && ((this.y + this.h + this.dy) <= listofBounds[i].y) && d1.dy <= listofBounds[i].y)
+	{
+	    console.log(listofBounds[i]);
+	    return true;
+	}
     }
     return false;
 }
@@ -302,10 +305,11 @@ function animate() {
 	}
 
 // the next 3 if statements deal with collision to objects on screen, still flawed
-    if (d1.falling && d1.dy >= 0){
+    if (d1.dy >= 0){
 	if(d1.collideUn()){
 	    d1.falling = false;
 	    d1.dy = 0;
+	    d1.ay = 0;
 	}
     }
     if (d1.dx < 0){
@@ -334,7 +338,7 @@ $(document).ready(
 	function(){
 	    generate_bounds();
 	    draw_bounds();
-	    d1 = new disc(0,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
+	    d1 = new disc(0,0,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 		d1.draw();
 		setInterval(animate,20);
 	}
