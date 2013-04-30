@@ -316,6 +316,7 @@ function animate() {
 $(document).ready(
 	function(){
 	    generate_bounds();
+	    draw_bounds();
 	    d1 = new disc(50,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 		d1.draw();
 		setInterval(animate,20);
