@@ -303,12 +303,14 @@ function animate() {
 	if (d1.collideL()){
 	    d1.slowing = false;
 	    d1.dx = 0;
+	    d1.ax = 0;
 	}
     }
     if (d1.dx > 0){
 	if (d1.collideR()){
 	    d1.slowing = false;
 	    d1.dx = 0;
+	    d1.ax = 0;
 	}
     }
 	
