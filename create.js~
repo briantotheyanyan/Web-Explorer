@@ -243,23 +243,6 @@ $(document).keydown(
 	}
 );
 
-$(document).keypress(function(e){
-    if (e.keyCode == 65){
-	if (d1.collideL()){
-	    d1.dx = 0;
-	     d1.ax = 0;
-	     d1.slowing = false;
-	}
-    }
-
-    if (e.keyCode == 68){
-	if(d1.collideR()){
-	    d1.dx = 0;
-	    d1.ax = 0;
-	    d1.slowing = false;
-	}
-    }
-});
 	    
 
 
