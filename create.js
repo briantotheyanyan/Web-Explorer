@@ -201,11 +201,11 @@ disc.prototype.collideR = function(){
 disc.prototype.collideL = function(){
     var listofBounds = get_bounds();
     for(var i = 0; i<listofBounds.length;i++){
-	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h) && (this.x + this.dx <= listofBounds[i].x + listofBounds[i].w)){
+	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h) && (this.x + this.dx <= listofBounds[i].x + listofBounds[i].w) && (this.x >= listofBounds[i].x)){
 	    return true;
+	}
     }
     return false;
-    }
 }
 
 ///////////////////////
@@ -325,7 +325,7 @@ $(document).ready(
 	function(){
 	    generate_bounds();
 	    draw_bounds();
-	    d1 = new disc(800,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
+	    d1 = new disc(0,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 		d1.draw();
 		setInterval(animate,20);
 	}
