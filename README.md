@@ -22,3 +22,5 @@ DEADLINES
 4/21: Collision is working, still need to fully implement it. But the base of it works. However, the movement of the character is very clunky. Must find a way to make the motion more fluid.
 
 4/27: Fixed the motion, have the stuff on screen almost working, just have to put the parts together. Almost have it working.
+
+4/30: Got a VERY CLEAN and nice looking platforms for pages, and canvas that overlaps the page so it looks nice. Also began perfecting motion, still some kinks, but still very workable.
