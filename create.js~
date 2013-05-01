@@ -218,9 +218,7 @@ disc.prototype.collideUn = function(){
     	var platwidth = listofBounds[i].w;
     
     	
-        if ( (this.x >= platleftcorner) && (this.x + this.w <= (platleftcorner + platwidth)) //&& 
-        	//((this.y + this.h + this.dy) <= platheight) 
-        )
+        if ( ((this.x >= platleftcorner) || (this.x + this.w <= (platleftcorner + platwidth))) && ((this.y + this.h + this.dy) >= platheight) )
 	{return true;}
     }
     return false;
@@ -272,8 +270,9 @@ $(document).keydown(
 		}
         if (e.keyCode == 87){
 			if (d1.dy == 0){
-				d1.dy = -25;
-				d1.falling=true;
+			    d1.dy = -50;
+			    d1.ay = 2;
+			    d1.falling=true;
 			}
 		}
 	}
@@ -333,6 +332,7 @@ function animate() {
 	if(d1.collideUn()){
 	    d1.falling = false;
 	    d1.dy = 0;
+	    d1.ay = 0;
 	}
     }
     if (d1.dx < 0){
@@ -341,12 +341,22 @@ function animate() {
 	    d1.dx = 0;
 	    d1.ax = 0;
 	}
+	if(d1.collideUn()){
+	    d1.falling = false;
+	    d1.dy = 0;
+	    d1.ay = 0;
+	}
     }
     if (d1.dx > 0){
 	if (d1.collideR()){
 	    d1.slowing = false;
 	    d1.dx = 0;
 	    d1.ax = 0;
+	}
+	if(d1.collideUn()){
+	    d1.falling = false;
+	    d1.dy = 0;
+	    d1.ay = 0;
 	}
     }
 	
@@ -361,7 +371,7 @@ $(document).ready(
 	function(){
 	    generate_bounds();
 	    draw_bounds();
-	    d1 = new disc(0,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
+	    d1 = new disc(1000,200,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 		d1.draw();
 		setInterval(animate,20);
 	}

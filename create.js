@@ -212,17 +212,15 @@ disc.prototype.collideUn = function(){
     var listofBounds = get_bounds();
    
     for(var i = 0; i < listofBounds.length; i++){
-    	
-    	var platleftcorner = listofBounds[i].x;
-        var platheight = listofBounds[i].y;
-    	var platwidth = listofBounds[i].w;
-    
-    	
-        if ( ((this.x >= platleftcorner) || (this.x + this.w <= (platleftcorner + platwidth))) && ((this.y + this.h + this.dy) >= platheight) )
-	{return true;}
+	if((this.x >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w) && (this.y + this.h + this.dy >= listofBounds[i].y))
+	{
+	    return true;
+	}
     }
     return false;
 }
+
+
 disc.prototype.collideR = function(){
     var listofBounds = get_bounds();
     for(var i = 0;i<listofBounds.length;i++){
@@ -359,6 +357,9 @@ function animate() {
 	    d1.ay = 0;
 	}
     }
+    if (!d1.collideUn()){
+	d1.ay = 2;
+    }
 	
     d1.draw();
     draw_bounds();
@@ -371,7 +372,7 @@ $(document).ready(
 	function(){
 	    generate_bounds();
 	    draw_bounds();
-	    d1 = new disc(1000,200,20,40,0,0,0,2,true,false,"#ff0000", ctx);
+	    d1 = new disc(0,0,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 		d1.draw();
 		setInterval(animate,20);
 	}
