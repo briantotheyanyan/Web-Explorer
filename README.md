@@ -1,7 +1,8 @@
 NSYZ
 ====
 
-NYSZ is a javascript file that turns HTML files into platforms. All you have to do is import create.js into any html file and you it works. Press W to Jump, A to move left, D to move right and S to fall through platforms.
+NYSZ is a javascript file that turns HTML files into platforms. All you have to do is import create.js into any html file and you it works. We also have an example using the Wikipedia Home Page.
+Press W to Jump, A to move left, D to move right and S to fall through platforms.
 
 The Team and their current assingment:
 
