@@ -1,4 +1,4 @@
-B1;3201;0c// NSYZ
+// NSYZ
 // CREATE BOUNDS AND READ HTML PAGES
 // 
 //
@@ -77,6 +77,14 @@ function getPWidth(obj)
 
 function generate_bounds()
 {
+
+    //tag types that are completely ignored
+    var ignored = ["SCRIPT",
+		   "DOCTYPE!"
+		  ];
+
+
+
     //THIS IS USED TO READ HTML ELEMENTS AND CREATE BOUNDS . THEY ARE ADDED TO AN ARRAY
     var all = $("*",document.body);
 
@@ -89,13 +97,26 @@ function generate_bounds()
 	var width = $(all[i]).outerWidth();
   
         //SCALE IS ADJUSTABLE
-        var scale = 1
+        var scale = 1;
+	try
+	{
+	    var elementID = all[i].id;
+	}
+	catch(err)
+	{
+	    var elementID = null;
+	}
 	
-	if ( all[i].id != "c" && $(all[i]).prop("tagName") != "SCRIPT")
+	var tag = $(all[i]).prop("tagName");	
+	console.log(tag);
+	var tagcount = ($.inArray(tag,ignored));
+	console.log(tagcount);
+
+	if ( elementID != "c" && tagcount == -1)
 	{
 	    console.log(all[i]);
 
-	    if($(all[i]).prop("tagName") == "P")
+	    if(tag == "P")
 	    {
 		//text elements have diferent width
 		width = getPWidth(all[i].id);
@@ -129,7 +150,7 @@ bound.prototype.draw = function()
 {
     // this is used for drawing blocks around the identified elements                            
     this.ctx.fillStyle = this.c;
-    this.ctx.fillRect(this.x,this.y,this.w,this.h);
+    this.ctx.strokeRect(this.x,this.y,this.w,this.h);
 }
 
 function draw_bounds(){
