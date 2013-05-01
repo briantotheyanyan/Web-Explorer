@@ -216,6 +216,10 @@ disc.prototype.collideUn = function(){
 	{
 	    return listofBounds[i].y;
 	}
+	if((this.x >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w) && (this.y + this.h + this.dy >= listofBounds[i].y + listofBounds[i].h) && this.y < listofBounds[i].y + listofBounds[i].h)
+	{
+	    return listofBounds[i].y+listofBounds[i].h;
+	}
     }
     return false;
 }
