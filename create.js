@@ -183,7 +183,7 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
     this.falling=falling;
     this.slowing=slowing;
     this.c1=c1;
-  this.ctx=ctx;
+    this.ctx=ctx;
 }
 
 ///////////////////////
@@ -248,35 +248,45 @@ disc.prototype.collideL = function(){
 $(document).keydown(
     function(e) {
 	console.log(e.keyCode);
-	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR()){
-	    if(d1.dx<10){
-		    if(!d1.falling){ 
-			d1.ax=2;
-		    }else{
-			d1.ax=1;
-		    }
+	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR())
+	{
+	    if(d1.dx<10)
+	    {
+		if(!d1.falling)
+		{ 
+		    d1.ax=2;
 		}
+		else
+		{
+		    d1.ax=1;
+		}
+	    }
 	}				
-	if (e.keyCode == 65 && d1.x !=0 && !d1.collideL()){
+	if (e.keyCode == 65 && d1.x !=0 && !d1.collideL())
+	{
 	    if(d1.dx>-10){
-		if(!d1.falling){ 
-			d1.ax=-2;
-		    }else{
-			d1.ax=-1;
-		    }
+		if(!d1.falling)
+		{ 
+		    d1.ax=-2;
+		}else{
+		    d1.ax=-1;
+		}
 	    }
 	}
-        if (e.keyCode == 87){
-	    if (d1.dy == 0){
+        if (e.keyCode == 87)
+	{
+	    if (d1.dy == 0)
+	    {
 		d1.dy = -50;
 		d1.ay = 2;
 		d1.falling=true;
 	    }
 	}
-	if (e.keycode == 83){
-	    if (d1.dy == 0 && d1.collideUn()){
-		console.log('implementation sucks');
-		d1.dy = d1.dy + 1 + d1.h;
+	if (e.keyCode == 83)
+	{
+	    if (d1.dy == 0 && d1.collideUn())
+	    {
+		d1.dy = d1.dy + d1.h;
 		d1.falling = true;
 	    }
 	}
