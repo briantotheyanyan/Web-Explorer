@@ -339,11 +339,6 @@ function animate() {
 	    d1.dx = 0;
 	    d1.ax = 0;
 	}
-	if(d1.collideUn()){
-	    d1.falling = false;
-	    d1.dy = 0;
-	    d1.ay = 0;
-	}
     }
     if (d1.dx > 0){
 	if (d1.collideR()){
@@ -351,14 +346,15 @@ function animate() {
 	    d1.dx = 0;
 	    d1.ax = 0;
 	}
-	if(d1.collideUn()){
-	    d1.falling = false;
-	    d1.dy = 0;
-	    d1.ay = 0;
-	}
     }
     if (!d1.collideUn()){
+	d1.falling = true;
 	d1.ay = 2;
+    }
+    else{
+	d1.ay = 0;
+	d1.dy = 0;
+	d1.falling = false;
     }
 	
     d1.draw();
@@ -372,7 +368,7 @@ $(document).ready(
 	function(){
 	    generate_bounds();
 	    draw_bounds();
-	    d1 = new disc(0,0,20,40,0,0,0,2,true,false,"#ff0000", ctx);
+	    d1 = new disc(0,300,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 		d1.draw();
 		setInterval(animate,20);
 	}
