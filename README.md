@@ -1,5 +1,6 @@
 NSYZ
 ====
+At the moment, try using V1.0, this version is under construction.
 
 NYSZ is a javascript file that turns HTML files into platforms. All you have to do is import create.js into any html file and you it works. We also have an example using the Wikipedia Home Page, just open the HTML file in your browser (most tested in Chrome).
 
