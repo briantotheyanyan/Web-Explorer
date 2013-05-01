@@ -1,7 +1,7 @@
 NSYZ
 ====
 
-NYSZ is a chrome plugin that allows for a new way to enjoy browsing the web, by turning any old web page into a 2D platformer level taken directly from the web page you were on. The level will be created from the actual web page itself, the platforms being anything from text on the page, a button, a table, or an image. But the fun doesn't stop there, just as you are able to click to transfer to another web page, NYSZ allows our NYSZ to use his switchboard-samurai sword to acsess links and transfer to that level.
+NYSZ is a javascript file that turns HTML files into platforms. All you have to do is import create.js into any html file and you it works. Press W to Jump, A to move left, D to move right and S to fall through platforms.
 
 The Team and their current assingment:
 
