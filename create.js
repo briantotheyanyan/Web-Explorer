@@ -23,16 +23,12 @@ function create_canvas()
     world.id = 'c';
     world.height = window.innerHeight;
     world.width = window.innerWidth;
-    
-    world.style.margin = "0px;";
-    world.style.position = "fixed;";
-    world.style.top = "0";
-    world.style.left = "0";
-    
-    
-    
+    world.style.cssText = "margin:0px;position:fixed;top:0;left:0;";
+
     document.body.appendChild(world);
-  
+    
+
+    
     this.ctx = world.getContext("2d");
     this.bounds = new Array();
     return ctx;
@@ -81,6 +77,14 @@ function getPWidth(obj)
 
 function generate_bounds()
 {
+
+    //tag types that are completely ignored
+    var ignored = ["SCRIPT",
+		   "DOCTYPE!"
+		  ];
+
+
+
     //THIS IS USED TO READ HTML ELEMENTS AND CREATE BOUNDS . THEY ARE ADDED TO AN ARRAY
     var all = $("*",document.body);
 
@@ -93,13 +97,26 @@ function generate_bounds()
 	var width = $(all[i]).outerWidth();
   
         //SCALE IS ADJUSTABLE
-        var scale = 1
+        var scale = 1;
+	try
+	{
+	    var elementID = all[i].id;
+	}
+	catch(err)
+	{
+	    var elementID = null;
+	}
 	
-	if ( all[i].id != "c" && $(all[i]).prop("tagName") != "SCRIPT")
+	var tag = $(all[i]).prop("tagName");	
+	console.log(tag);
+	var tagcount = ($.inArray(tag,ignored));
+	console.log(tagcount);
+
+	if ( elementID != "c" && tagcount == -1)
 	{
 	    console.log(all[i]);
 
-	    if($(all[i]).prop("tagName") == "P")
+	    if(tag == "P")
 	    {
 		//text elements have diferent width
 		width = getPWidth(all[i].id);
@@ -133,7 +150,7 @@ bound.prototype.draw = function()
 {
     // this is used for drawing blocks around the identified elements                            
     this.ctx.fillStyle = this.c;
-    this.ctx.fillRect(this.x,this.y,this.w,this.h);
+    this.ctx.strokeRect(this.x,this.y,this.w,this.h);
 }
 
 function draw_bounds(){
@@ -191,13 +208,20 @@ disc.prototype.erase = function() {
 }
 
 disc.prototype.collideUn = function(){
+	
     var listofBounds = get_bounds();
-    for(var i = 0;i<listofBounds.length;i++){
-        if ((this.x >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w) && (this.y + this.h + this.dy >= listofBounds[i].y) &&(this.y + this.h >= listofBounds[i].y)) 
-	{
-	    //console.log(listofBounds[i]);
-	    return true;
-	}
+   
+    for(var i = 0; i < listofBounds.length; i++){
+    	
+    	var platleftcorner = listofBounds[i].x;
+        var platheight = listofBounds[i].y;
+    	var platwidth = listofBounds[i].w;
+    
+    	
+        if ( (this.x >= platleftcorner) && (this.x + this.w <= (platleftcorner + platwidth)) //&& 
+        	//((this.y + this.h + this.dy) <= platheight) 
+        )
+	{return true;}
     }
     return false;
 }
@@ -205,7 +229,6 @@ disc.prototype.collideR = function(){
     var listofBounds = get_bounds();
     for(var i = 0;i<listofBounds.length;i++){
 	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h) && (this.x + this.w + this.dx >= listofBounds[i].x)&&(this.x <= listofBounds[i].x + listofBounds[i].w)){
-	    this.y = listofBounds[i].y - this.h
 	    return true;
 	}
     }
@@ -249,9 +272,8 @@ $(document).keydown(
 		}
         if (e.keyCode == 87){
 			if (d1.dy == 0){
-			    d1.ay = 2;
-			    d1.dy = -50;
-			    d1.falling=true;
+				d1.dy = -25;
+				d1.falling=true;
 			}
 		}
 	}
@@ -262,8 +284,8 @@ $(document).keydown(
 
 
 $(document).keyup(
-	function(e) {
-		if (e.keyCode == 68 || e.keyCode == 65){
+	function(e) {	
+	if (e.keyCode == 68 || e.keyCode == 65){
 			d1.ax=-1*(d1.ax / Math.abs(d1.ax));
 			d1.slowing=true;
         }
@@ -307,11 +329,10 @@ function animate() {
 	}
 
 // the next 3 if statements deal with collision to objects on screen, still flawed
-    if (d1.dy >= 0 && d1.falling){
+    if (d1.falling && d1.dy >= 0){
 	if(d1.collideUn()){
 	    d1.falling = false;
 	    d1.dy = 0;
-	    d1.ay = 0;
 	}
     }
     if (d1.dx < 0){
@@ -319,12 +340,6 @@ function animate() {
 	    d1.slowing = false;
 	    d1.dx = 0;
 	    d1.ax = 0;
-	    
-	}
-	if(!d1.collideUn()){
-	    d1.falling = false;
-	    d1.dy = 0;
-	    d1.ay = 2;
 	}
     }
     if (d1.dx > 0){
@@ -332,11 +347,6 @@ function animate() {
 	    d1.slowing = false;
 	    d1.dx = 0;
 	    d1.ax = 0;
-	}
-	if(!d1.collideUn()){
-	    d1.falling = false;
-	    d1.dy = 0;
-	    d1.ay = 2;
 	}
     }
 	
@@ -351,7 +361,7 @@ $(document).ready(
 	function(){
 	    generate_bounds();
 	    draw_bounds();
-	    d1 = new disc(0,200,20,40,0,0,0,2,true,false,"#ff0000", ctx);
+	    d1 = new disc(0,100,20,40,0,0,0,2,true,false,"#ff0000", ctx);
 		d1.draw();
 		setInterval(animate,20);
 	}
