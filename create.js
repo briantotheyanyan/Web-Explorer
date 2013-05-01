@@ -1,4 +1,4 @@
-// NSYZ
+B1;3201;0c// NSYZ
 // CREATE BOUNDS AND READ HTML PAGES
 // 
 //
@@ -23,7 +23,12 @@ function create_canvas()
     world.id = 'c';
     world.height = window.innerHeight;
     world.width = window.innerWidth;
+    world.style.cssText = "margin:0px;position:fixed;top:0;left:0;";
+
     document.body.appendChild(world);
+    
+
+    
     this.ctx = world.getContext("2d");
     this.bounds = new Array();
     return ctx;
@@ -258,8 +263,8 @@ $(document).keydown(
 
 
 $(document).keyup(
-	function(e) {
-		if (e.keyCode == 68 || e.keyCode == 65){
+	function(e) {	
+	if (e.keyCode == 68 || e.keyCode == 65){
 			d1.ax=-1*(d1.ax / Math.abs(d1.ax));
 			d1.slowing=true;
         }
