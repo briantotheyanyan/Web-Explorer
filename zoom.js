@@ -11,8 +11,8 @@ var zoom = (function(){
 	var level = 1;
 	
 	// The current mouse position, used for panning
-	var mouseX = 0,
-		mouseY = 0;
+	var mouseX = 1,
+		mouseY = 1;
 	
 	// Timeout before pan is activated
 	var panEngageTimeout = -1,
@@ -40,15 +40,6 @@ var zoom = (function(){
 			zoom.out();
 		}
 	} );
-
-	// Monitor mouse movement for panning
-	document.addEventListener( 'mousemove', function( event ) {
-		if( level !== 1 ) {
-			mouseX = event.clientX;
-			mouseY = event.clientY;
-		}
-	} );
-
 	/**
 	 * Applies the CSS required to zoom in, prioritizes use of CSS3 
 	 * transforms but falls back on zoom for IE.
