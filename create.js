@@ -214,7 +214,7 @@ disc.prototype.collideUn = function(){
     for(var i = 0; i < listofBounds.length; i++){
 	if((this.x >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w) && (this.y + this.h + this.dy >= listofBounds[i].y) && this.y < listofBounds[i].y)
 	{
-	    return true;
+	    return listofBounds[i].y;
 	}
     }
     return false;
@@ -370,6 +370,7 @@ function animate() {
     }
     else{
 	if (d1.dy <= 0){
+		d1.dy = d1.collideUn() + d1.h;
 	    d1.ay = 0;
 	    d1.dy = 0;
 	    d1.falling = false;
