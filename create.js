@@ -272,7 +272,13 @@ $(document).keydown(
 			    d1.ay = 2;
 			    d1.falling=true;
 			}
+	}
+	    if (e.keycode == 83){
+		if (d1.dy == 0 && d1.collideUn()){
+		    d1.dy = d1.dy - 1;
+		    d1.falling = true;
 		}
+	    }
 	}
 );
 
