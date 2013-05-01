@@ -24,10 +24,10 @@ function create_canvas()
     world.height = window.innerHeight;
     world.width = window.innerWidth;
     world.style.cssText = "margin:0px;position:fixed;top:0;left:0;";
-
+    
     document.body.appendChild(world);
     
-
+    
     
     this.ctx = world.getContext("2d");
     this.bounds = new Array();
@@ -55,8 +55,8 @@ function set_canvas()
 
 function getLoc(obj)
 {
-   // Need an algorithim to go through number of characters
-   //(including br's) and account for un-fixed width for p's
+    // Need an algorithim to go through number of characters
+    //(including br's) and account for un-fixed width for p's
     obj = "#" + obj;
     var loc = new Array();;
     loc[0] = $(obj).position().left,
@@ -77,17 +77,17 @@ function getPWidth(obj)
 
 function generate_bounds()
 {
-
+    
     //tag types that are completely ignored
     var ignored = ["SCRIPT",
 		   "DOCTYPE!"
 		  ];
-
-
-
+    
+    
+    
     //THIS IS USED TO READ HTML ELEMENTS AND CREATE BOUNDS . THEY ARE ADDED TO AN ARRAY
     var all = $("*",document.body);
-
+    
     for (var i = 0; i< all.length;i++)
     {
 	var offset = $(all[i]).offset();
@@ -95,7 +95,7 @@ function generate_bounds()
 	var y = offset.top;
 	var height = $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
-  
+	
         //SCALE IS ADJUSTABLE
         var scale = 1;
 	try
@@ -111,11 +111,11 @@ function generate_bounds()
 	console.log(tag);
 	var tagcount = ($.inArray(tag,ignored));
 	console.log(tagcount);
-
+	
 	if ( elementID != "c" && tagcount == -1)
 	{
 	    console.log(all[i]);
-
+	    
 	    if(tag == "P")
 	    {
 		//text elements have diferent width
@@ -125,7 +125,7 @@ function generate_bounds()
 	    if ( !(it.w == 0 || it.h == 0))// If no dimensions, don't add to bounds
 		bounds.push(it);
 	}
-    
+	
     }
 }
 
@@ -163,7 +163,7 @@ function draw_bounds(){
 function get_bounds(){
     // returns an array of bounds for collision
     return bounds;
-
+    
 }
 
 
@@ -172,17 +172,17 @@ function get_bounds(){
 /////////////////////////
 
 var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
-  this.x=x;
-  this.y=y;
-  this.h=h;
-  this.w=w;
-  this.dx=dx;
-  this.dy=dy;
-  this.ax=ax
-  this.ay=ay;
-  this.falling=falling;
-  this.slowing=slowing;
-  this.c1=c1;
+    this.x=x;
+    this.y=y;
+    this.h=h;
+    this.w=w;
+    this.dx=dx;
+    this.dy=dy;
+    this.ax=ax
+    this.ay=ay;
+    this.falling=falling;
+    this.slowing=slowing;
+    this.c1=c1;
   this.ctx=ctx;
 }
 
@@ -195,8 +195,8 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
 
 
 disc.prototype.draw = function() {
-  this.ctx.fillStyle=this.c1;
-  this.ctx.fillRect(this.x,this.y,this.w,this.h);
+    this.ctx.fillStyle=this.c1;
+    this.ctx.fillRect(this.x,this.y,this.w,this.h);
 }
 
 ////////////////
@@ -204,13 +204,13 @@ disc.prototype.draw = function() {
 ////////////////
 
 disc.prototype.erase = function() {
-  this.ctx.clearRect(this.x,this.y,this.w,this.h);
+    this.ctx.clearRect(this.x,this.y,this.w,this.h);
 }
 
 disc.prototype.collideUn = function(){
-	
+    
     var listofBounds = get_bounds();
-   
+    
     for(var i = 0; i < listofBounds.length; i++){
 	if((this.x >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w) && (this.y + this.h + this.dy >= listofBounds[i].y) && this.y < listofBounds[i].y)
 	{
@@ -246,40 +246,41 @@ disc.prototype.collideL = function(){
 
 
 $(document).keydown(
-	function(e) {
-		console.log(e.keyCode);
-	    if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR()){
-			if(d1.dx<10){
-				if(!d1.falling){ 
-					d1.ax=2;
-				}else{
-					d1.ax=1;
-				}
-			}
-		}				
-	    if (e.keyCode == 65 && d1.x !=0 && !d1.collideL()){
-			if(d1.dx>-10){
-				if(!d1.falling){ 
-					d1.ax=-2;
-				}else{
-					d1.ax=-1;
-				}
-			}
+    function(e) {
+	console.log(e.keyCode);
+	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR()){
+	    if(d1.dx<10){
+		    if(!d1.falling){ 
+			d1.ax=2;
+		    }else{
+			d1.ax=1;
+		    }
 		}
-        if (e.keyCode == 87){
-			if (d1.dy == 0){
-			    d1.dy = -50;
-			    d1.ay = 2;
-			    d1.falling=true;
-			}
-	}
-	    if (e.keycode == 83){
-		if (d1.dy == 0 && d1.collideUn()){
-		    d1.dy = d1.dy - 1;
-		    d1.falling = true;
-		}
+	}				
+	if (e.keyCode == 65 && d1.x !=0 && !d1.collideL()){
+	    if(d1.dx>-10){
+		if(!d1.falling){ 
+			d1.ax=-2;
+		    }else{
+			d1.ax=-1;
+		    }
 	    }
 	}
+        if (e.keyCode == 87){
+	    if (d1.dy == 0){
+		d1.dy = -50;
+		d1.ay = 2;
+		d1.falling=true;
+	    }
+	}
+	if (e.keycode == 83){
+	    if (d1.dy == 0 && d1.collideUn()){
+		console.log('implementation sucks');
+		d1.dy = d1.dy + 1 + d1.h;
+		d1.falling = true;
+	    }
+	}
+    }
 );
 
 	    
@@ -287,12 +288,12 @@ $(document).keydown(
 
 
 $(document).keyup(
-	function(e) {	
+    function(e) {	
 	if (e.keyCode == 68 || e.keyCode == 65){
-			d1.ax=-1*(d1.ax / Math.abs(d1.ax));
-			d1.slowing=true;
+	    d1.ax=-1*(d1.ax / Math.abs(d1.ax));
+	    d1.slowing=true;
         }
-    }
+	}
 );
 
 ////////////////
@@ -301,36 +302,36 @@ $(document).keyup(
 
 function animate() {
     d1.erase();
-	if(d1.slowing && d1.dx == 0){
-		d1.slowing = false;
-		d1.ax = 0;
+    if(d1.slowing && d1.dx == 0){
+	    d1.slowing = false;
+	    d1.ax = 0;
 	}
-	d1.dx = d1.dx + d1.ax;
-	d1.x = d1.x + d1.dx;
-	d1.dy = d1.dy + d1.ay;
-	d1.y = d1.y + d1.dy;
-	if (d1.x + d1.dx >= canvas.width && d1.dx > 0)  { 
-		d1.dx = 0;
-		d1.ax = 0;
-		d1.x = canvas.width-d1.w;
+    d1.dx = d1.dx + d1.ax;
+    d1.x = d1.x + d1.dx;
+    d1.dy = d1.dy + d1.ay;
+    d1.y = d1.y + d1.dy;
+    if (d1.x + d1.dx >= canvas.width && d1.dx > 0)  { 
+	    d1.dx = 0;
+	    d1.ax = 0;
+	    d1.x = canvas.width-d1.w;
 	}
-	if (d1.x + d1.dx <= 0 && d1.dx < 0){
-		d1.dx = 0;
-		d1.ax = 0;
-		d1.x = 0;
+    if (d1.x + d1.dx <= 0 && d1.dx < 0){
+	    d1.dx = 0;
+	    d1.ax = 0;
+	    d1.x = 0;
 	}
-	if (d1.y >= canvas.height-d1.h && d1.dy > 0){ 
-		d1.dy = 0;
-		d1.y = canvas.height-d1.h;
-		d1.falling=false;
+    if (d1.y >= canvas.height-d1.h && d1.dy > 0){ 
+	    d1.dy = 0;
+	    d1.y = canvas.height-d1.h;
+	    d1.falling=false;
 	}
     if ((d1.x <= 0) || d1.x >= canvas.width) {
-		d1.dx = 0 - d1.dx
-	} 
+	d1.dx = 0 - d1.dx
+    } 
     if (d1.y >= canvas.height) {
-		d1.dy = 0
-	}
-
+	d1.dy = 0
+    }
+    
 // the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
 	if(d1.collideUn()){
@@ -366,18 +367,18 @@ function animate() {
     }
     d1.draw();
     draw_bounds();
-	//console.log("aaaaa");
+    //console.log("aaaaa");
 }
 
 
 
 $(document).ready(
-	function(){
+    function(){
 	    generate_bounds();
 	    draw_bounds();
 	    d1 = new disc(0,300,20,40,0,0,0,2,true,false,"#ff0000", ctx);
-		d1.draw();
-		setInterval(animate,20);
+	    d1.draw();
+	    setInterval(animate,20);
 	}
 );
 
