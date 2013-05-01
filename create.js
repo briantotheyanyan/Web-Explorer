@@ -212,7 +212,7 @@ disc.prototype.collideUn = function(){
     var listofBounds = get_bounds();
    
     for(var i = 0; i < listofBounds.length; i++){
-	if((this.x >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w) && (this.y + this.h + this.dy >= listofBounds[i].y))
+	if((this.x >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w) && (this.y + this.h + this.dy >= listofBounds[i].y) && this.y < listofBounds[i].y)
 	{
 	    return true;
 	}
