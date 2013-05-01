@@ -352,11 +352,12 @@ function animate() {
 	d1.ay = 2;
     }
     else{
-	d1.ay = 0;
-	d1.dy = 0;
-	d1.falling = false;
+	if (d1.dy <= 0){
+	    d1.ay = 0;
+	    d1.dy = 0;
+	    d1.falling = false;
+	}
     }
-	
     d1.draw();
     draw_bounds();
 	//console.log("aaaaa");
