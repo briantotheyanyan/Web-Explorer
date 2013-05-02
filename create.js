@@ -329,45 +329,6 @@ disc.prototype.collideL = function(){
 
     function animate() {
 	d1.erase();
-	if(d1.slowing && d1.dx == 0){
-	    d1.slowing = false;
-	    d1.ax = 0;
-	}
-	d1.dx = d1.dx + d1.ax;
-	d1.x = d1.x + d1.dx;
-	d1.dy = d1.dy + d1.ay;
-	d1.y = d1.y + d1.dy;
-	
-	if (d1.x + d1.dx >= canvas.width && d1.dx > 0){ 
-	    d1.dx = 0;
-	    d1.ax = 0;
-	    d1.x = canvas.width-d1.w;
-	}
-	if (d1.x + d1.dx <= 0 && d1.dx < 0){
-	    d1.dx = 0;
-	    d1.ax = 0;
-	    d1.x = 0;
-	}
-	if (d1.y >= canvas.height-d1.h && d1.dy > 0){ 
-	    d1.dy = 0;
-	    d1.y = canvas.height-d1.h;
-	    d1.falling=false;
-	}
-	if ((d1.x <= 0) || d1.x >= canvas.width) {
-	    d1.dx = 0 - d1.dx
-	} 
-	if (d1.y >= canvas.height) {
-	    d1.dy = 0
-	}
-	
-	// the next 3 if statements deal with collision to objects on screen, still flawed
-	if (d1.falling && d1.dy >= 0){
-	    if(d1.collideUn()){
-		d1.falling = false;
-		d1.dy = 0;
-		d1.ay = 0;
-	    }
-	}
 	if (d1.dx < 0){
 	    if (d1.collideL()){
 		d1.slowing = false;
@@ -394,9 +355,47 @@ disc.prototype.collideL = function(){
 		d1.falling = false;
 	    }
 	}
+	if(d1.slowing && d1.dx == 0){
+	    d1.slowing = false;
+	    d1.ax = 0;
+	}
+	if (d1.x + d1.dx >= canvas.width && d1.dx > 0){ 
+	    d1.dx = 0;
+	    d1.ax = 0;
+	    d1.x = canvas.width-d1.w;
+	}
+	if (d1.x + d1.dx <= 0 && d1.dx < 0){
+	    d1.dx = 0;
+	    d1.ax = 0;
+	    d1.x = 0;
+	}
+	if (d1.y >= canvas.height-d1.h && d1.dy > 0){ 
+	    d1.dy = 0;
+	    d1.y = canvas.height-d1.h;
+	    d1.falling=false;
+	}
+	if ((d1.x <= 0) || d1.x >= canvas.width) {
+	    d1.dx = 0 - d1.dx
+	} 
+	if (d1.y >= canvas.height) {
+	    d1.dy = 0
+	}
+	if (d1.falling && d1.dy >= 0){
+	    if(d1.collideUn()){
+		d1.falling = false;
+		d1.dy = 0;
+		d1.ay = 0;
+	    }
+	}
+	d1.dx = d1.dx + d1.ax;
+	d1.x = d1.x + d1.dx;
+	d1.dy = d1.dy + d1.ay;
+	d1.y = d1.y + d1.dy;
+	
+	// the next 3 if statements deal with collision to objects on screen, still flawed
 	d1.draw();
-	$(window).scrollTop((d1.y-500)*2);
-	$(window).scrollLeft((d1.x-500)*2);
+	//$(window).scrollTop((d1.y-500)*2);
+	//$(window).scrollLeft((d1.x-500)*2);
 	draw_bounds();
     }
 
@@ -407,7 +406,7 @@ disc.prototype.collideL = function(){
 	    generate_bounds();
 	    draw_bounds();
 	    d1 = new disc(0,300,5,5,0,0,0,5,true,false,"#000000", ctx);
-	    zoom.to({x:0, y:0, width:300, height:300});
+	    //zoom.to({x:0, y:0, width:300, height:300});
 	    d1.draw();
 	    setInterval(animate,20);
 	}
