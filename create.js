@@ -393,15 +393,6 @@ function animate() {
 	    d1.dy = 0;
 	    d1.falling = false;
 	}
-	d1.dx = d1.dx + d1.ax;
-	d1.x = d1.x + d1.dx;
-	d1.dy = d1.dy + d1.ay;
-	d1.y = d1.y + d1.dy;
-	d1.draw();
-
-	$(window).scrollTop((d1.y-500)*2);
-	$(window).scrollLeft((d1.x-500)*2);
-	draw_bounds();
     }
     d1.draw();
     //$(window).scrollTop((d1.y-500)*2);
@@ -411,16 +402,6 @@ function animate() {
 
 
 
-    $(document).ready(
-	function(){
-	    generate_bounds();
-	    draw_bounds();
-	    d1 = new disc(0,300,5,5,0,0,0,5,true,false,"#000000", ctx);
-	    zoom.to({x:0, y:0, width:300, height:300});
-	    d1.draw();
-	    setInterval(animate,20);
-	}
-    );
 $(document).ready(
     function(){
 	generate_bounds();
