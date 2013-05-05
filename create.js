@@ -33,6 +33,8 @@ function create_canvas()
     
     this.ctx = world.getContext("2d");
     this.bounds = new Array();
+    this.h_bounds() = new Array();
+    this.v_bounds() = new Array();
     return ctx;
 }
 
@@ -138,6 +140,7 @@ function generate_bounds()
 
 var bound = function(x,y,h,w,c,ctx)
 {
+    //temporary
     //bounds represent physical platform, for COLLISION
     this.x=x;
     this.y=y;
@@ -145,6 +148,25 @@ var bound = function(x,y,h,w,c,ctx)
     this.w=w;
     this.c=c;
     this.ctx=ctx;
+
+    
+}
+
+
+var h_bound = function(x,y,x2)
+{
+    this.x = x;
+    this.y = y;
+    this.x2 = x2;
+    this.y2 = y;
+}
+
+var v_bound = function(x,y,y2)
+{
+    this.x = x;
+    this.y = y;
+    this.x2 = x;
+    this.y2 = y2;
 }
 
 
