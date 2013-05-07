@@ -52,8 +52,32 @@ function set_canvas()
 }
 
 ////////////////////////////
-// READ HTML /////////////
+// READ HTML //////////////
 ///////////////////////////
+function create_ruler()
+{
+    var ruler = document.createElement('span');
+    ruler.id = "ruler";
+    ruler.style.cssText = "visibility:hidden;white-space:nowrap;";
+    document.body.appendChild(ruler);
+
+}
+
+create_ruler();
+
+function get_text_width(obj)
+{
+    //needs to check for fontsizes in classes
+    //also note check for visivbility
+    var text = $(obj)[0].innerHTML;
+    console.log(text);
+    var ruler = $("#ruler")[0];
+    ruler.innerHTML = text;
+    console.log(ruler);
+    console.log(ruler.offsetWidth);
+    return ruler.offsetWidth;
+   
+}
 
 function getLoc(obj)
 {
@@ -67,14 +91,6 @@ function getLoc(obj)
     loc[3] = $(obj).width();
     return loc;
 }
-
-function getPWidth(obj)
-{
-    //GET WIDTH OF TEXT ELEMENT
-    var b = document.getElementById(obj).innerHTML.trim();
-    
-}
-
 
 
 function generate_bounds()
@@ -120,8 +136,9 @@ function generate_bounds()
 
 	    if(tag == "P")
 	    {
+		console.log(all[i]);
 		//text elements have diferent width
-		width = getPWidth(all[i].id);
+		width = get_text_width(all[i]);
 	    }
 	    var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
 	    if ( !(it.w == 0 || it.h == 0))// If no dimensions, don't add to bounds
