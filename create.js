@@ -25,7 +25,7 @@ function create_canvas()
     world.id = 'c';
     world.height = $(document).height();
     world.width = $(document).width();
-    world.style.cssText = "margin:0px;position:fixed;top:0;left:0;";
+    world.style.cssText = "margin:0px;position:absolute;top:0;left:0;";
     
     document.body.appendChild(world);
     
