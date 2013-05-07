@@ -33,8 +33,6 @@ function create_canvas()
     
     this.ctx = world.getContext("2d");
     this.bounds = new Array();
-    this.h_bounds() = new Array();
-    this.v_bounds() = new Array();
     return ctx;
 }
 
@@ -140,7 +138,6 @@ function generate_bounds()
 
 var bound = function(x,y,h,w,c,ctx)
 {
-    //temporary
     //bounds represent physical platform, for COLLISION
     this.x=x;
     this.y=y;
@@ -148,25 +145,6 @@ var bound = function(x,y,h,w,c,ctx)
     this.w=w;
     this.c=c;
     this.ctx=ctx;
-
-    
-}
-
-
-var h_bound = function(x,y,x2)
-{
-    this.x = x;
-    this.y = y;
-    this.x2 = x2;
-    this.y2 = y;
-}
-
-var v_bound = function(x,y,y2)
-{
-    this.x = x;
-    this.y = y;
-    this.x2 = x;
-    this.y2 = y2;
 }
 
 
@@ -210,22 +188,6 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
     this.ctx=ctx;
     this.jumpLevel = jumpLevel;
 }
-
-var stickmanimages = new Array();
-
-var counter = 0;
-var countmod = counter % 14;
-
-loadimages = function() {
-
-for(var i = 0; i < 14; i++) {
-
-stickmanimages[i] = new Image();
-stickmanimages[i].src = "/stickmangif/stickman["+i+"]";
-document.documentElement.appendChild(stickmanimages[i]);
-
-}
-};
 
 ///////////////////////
 // INSTANTIATE DISC HERE
