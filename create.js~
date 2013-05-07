@@ -310,15 +310,18 @@ $(document).keydown(
 	}
 	if (e.keyCode == 87)
 	{
-	    if (d1.dy == 0)
-	    {
-		if (d1.jumpLevel < 5)
-		{
-		    d1.jumpLevel = d1.jumpLevel + 1;
-		}
-		//d1.dy = -25;
-		//d1.falling=true;
+	    if (d1.jumpLevel == 0 && d1.dy == 0){
+		d1.dy = -30;
+		d1.jumpLevel = d1.jumpLevel + 1;
 	    }
+	    else if (d1.jumpLevel < 5 && d1.dy <= 0)
+	    {
+		d1.dy = d1.dy - 15;
+		d1.jumpLevel = d1.jumpLevel + 1;
+	    }
+	    //d1.dy = -25;
+	    //d1.falling=true;
+	    
 	}
 	if (e.keyCode == 83)
 	{
@@ -341,11 +344,9 @@ $(document).keyup(
 	    d1.ax=-1*(d1.ax / Math.abs(d1.ax));
 	    d1.slowing=true;
         }
-	if (e.keyCode == 87)
-	{
-	    d1.dy = -10 * d1.jumpLevel;
+	if (e.keyCode == 87){
+	    console.log('keyup');
 	    d1.jumpLevel = 0;
-	    d1.falling=true;
 	}
     }
 );
@@ -414,7 +415,7 @@ function animate() {
     */
     if (!d1.collideUn()){
 	d1.falling = true;
-	d1.ay = 2;
+	d1.ay = 1;
     }
     else{
 	if (d1.dy <= 0){
@@ -436,7 +437,7 @@ $(document).ready(
     function(){
 	generate_bounds();
 	draw_bounds();
-	d1 = new disc(0,300,5,5,0,0,0,5,true,false,0,"#000000", ctx);
+	d1 = new disc(0,300,5,5,0,0,0,1,true,false,0,"#000000", ctx);
 	//zoom.to({x:0, y:0, width:300, height:300});
 	d1.draw();
 	setInterval(animate,20);
