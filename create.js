@@ -189,6 +189,24 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
     this.jumpLevel = jumpLevel;
 }
 
+//Stick Character
+var stickmanimages = new Array();
+
+var counter = 0;
+var countmod = counter % 14;
+
+loadimages = function() {
+
+for(var i = 0; i < 14; i++) {
+
+stickmanimages[i] = new Image();
+stickmanimages[i].src = "/stickmangif/stickman["+i+"]";
+document.documentElement.appendChild(stickmanimages[i]);
+
+}
+};
+
+
 ///////////////////////
 // INSTANTIATE DISC HERE
 //
