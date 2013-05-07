@@ -442,7 +442,3 @@ $(document).ready(
 	setInterval(animate,20);
     }
 );
-
-
-
-//generate_bounds();
