@@ -438,7 +438,7 @@ $(document).ready(
 	generate_bounds();
 	draw_bounds();
 	d1 = new disc(0,300,5,5,0,0,0,1,true,false,0,"#000000", ctx);
-	//zoom.to({x:0, y:0, width:300, height:300});
+	//zoom.to({x:150, y:150, width:300, height:300});
 	d1.draw();
 	setInterval(animate,20);
     }
