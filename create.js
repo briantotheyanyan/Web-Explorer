@@ -195,7 +195,7 @@ function get_bounds(){
 // DISC CHARACTER //////
 /////////////////////////
 
-var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
+var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
     this.x=x;
     this.y=y;
     this.h=h;
@@ -208,6 +208,7 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
     this.slowing=slowing;
     this.c1=c1;
     this.ctx=ctx;
+    this.jumpLevel = jumpLevel;
 }
 
 var stickmanimages = new Array();
@@ -278,12 +279,15 @@ disc.prototype.collideUn = function(){
 
 disc.prototype.collideR = function(){
     var listofBounds = get_bounds();
-    for(var i = 0;i<listofBounds.length;i++){
-	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h)){
-	    if((this.x + this.w + this.dx >= listofBounds[i].x)&&(this.x + this.w <= listofBounds[i].x)){
+    for(var i = 0;i<listofBounds.length;i++)
+    {
+	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h))
+	{
+	    if((this.x + this.w + this.dx >= listofBounds[i].x)&&(this.x + this.w <= listofBounds[i].x))
+	    {
 		return true;
 	    }
-	    if((this.x + this.w + this.dx >= listofBounds[i].x + listofBounds[i].w) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w)){
+	    else if(((this.x + this.w + this.dx) >= (listofBounds[i].x + listofBounds[i].w)) && ((this.x + this.w) <= (listofBounds[i].x + listofBounds[i].w))){
 		return true;
 	    }
 	}
@@ -292,12 +296,16 @@ disc.prototype.collideR = function(){
 }
 disc.prototype.collideL = function(){
     var listofBounds = get_bounds();
-    for(var i = 0; i<listofBounds.length;i++){
-	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h)){
-	    if((this.x + this.dx <= listofBounds[i].x + listofBounds[i].w) && (this.x >= listofBounds[i].x + listofBounds[i].w)){
+    for(var i = 0; i<listofBounds.length;i++)
+    {
+	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h))
+	{
+	    if((this.x + this.dx <= listofBounds[i].x + listofBounds[i].w) && (this.x >= listofBounds[i].x + listofBounds[i].w))
+	    {
 		return true;
 	    }
-	    if((this.x + this.dx <= listofBounds[i].x) && (this.x >= listofBounds[i].x)){
+	    else if((this.x + this.dx <= listofBounds[i].x) && (this.x >= listofBounds[i].x))
+	    {
 		return true;
 	    }
 	}
@@ -312,7 +320,7 @@ disc.prototype.collideL = function(){
 
 $(document).keydown(
     function(e) {
-	//console.log(e.keyCode);
+	console.log(e.keyCode);
 	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR())
 	{
 	    if(d1.dx<5)
@@ -342,8 +350,12 @@ $(document).keydown(
 	{
 	    if (d1.dy == 0)
 	    {
-		d1.dy = -25;
-		d1.falling=true;
+		if (d1.jumpLevel < 5)
+		{
+		    d1.jumpLevel = d1.jumpLevel + 1;
+		}
+		//d1.dy = -25;
+		//d1.falling=true;
 	    }
 	}
 	if (e.keyCode == 83)
@@ -367,6 +379,12 @@ $(document).keyup(
 	    d1.ax=-1*(d1.ax / Math.abs(d1.ax));
 	    d1.slowing=true;
         }
+	if (e.keyCode == 87)
+	{
+	    d1.dy = -10 * d1.jumpLevel;
+	    d1.jumpLevel = 0;
+	    d1.falling=true;
+	}
     }
 );
 
@@ -417,7 +435,7 @@ function animate() {
 	    d1.ay = 0;
 	}
     }
-    if (d1.dx < 0){
+    /*if (d1.dx < 0){
 	if (d1.collideL()){
 	    d1.slowing = false;
 	    d1.dx = 0;
@@ -431,6 +449,7 @@ function animate() {
 	    d1.ax = 0;
 	}
     }
+    */
     if (!d1.collideUn()){
 	d1.falling = true;
 	d1.ay = 2;
@@ -455,7 +474,7 @@ $(document).ready(
     function(){
 	generate_bounds();
 	draw_bounds();
-	d1 = new disc(0,300,5,5,0,0,0,5,true,false,"#000000", ctx);
+	d1 = new disc(0,300,5,5,0,0,0,5,true,false,0,"#000000", ctx);
 	//zoom.to({x:0, y:0, width:300, height:300});
 	d1.draw();
 	setInterval(animate,20);
