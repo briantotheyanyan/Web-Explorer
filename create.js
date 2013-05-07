@@ -311,7 +311,7 @@ $(document).keydown(
 	if (e.keyCode == 87)
 	{
 	    if (d1.jumpLevel == 0 && d1.dy == 0){
-		d1.dy = -35;
+		d1.dy = -34;
 		d1.jumpLevel = d1.jumpLevel + 1;
 	    }
 	    else if (d1.jumpLevel < 5 && d1.dy <= 0)
