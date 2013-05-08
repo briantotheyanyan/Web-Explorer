@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=UTF-8">
+		<title>Internet Explorer</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+	<body>
+		<div id="center">NSYZ</div>
+		<div id="content">
+			<p>The best game you've ever played.</p>
+			<a id="button" href="javascript:var%20s%20=%20document.createElement('script');s.type='text/javascript';document.body.appendChild(s);s.src='../create.js';void(0);">NSYZ</a>
+		</div>
+		<img id="lifebar" src="../static/css/img/lifebar.jpg"/>
+		<div id="bottom">Nass Shi Yan Zhang</div>
+	</body>
+</html>

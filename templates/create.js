@@ -388,21 +388,24 @@ $(document).keydown(
 	}
 	if (e.keyCode == 32)
 	{
-	        if (d1.dx < 0 && d1.dy != 0){
-	if (d1.collideL()){
-	    d1.slidingonWall = true;
-	    d1.dx = 0;
-	    d1.ax = 0;
-	}
-    }
-    if (d1.dx > 0 && d1.dy != 0){
-	if (d1.collideR()){
-	    d1.slidingonWall = true;
-	    d1.slowing = false;
-	    d1.dx = 0;
-	    d1.ax = 0;
-	}
-    }
+	    if (!d1.slidingonWall){
+		if (d1.dx < 0 && d1.dy != 0){
+		    if (d1.collideL()){
+			d1.slidingonWall = true;
+			d1.dx = 0;
+			d1.ax = 0;
+		    }
+		}
+		
+		if (d1.dx > 0 && d1.dy != 0){
+		    if (d1.collideR()){
+			d1.slidingonWall = true;
+			d1.slowing = false;
+			d1.dx = 0;
+			d1.ax = 0;
+		    }
+		}
+	    }
 	}
     }
 );
@@ -495,7 +498,7 @@ $(document).ready(
 	generate_bounds();
 	draw_bounds();
 	d1 = new disc(0,300,5,5,0,0,0,5,true,false,0,"#000000", ctx);
-	zoom.to({x:0, y:0, height:300 , width:300});
+	//zoom.to({x:0, y:0, height:300 , width:300});
 	d1.draw();
 	setInterval(animate,20);
     }
