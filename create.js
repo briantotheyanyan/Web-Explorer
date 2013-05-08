@@ -187,6 +187,7 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
     this.c1=c1;
     this.ctx=ctx;
     this.jumpLevel = jumpLevel;
+    this.slidingonWall = false;
 }
 
 ///////////////////////
@@ -331,6 +332,27 @@ $(document).keydown(
 		d1.falling = true;
 	    }
 	}
+	if (e.keyCode == 32)
+	{
+	    if (!d1.slidingonWall){
+		if (d1.dx < 0 && d1.dy != 0){
+		    if (d1.collideL()){
+			d1.slidingonWall = true;
+			d1.dx = 0;
+			d1.ax = 0;
+		    }
+		}
+		
+		if (d1.dx > 0 && d1.dy != 0){
+		    if (d1.collideR()){
+			d1.slidingonWall = true;
+			d1.slowing = false;
+			d1.dx = 0;
+			d1.ax = 0;
+		    }
+		}
+	    }
+	}
     }
 );
 
@@ -390,7 +412,6 @@ function animate() {
 	d1.dy = 0
     }
 
-    // the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
 	if(d1.collideUn()){
 	    d1.falling = false;
@@ -398,21 +419,6 @@ function animate() {
 	    d1.ay = 0;
 	}
     }
-    /*if (d1.dx < 0){
-	if (d1.collideL()){
-	    d1.slowing = false;
-	    d1.dx = 0;
-	    d1.ax = 0;
-	}
-    }
-    if (d1.dx > 0){
-	if (d1.collideR()){
-	    d1.slowing = false;
-	    d1.dx = 0;
-	    d1.ax = 0;
-	}
-    }
-    */
     if (!d1.collideUn()){
 	d1.falling = true;
 	d1.ay = 1;
