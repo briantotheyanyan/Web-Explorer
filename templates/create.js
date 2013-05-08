@@ -51,28 +51,60 @@ function set_canvas()
     //console.log("set_canvas");
 }
 
+set_canvas()
+
 ////////////////////////////
-// READ HTML /////////////
+// READ HTML //////////////
 ///////////////////////////
+function create_ruler()
+{
+    var ruler = document.createElement('span');
+    ruler.id = "ruler";
+    ruler.style.cssText = "visibility:hidden;white-space:nowrap;";
+    document.body.appendChild(ruler);
+
+}
+
+create_ruler();
+
+function get_text_width(obj)
+{
+    //needs to check for fontsizes in classes
+    //also note check for visivbility
+    var text = $(obj)[0].innerHTML;
+    console.log(text);
+    var ruler = $("#ruler")[0];
+    ruler.innerHTML = text;
+    console.log(ruler);
+    console.log(ruler.offsetWidth);
+    return ruler.offsetWidth;
+   
+}
+
+
+function do_padding()
+{
+    var margin = $(document)[0].body.style.margin;
+    console.log(margin);
+    if(margin == "")
+	$(document)[0].body.style.margin = "0px"
+
+	
+}
+
+do_padding();
 
 function getLoc(obj)
 {
     // Need an algorithim to go through number of characters
     //(including br's) and account for un-fixed width for p's
     obj = "#" + obj;
-    var loc = new Array();;
+    var loc = new Array();
     loc[0] = $(obj).position().left,
     loc[1] = $(obj).position().top;
     loc[2] = $(obj).height();
     loc[3] = $(obj).width();
     return loc;
-}
-
-function getPWidth(obj)
-{
-    //GET WIDTH OF TEXT ELEMENT
-    var b = document.getElementById(obj).innerHTML.trim();
-    
 }
 
 
@@ -92,9 +124,29 @@ function generate_bounds()
     
     for (var i = 0; i< all.length;i++)
     {
+	var midY = $(document).height()/2;
+	var midX = $(document).width()/2;
 	var offset = $(all[i]).offset();
-	var x = offset.left;
-	var y = offset.top;
+	var margin = $(document)[0].body.style.margin;
+
+        if(margin != "0px"){
+	    var int_margin = parseInt(margin.substring(0,margin.length-2));
+	    console.log(int_margin);
+	    if(offset.left < midX){
+		var x = offset.left - int_margin;}
+	    else{
+		var x = offset.left + int_margin;}
+	    if(offset.top < midY){
+		var y = offset.top - int_margin;}
+	    else{
+		var y = offset.top + int_margin;}
+
+	}
+	else{
+	    var x = offset.left;
+	    var y = offset.top;
+	}
+	
 	var height = $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
 
@@ -120,9 +172,11 @@ function generate_bounds()
 
 	    if(tag == "P")
 	    {
+		console.log(all[i]);
 		//text elements have diferent width
-		width = getPWidth(all[i].id);
+		width = get_text_width(all[i]);
 	    }
+	    
 	    var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
 	    if ( !(it.w == 0 || it.h == 0))// If no dimensions, don't add to bounds
 		bounds.push(it);
@@ -426,8 +480,8 @@ function animate() {
 	}
     }
     d1.draw();
-    //$(window).scrollTop((d1.y-500)*2);
-    //$(window).scrollLeft((d1.x-500)*2);
+ //  $(window).scrollTop((d1.y-500)*2);
+ //   $(window).scrollLeft((d1.x-500)*2);
     draw_bounds();
 }
 
@@ -437,8 +491,8 @@ $(document).ready(
     function(){
 	generate_bounds();
 	draw_bounds();
-	d1 = new disc(0,300,5,5,0,0,0,1,true,false,0,"#000000", ctx);
-	//zoom.to({x:150, y:150, width:300, height:300});
+	d1 = new disc(0,300,5,5,0,0,0,5,true,false,0,"#000000", ctx);
+	zoom.to({x:0, y:0, height:300 , width:300});
 	d1.draw();
 	setInterval(animate,20);
     }
