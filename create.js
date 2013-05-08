@@ -25,7 +25,7 @@ function create_canvas()
     world.id = 'c';
     world.height = $(document).height();
     world.width = $(document).width();
-    world.style.cssText = "margin:0px;position:fixed;top:0;left:0;";
+    world.style.cssText = "margin:0px;position:absolute;top:0;left:0;";
     
     document.body.appendChild(world);
     
@@ -173,7 +173,9 @@ function get_bounds(){
 // DISC CHARACTER //////
 /////////////////////////
 
-var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
+var stickmanimages = {};
+
+var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx) {
     this.x=x;
     this.y=y;
     this.h=h;
@@ -187,37 +189,75 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
     this.c1=c1;
     this.ctx=ctx;
     this.jumpLevel = jumpLevel;
+    this.image = stickmanimages[0];
+}
+/*
+
+var totalResources = 14;
+var numResourcesLoaded = 0;
+var fps = 28;
+
+function resourceLoaded() {
+
+    numResourcesLoaded += 1;
+    if(numResourcesLoaded == totalResources) {
+	
+	setInterval(draw, 1000 / fps);
+    }
+}
+*/
+/*
+for(var i = 0; i < 14; i++){
+loadImage("stickman["+i+"]");
+}
+*/
+
+stickmanimages = new Array();
+
+for(var i = 0; i < 14; i++) {
+stickmanimages[i] = new Image();
+stickmanimages[i].src = "stickmangif/stickman["+i+"]";
+stickmanimages[i].onload = function() {
+    context.drawImage(stickmanimages[i], 20, 20);
+}
 }
 
-//Stick Character
-var stickmanimages = new Array();
+/*
+loadImage = function(name) {
+    stickmanimages[name]= new Image();
+    images[name].onload = function() {
+	resourceLoaded();
+}
 
-var counter = 0;
-var countmod = counter % 14;
+images[name].src = stickmangif/
 
-loadimages = function() {
+}
 
 for(var i = 0; i < 14; i++) {
 
 stickmanimages[i] = new Image();
-stickmanimages[i].src = "/stickmangif/stickman["+i+"]";
+stickmanimages[i].src = stickmangif\;
 document.documentElement.appendChild(stickmanimages[i]);
 
-}
-};
+*/
 
-
-///////////////////////
-// INSTANTIATE DISC HERE
-//
-//
-//
-///////////////////////
+///////////////////////////
+// INSTANTIATE DISC HERE//
+/////////////////////////
 
 
 disc.prototype.draw = function() {
     this.ctx.fillStyle=this.c1;
     this.ctx.fillRect(this.x,this.y,this.w,this.h);
+    
+    /*
+      var x = this.x;
+      var y = this.y;
+      for(var i = 0; i < 14; i ++) {
+      context.drawImage(images["stickman["+i+"]", this.x, this.y)
+      }
+     */
+
 }
 
 ////////////////
@@ -352,10 +392,6 @@ $(document).keydown(
     }
 );
 
-
-
-
-
 $(document).keyup(
     function(e) {
 	if (e.keyCode == 68 || e.keyCode == 65){
@@ -449,15 +485,14 @@ function animate() {
     draw_bounds();
 }
 
-
-
 $(document).ready(
     function(){
 	generate_bounds();
 	draw_bounds();
 	d1 = new disc(0,300,5,5,0,0,0,1,true,false,0,"#000000", ctx);
-	//zoom.to({x:0, y:0, width:300, height:300});
+	//zoom.to({x:150, y:150, width:300, height:300});
 	d1.draw();
 	setInterval(animate,20);
     }
 );
+
