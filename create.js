@@ -51,6 +51,8 @@ function set_canvas()
     //console.log("set_canvas");
 }
 
+set_canvas()
+
 ////////////////////////////
 // READ HTML //////////////
 ///////////////////////////
@@ -79,18 +81,32 @@ function get_text_width(obj)
    
 }
 
+
+function do_padding()
+{
+    var margin = $(document)[0].body.style.margin;
+    console.log(margin);
+    if(margin == "")
+	$(document)[0].body.style.margin = "0px"
+
+	
+}
+
+do_padding();
+
 function getLoc(obj)
 {
     // Need an algorithim to go through number of characters
     //(including br's) and account for un-fixed width for p's
     obj = "#" + obj;
-    var loc = new Array();;
+    var loc = new Array();
     loc[0] = $(obj).position().left,
     loc[1] = $(obj).position().top;
     loc[2] = $(obj).height();
     loc[3] = $(obj).width();
     return loc;
 }
+
 
 
 function generate_bounds()
@@ -108,9 +124,29 @@ function generate_bounds()
     
     for (var i = 0; i< all.length;i++)
     {
+	var midY = $(document).height()/2;
+	var midX = $(document).width()/2;
 	var offset = $(all[i]).offset();
-	var x = offset.left;
-	var y = offset.top;
+	var margin = $(document)[0].body.style.margin;
+
+        if(margin != "0px"){
+	    var int_margin = parseInt(margin.substring(0,margin.length-2));
+	    console.log(int_margin);
+	    if(offset.left < midX){
+		var x = offset.left - int_margin;}
+	    else{
+		var x = offset.left + int_margin;}
+	    if(offset.top < midY){
+		var y = offset.top - int_margin;}
+	    else{
+		var y = offset.top + int_margin;}
+
+	}
+	else{
+	    var x = offset.left;
+	    var y = offset.top;
+	}
+	
 	var height = $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
 
@@ -140,6 +176,7 @@ function generate_bounds()
 		//text elements have diferent width
 		width = get_text_width(all[i]);
 	    }
+	    
 	    var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
 	    if ( !(it.w == 0 || it.h == 0))// If no dimensions, don't add to bounds
 		bounds.push(it);
@@ -442,8 +479,8 @@ function animate() {
 	}
     }
     d1.draw();
-    //$(window).scrollTop((d1.y-500)*2);
-    //$(window).scrollLeft((d1.x-500)*2);
+ //  $(window).scrollTop((d1.y-500)*2);
+ //   $(window).scrollLeft((d1.x-500)*2);
     draw_bounds();
 }
 
@@ -454,7 +491,7 @@ $(document).ready(
 	generate_bounds();
 	draw_bounds();
 	d1 = new disc(0,300,5,5,0,0,0,5,true,false,0,"#000000", ctx);
-	//zoom.to({x:0, y:0, width:300, height:300});
+	zoom.to({x:0, y:0, height:300 , width:300});
 	d1.draw();
 	setInterval(animate,20);
     }
