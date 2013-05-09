@@ -253,7 +253,7 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
 
 disc.prototype.draw = function() {
     this.ctx.fillStyle=this.c1;
-    this.ctx.fillRect(this.x,this.y,this.w,this.h);
+    this.ctx.fillRect(this.x-5,this.y-19,this.w+9,this.h+19);
 }
 
 ////////////////
@@ -261,7 +261,7 @@ disc.prototype.draw = function() {
 ////////////////
 
 disc.prototype.erase = function() {
-    this.ctx.clearRect(this.x,this.y,this.w,this.h);
+    this.ctx.clearRect(this.x-5,this.y-19,this.w+9,this.h+19);
 }
 
 disc.prototype.collideUn = function(){
@@ -333,14 +333,12 @@ disc.prototype.collideL = function(){
 ///MOVEMENT ///////////
 ///////////////////////
 
-var isJumping = new Boolean();
-isJumping = false;
 
 $(document).keydown(
     function(e) {
 	console.log(e.keyCode);
 	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR())
-	{ 
+	{
 	    if(d1.dx<5)
 	    {
 		if(!d1.falling)
@@ -352,10 +350,9 @@ $(document).keydown(
 		    d1.ax=1;
 		}
 	    }
-	  
 	}
 	if (e.keyCode == 65 && d1.x !=0 && !d1.collideL())
-	{ 
+	{
 	    if(d1.dx>-5){
 		if(!d1.falling)
 		{
@@ -364,24 +361,22 @@ $(document).keydown(
 		    d1.ax=-1;
 		}
 	    }
-	   
 	}
 	if (e.keyCode == 87)
 	{
-		if (d1.jumpLevel == 0 && d1.dy == 0){
-		d1.dy = -10;
-		d1.jumpLevel = d1.jumpLevel + 1;
-		}
-		else if (d1.jumpLevel < 5 && d1.dy <= 0)
-		{
-		d1.dy = d1.dy - 5;
-		d1.jumpLevel = d1.jumpLevel + 1;
-		}
-		//d1.dy = -25;
-		//d1.falling=true;
-
+	    //if (d1.jumpLevel == 0 && d1.dy == 0){
+		d1.dy = -20;
+		//d1.jumpLevel = d1.jumpLevel + 1;
+	   // }
+	   // else if (d1.jumpLevel < 5 && d1.dy <= 0)
+	  //  {
+		//d1.dy = d1.dy - 5;
+		//d1.jumpLevel = d1.jumpLevel + 1;
+	   // }
+	    //d1.dy = -25;
+	    //d1.falling=true;
+	    
 	}
-	
 	if (e.keyCode == 83)
 	{
 	    if (d1.dy == 0 && d1.collideUn())
@@ -406,7 +401,6 @@ $(document).keyup(
 	if (e.keyCode == 87){
 	    console.log('keyup');
 	    d1.jumpLevel = 0;
-		d1.isJumping = false;
 	}
     }
 );
@@ -449,7 +443,8 @@ function animate() {
     if (d1.y >= canvas.height) {
 	d1.dy = 0
     }
-	// the next 3 if statements deal with collision to objects on screen, still flawed
+
+    // the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
 	if(d1.collideUn()){
 	    d1.falling = false;
@@ -496,7 +491,7 @@ $(document).ready(
     function(){
 	generate_bounds();
 	draw_bounds();
-	d1 = new disc(0,300,20,10,0,0,0,5,true,false,0,"#000000", ctx);
+	d1 = new disc(0,300,1,1,0,0,0,5,true,false,0,"#000000", ctx);
 	//zoom.to({x:0, y:0, height:300 , width:300});
 	d1.draw();
 	setInterval(animate,20);
