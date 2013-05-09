@@ -278,7 +278,7 @@ disc.prototype.collideUn = function(){
 	var plat_yloc = listofBounds[i].y; 
 	var plat_xloc = listofBounds[i].x;
 
-	if((dyloc + dHeight + d_yspeed  >= plat_yloc) && disc_yloc < plat_yloc)
+	if((d_yloc + dHeight + d_yspeed  >= plat_yloc) && d_yloc < plat_yloc)
 	{
 	    if ((d_xloc >= plat_xloc) && (this.x <= plat_xloc + listofBounds[i].w)){
 		return listofBounds[i].y;
