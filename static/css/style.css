@@ -17,8 +17,9 @@ body {
 	width:90%;
 	height:75%;
 	color:#000000;
-	background-color:#ffffff;
+	background-color:#000084;
 	text-align:center;
+	border-image:url('./img/borders.png') 30 30 round;
 }
 
 #button{
