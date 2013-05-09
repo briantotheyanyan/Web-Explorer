@@ -370,13 +370,12 @@ $(document).keydown(
 	{
 	    if (d1.jumpLevel == 0 && d1.dy == 0 && isJumping == false){
 			isJumping = true;
-			d1.dy = d1.dy-1;
+			d1.dy = d1.dy-10;
 	    }
-	    else if (d1.jumpLevel < 5 && d1.dy <= 0 && isJumping == false)
+	    else if (d1.jumpLevel < 20 && d1.dy <= 0 && isJumping == false)
 	    {
 			isJumping = true;
 			d1.dy = d1.dy - 5;
-			d1.jumpLevel = d1.jumpLevel + 1;
 	    }
 	    //d1.dy = -25;
 	    //d1.falling=true;
