@@ -267,20 +267,11 @@ disc.prototype.erase = function() {
 disc.prototype.collideUn = function(){
     
     var listofBounds = get_bounds();
-
-    var d_yloc = this.y;
-    var dHeight = this.h;
-    var d_yspeed = this.dy;
-    var d_xloc = this.x;
-
-    for(var i = 0; i < listofBounds.length; i++) {
-
-	var plat_yloc = listofBounds[i].y; 
-	var plat_xloc = listofBounds[i].x;
-
-	if((d_yloc + dHeight + d_yspeed  >= plat_yloc) && d_yloc < plat_yloc)
+    
+    for(var i = 0; i < listofBounds.length; i++){
+	if((this.y + this.h + this.dy >= listofBounds[i].y) && this.y < listofBounds[i].y)
 	{
-	    if ((d_xloc >= plat_xloc) && (this.x <= plat_xloc + listofBounds[i].w)){
+	    if ((this.x >= listofBounds[i].x) && (this.x <= listofBounds[i].x + listofBounds[i].w)){
 		return listofBounds[i].y;
 	    }
 	    if ((this.x + this.w >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w)){
