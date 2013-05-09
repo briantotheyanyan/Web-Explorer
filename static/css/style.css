@@ -19,7 +19,7 @@ body {
 	color:#ffffff;
 	background-color:#000084;
 	text-align:center;
-	border-image:url('./img/borders.png') 5 5 round;
+	border-image:url('./img/borders.png') 10 10 round;
 }
 
 #button{
@@ -37,7 +37,7 @@ body {
 	left:0;
 	bottom:0; 
 	background-image: url('./img/brick.jpg');
-	font-size:200%;
+	font-size:150%;
 }
 #lifebar{
 	position:absolute;
