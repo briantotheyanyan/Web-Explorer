@@ -506,7 +506,7 @@ $(document).ready(
     function(){
 	generate_bounds();
 	draw_bounds();
-	d1 = new disc(0,300,10,20,0,0,0,5,true,false,0,"#000000", ctx);
+	d1 = new disc(0,300,5,5,0,0,0,5,true,false,0,"#000000", ctx);
 	//zoom.to({x:0, y:0, height:300 , width:300});
 	d1.draw();
 	setInterval(animate,20);
