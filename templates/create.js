@@ -371,16 +371,19 @@ $(document).keydown(
 	    if (d1.jumpLevel == 0 && d1.dy == 0 && isJumping == false){
 			isJumping = true;
 			d1.dy = d1.dy-10;
+			d1.jumpLevel = d1.jumpLevel + 1;
 	    }
 	    else if (d1.jumpLevel < 20 && d1.dy <= 0 && isJumping == false)
 	    {
 			isJumping = true;
 			d1.dy = d1.dy - 5;
+			d1.jumpLevel = d1.jumpLevel + 1;
 	    }
 	    //d1.dy = -25;
 	    //d1.falling=true;
 	    
 	} isJumping = false;
+	
 	if (e.keyCode == 83)
 	{
 	    if (d1.dy == 0 && d1.collideUn())
@@ -447,8 +450,7 @@ function animate() {
     if (d1.y >= canvas.height) {
 	d1.dy = 0
     }
-	d1.jumpLevel = d1.jumpLevel + 1;
-    // the next 3 if statements deal with collision to objects on screen, still flawed
+	// the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
 	if(d1.collideUn()){
 	    d1.falling = false;
