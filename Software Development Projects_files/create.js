@@ -333,12 +333,14 @@ disc.prototype.collideL = function(){
 ///MOVEMENT ///////////
 ///////////////////////
 
+var isJumping = new Boolean();
+isJumping = false;
 
 $(document).keydown(
     function(e) {
 	console.log(e.keyCode);
 	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR())
-	{
+	{ 
 	    if(d1.dx<5)
 	    {
 		if(!d1.falling)
@@ -350,9 +352,10 @@ $(document).keydown(
 		    d1.ax=1;
 		}
 	    }
+	  
 	}
 	if (e.keyCode == 65 && d1.x !=0 && !d1.collideL())
-	{
+	{ 
 	    if(d1.dx>-5){
 		if(!d1.falling)
 		{
@@ -361,22 +364,25 @@ $(document).keydown(
 		    d1.ax=-1;
 		}
 	    }
+	   
 	}
 	if (e.keyCode == 87)
 	{
-	    if (d1.jumpLevel == 0 && d1.dy == 0){
-		d1.dy = -34;
+	    if (d1.jumpLevel == 0 && d1.dy == 0 && isJumping == false){
+		isJumping = true;
+		d1.dy = -20;
 		d1.jumpLevel = d1.jumpLevel + 1;
 	    }
-	    else if (d1.jumpLevel < 5 && d1.dy <= 0)
+	    else if (d1.jumpLevel < 5 && d1.dy <= 0 && isJumping == false)
 	    {
+		isJumping = true;
 		d1.dy = d1.dy - 5;
 		d1.jumpLevel = d1.jumpLevel + 1;
 	    }
 	    //d1.dy = -25;
 	    //d1.falling=true;
 	    
-	}
+	} isJumping = false;
 	if (e.keyCode == 83)
 	{
 	    if (d1.dy == 0 && d1.collideUn())
