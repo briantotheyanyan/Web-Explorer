@@ -40,6 +40,8 @@ function create_canvas()
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
 
+var current_link = "";
+
 function set_canvas()
 {
     //set for every on resize
@@ -176,8 +178,14 @@ function generate_bounds()
 		//text elements have diferent width
 		width = get_text_width(all[i]);
 	    }
+	    var link = null;
+	    if(tag == "A")
+	    {
+		console.log(all[i]);
+		link = all[i].href;
+	    }
 	    
-	    var it = new bound(x/scale,y/scale,height/scale,width/scale,c,ctx);
+	    var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,ctx);
 	    if ( !(it.w == 0 || it.h == 0))// If no dimensions, don't add to bounds
 		bounds.push(it);
 	}
@@ -190,22 +198,32 @@ function generate_bounds()
 // BOUNDS ///////////////
 /////////////////////////
 
-var bound = function(x,y,h,w,c,ctx)
+var bound = function(x,y,h,w,link,c,ctx)
 {
-    //bounds represent physical platform, for COLLISION
+    this.link = link;
+    console.log(this.link);
+   //bounds represent physical platform, for COLLISION
     this.x=x;
     this.y=y;
     this.h=h;
     this.w=w;
-    this.c=c;
-    this.ctx=ctx;
+    this.c = c;
+    if (this.link == null)
+    {
+	this.c  = "#000000";
+    }
+
+    this.ctx =ctx;
+
 }
 
 
 bound.prototype.draw = function()
 {
+    this.ctx.strokeStyle = "#000000";
     // this is used for drawing blocks around the identified elements
-    this.ctx.fillStyle = this.c;
+    if(this.link != null)
+	this.ctx.strokeStyle = "#FF0000";
     this.ctx.strokeRect(this.x,this.y,this.w,this.h);
 }
 
@@ -222,6 +240,10 @@ function get_bounds(){
     
 }
 
+function go_link(){
+
+    window.location.href = current_link;
+}
 
 //////////////////////////
 // DISC CHARACTER //////
@@ -269,21 +291,29 @@ disc.prototype.collideUn = function(){
     var listofBounds = get_bounds();
     
     for(var i = 0; i < listofBounds.length; i++){
+//	console.log(listofBounds[i]);
 	if((this.y + this.h + this.dy >= listofBounds[i].y) && this.y < listofBounds[i].y)
 	{
 	    if ((this.x >= listofBounds[i].x) && (this.x <= listofBounds[i].x + listofBounds[i].w)){
+		current_link = listofBounds[i].link;
 		return listofBounds[i].y;
+
+		
 	    }
 	    if ((this.x + this.w >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w)){
+
+		link = listofBounds[i].link;
 		return listofBounds[i].y;
 	    }
 	}
 	if((this.y + this.h + this.dy >= listofBounds[i].y + listofBounds[i].h) && (this.y < listofBounds[i].y + listofBounds[i].h))
 	{
 	    if ((this.x >= listofBounds[i].x) && (this.x <= listofBounds[i].x + listofBounds[i].w)){
+		link = listofBounds[i].link;
 		return listofBounds[i].y+listofBounds[i].h;
 	    }
 	    if ((this.x + this.w >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w)){
+		link = listofBounds[i].link;
 		return listofBounds[i].y+listofBounds[i].h;
 	    }
 	    
@@ -301,9 +331,13 @@ disc.prototype.collideR = function(){
 	{
 	    if((this.x + this.w + this.dx >= listofBounds[i].x)&&(this.x + this.w <= listofBounds[i].x))
 	    {
+		if (listofBounds[i].link != null)
+		    link = listofBounds[i].link;
+		
 		return true;
 	    }
 	    else if(((this.x + this.w + this.dx) >= (listofBounds[i].x + listofBounds[i].w)) && ((this.x + this.w) <= (listofBounds[i].x + listofBounds[i].w))){
+		
 		return true;
 	    }
 	}
@@ -483,6 +517,8 @@ function animate() {
  //  $(window).scrollTop((d1.y-500)*2);
  //   $(window).scrollLeft((d1.x-500)*2);
     draw_bounds();
+
+    
 }
 
 
@@ -492,7 +528,7 @@ $(document).ready(
 	generate_bounds();
 	draw_bounds();
 	d1 = new disc(0,300,5,5,0,0,0,5,true,false,0,"#000000", ctx);
-	zoom.to({x:0, y:0, height:300 , width:300});
+//	zoom.to({x:d1.x-150, y:d1, height:300 , width:300});
 	d1.draw();
 	setInterval(animate,20);
     }
