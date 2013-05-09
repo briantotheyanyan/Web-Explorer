@@ -368,21 +368,19 @@ $(document).keydown(
 	}
 	if (e.keyCode == 87)
 	{
-	    if (d1.jumpLevel == 0 && d1.dy == 0 && isJumping == false){
-			isJumping = true;
-			d1.dy = d1.dy-10;
-			d1.jumpLevel = d1.jumpLevel + 1;
-	    }
-	    else if (d1.jumpLevel < 20 && d1.dy <= 0 && isJumping == false)
-	    {
-			isJumping = true;
-			d1.dy = d1.dy - 5;
-			d1.jumpLevel = d1.jumpLevel + 1;
-	    }
-	    //d1.dy = -25;
-	    //d1.falling=true;
-	    
-	} isJumping = false;
+		if (d1.jumpLevel == 0 && d1.dy == 0){
+		d1.dy = -10;
+		d1.jumpLevel = d1.jumpLevel + 1;
+		}
+		else if (d1.jumpLevel < 5 && d1.dy <= 0)
+		{
+		d1.dy = d1.dy - 5;
+		d1.jumpLevel = d1.jumpLevel + 1;
+		}
+		//d1.dy = -25;
+		//d1.falling=true;
+
+	}
 	
 	if (e.keyCode == 83)
 	{
@@ -408,6 +406,7 @@ $(document).keyup(
 	if (e.keyCode == 87){
 	    console.log('keyup');
 	    d1.jumpLevel = 0;
+		d1.isJumping = false;
 	}
     }
 );
