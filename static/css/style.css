@@ -19,7 +19,7 @@ body {
 	color:#ffffff;
 	background-color:#000084;
 	text-align:center;
-	border-image:url('./img/borders.png') 15 15 round;
+	border-image:url('./img/borders.png') 5 5 round;
 }
 
 #button{
