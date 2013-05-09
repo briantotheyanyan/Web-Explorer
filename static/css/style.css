@@ -1,3 +1,8 @@
+@font-face{
+       font-family: pixel;
+       src: local(my_custom_font), url('./fonts/minecraftia.ttf')    
+             format('opentype');
+}
 body {
 	background-image:url('./img/clouds.png');
 	color: #ffffff;
