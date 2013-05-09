@@ -369,15 +369,14 @@ $(document).keydown(
 	if (e.keyCode == 87)
 	{
 	    if (d1.jumpLevel == 0 && d1.dy == 0 && isJumping == false){
-		isJumping = true;
-		d1.dy = -20;
-		d1.jumpLevel = d1.jumpLevel + 1;
+			isJumping = true;
+			d1.dy = d1.dy-1;
 	    }
 	    else if (d1.jumpLevel < 5 && d1.dy <= 0 && isJumping == false)
 	    {
-		isJumping = true;
-		d1.dy = d1.dy - 5;
-		d1.jumpLevel = d1.jumpLevel + 1;
+			isJumping = true;
+			d1.dy = d1.dy - 5;
+			d1.jumpLevel = d1.jumpLevel + 1;
 	    }
 	    //d1.dy = -25;
 	    //d1.falling=true;
@@ -449,7 +448,7 @@ function animate() {
     if (d1.y >= canvas.height) {
 	d1.dy = 0
     }
-
+	d1.jumpLevel = d1.jumpLevel + 1;
     // the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
 	if(d1.collideUn()){
@@ -497,7 +496,7 @@ $(document).ready(
     function(){
 	generate_bounds();
 	draw_bounds();
-	d1 = new disc(0,300,10,20,0,0,0,5,true,false,0,"#000000", ctx);
+	d1 = new disc(0,300,20,10,0,0,0,5,true,false,0,"#000000", ctx);
 	//zoom.to({x:0, y:0, height:300 , width:300});
 	d1.draw();
 	setInterval(animate,20);
