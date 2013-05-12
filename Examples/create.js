@@ -39,6 +39,7 @@ function create_canvas()
 //VARIABLES
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
+var wasDown = false;
 
 function set_canvas()
 {
@@ -227,7 +228,7 @@ function get_bounds(){
 // DISC CHARACTER //////
 /////////////////////////
 
-var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
+var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
     this.x=x;
     this.y=y;
     this.h=h;
@@ -240,7 +241,6 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
     this.slowing=slowing;
     this.c1=c1;
     this.ctx=ctx;
-    this.jumpLevel = jumpLevel;
 }
 
 ///////////////////////
@@ -337,45 +337,37 @@ disc.prototype.collideL = function(){
 $(document).keydown(
     function(e) {
 	console.log(e.keyCode);
-	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR())
-	{
-	    if(d1.dx<5)
-	    {
-		if(!d1.falling)
-		{
-		    d1.ax=2;
+	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR()){
+	    if(d1.dx<0){
+			d1.dx = 0;
 		}
-		else
-		{
-		    d1.ax=1;
-		}
+		if(d1.dx<5){
+			if(!d1.falling){
+				d1.ax=2;
+			}else{
+				d1.ax=1;
+			}
 	    }
 	}
-	if (e.keyCode == 65 && d1.x !=0 && !d1.collideL())
-	{
-	    if(d1.dx>-5){
-		if(!d1.falling)
-		{
-		    d1.ax=-2;
-		}else{
-		    d1.ax=-1;
+	if (e.keyCode == 65 && d1.x !=0 && !d1.collideL()){
+		if(d1.dx>0){
+			d1.dx = 0;
 		}
+	    if(d1.dx>-5){
+			if(!d1.falling){
+				d1.ax=-2;
+			}else{
+				d1.ax=-1;
+			}
 	    }
 	}
 	if (e.keyCode == 87)
 	{
-	    //if (d1.jumpLevel == 0 && d1.dy == 0){
-		d1.dy = -20;
-		//d1.jumpLevel = d1.jumpLevel + 1;
-	   // }
-	   // else if (d1.jumpLevel < 5 && d1.dy <= 0)
-	  //  {
-		//d1.dy = d1.dy - 5;
-		//d1.jumpLevel = d1.jumpLevel + 1;
-	   // }
-	    //d1.dy = -25;
-	    //d1.falling=true;
-	    
+		if(!wasDown){
+			d1.dy=-2;
+			console.log('dang-ass javascript');
+		}
+		wasDown=true;
 	}
 	if (e.keyCode == 83)
 	{
@@ -399,6 +391,7 @@ $(document).keyup(
 	    d1.slowing=true;
         }
 	if (e.keyCode == 87){
+		wasDown=false;
 	    console.log('keyup');
 	    d1.jumpLevel = 0;
 	}
@@ -414,8 +407,8 @@ viewportHeight = $(window).height();
 function animate() {
     d1.erase();
     if(d1.slowing && d1.dx == 0){
-	d1.slowing = false;
-	d1.ax = 0;
+		d1.slowing = false;
+		d1.ax = 0;
     }
     d1.dx = d1.dx + d1.ax;
     d1.x = d1.x + d1.dx;
@@ -423,61 +416,64 @@ function animate() {
     d1.y = d1.y + d1.dy;
 
     if (d1.x + d1.dx >= canvas.width && d1.dx > 0){
-	d1.dx = 0;
-	d1.ax = 0;
-	d1.x = canvas.width-d1.w;
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = canvas.width-d1.w;
     }
     if (d1.x + d1.dx <= 0 && d1.dx < 0){
-	d1.dx = 0;
-	d1.ax = 0;
-	d1.x = 0;
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = 0;
     }
     if (d1.y >= canvas.height-d1.h && d1.dy > 0){
-	d1.dy = 0;
-	d1.y = canvas.height-d1.h;
-	d1.falling=false;
+		d1.dy = 0;
+		d1.y = canvas.height-d1.h;
+		d1.falling=false;
     }
     if ((d1.x <= 0) || d1.x >= canvas.width) {
-	d1.dx = 0 - d1.dx
+		d1.dx = 0 - d1.dx
     }
     if (d1.y >= canvas.height) {
-	d1.dy = 0
+		d1.dy = 0
     }
-
+	
+	if(wasDown){
+		d1.dy=-15;
+	}
+	
     // the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
-	if(d1.collideUn()){
-	    d1.falling = false;
-	    d1.dy = 0;
-	    d1.ay = 0;
-	}
-    }
-    /*if (d1.dx < 0){
-	if (d1.collideL()){
-	    d1.slowing = false;
-	    d1.dx = 0;
-	    d1.ax = 0;
-	}
-    }
-    if (d1.dx > 0){
-	if (d1.collideR()){
-	    d1.slowing = false;
-	    d1.dx = 0;
-	    d1.ax = 0;
-	}
-    }
-    */
-    if (!d1.collideUn()){
-	d1.falling = true;
-	d1.ay = 1;
-    }
-    else{
-	if (d1.dy <= 0){
-	    d1.dy = d1.collideUn() + d1.h;
-	    d1.ay = 0;
-	    d1.dy = 0;
-	    d1.falling = false;
-	}
+		if(d1.collideUn()){
+			d1.falling = false;
+			d1.dy = 0;
+			d1.ay = 0;
+		}
+		}
+		/*if (d1.dx < 0){
+		if (d1.collideL()){
+			d1.slowing = false;
+			d1.dx = 0;
+			d1.ax = 0;
+		}
+		}
+		if (d1.dx > 0){
+		if (d1.collideR()){
+			d1.slowing = false;
+			d1.dx = 0;
+			d1.ax = 0;
+		}
+		}
+		*/
+		if (!d1.collideUn()){
+			d1.falling = true;
+			d1.ay = 1;
+		}else{
+		if (d1.dy <= 0){
+			d1.dy = d1.collideUn() + d1.h;
+			d1.ay = 0;
+			d1.dy = 0;
+			d1.falling = false;
+		}
     }
     d1.draw();
  //  $(window).scrollTop((d1.y-500)*2);
@@ -491,7 +487,7 @@ $(document).ready(
     function(){
 	generate_bounds();
 	draw_bounds();
-	d1 = new disc(0,300,1,1,0,0,0,5,true,false,0,"#000000", ctx);
+	d1 = new disc(0,300,1,1,0,0,0,5,true,false,"#000000", ctx);
 	//zoom.to({x:0, y:0, height:300 , width:300});
 	d1.draw();
 	setInterval(animate,20);
