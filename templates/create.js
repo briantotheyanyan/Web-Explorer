@@ -441,6 +441,8 @@ function animate() {
     }
     if (d1.y >= canvas.height) {
 		d1.dy = 0
+		d1.jump=0;
+		d1.canJump=true;
     }
 	
 	if(wasDownW){
@@ -500,7 +502,9 @@ function animate() {
 		*/
 		if (!d1.collideUn()){
 			d1.falling = true;
-			d1.canJump=false;
+			if(d1.y<canvas.height-d1.h){
+				d1.canJump=false;
+			}
 			d1.ay = 1;
 		}else{
 			if (d1.dy <= 0){
