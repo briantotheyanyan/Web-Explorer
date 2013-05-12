@@ -517,10 +517,9 @@ function animate() {
 			}
 		}
     d1.draw();
- //  $(window).scrollTop((d1.y-500)*2);
- //   $(window).scrollLeft((d1.x-500)*2);
+	//$(window).scrollTop(d1.y);
+	//$(window).scrollLeft(d1.x);
     draw_bounds();
-	console.log(d1.jump);
 }
 
 
@@ -528,8 +527,8 @@ function animate() {
 $(document).ready(
     function(){
 	generate_bounds();
-	d1 = new disc(0,300,1,1,0,0,0,5,true,false,"#000000", ctx,0,true);
-	//zoom.to({x:0, y:0, height:300 , width:300});
+	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true);
+	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2});
 	d1.draw();
 	setInterval(animate,20);
     }
