@@ -16,8 +16,7 @@ var zoom=(function(){var level=1;var mouseX=1,mouseY=1;var panEngageTimeout=-1,p
 ////////////////////////////
 
 
-function create_canvas()
-{
+function create_canvas(){
     //generate a canvas that has the dimensions of the window
     //this is what will overlay the image of the background
     
@@ -37,10 +36,10 @@ function create_canvas()
 }
 
 //CONSTANTS
-const SPEEDLIMIT = 5;
+const SPEEDLIMIT = 10;
 const WALKACCEL = .7;
 const FALLINGACCEL = .35;
-const GRAVITY = 2;
+const JUMPLIMIT = 10;
 //VARIABLES
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
@@ -48,8 +47,7 @@ var wasDownW = false;
 var wasDownA = false;
 var wasDownD = false;
 
-function set_canvas()
-{
+function set_canvas(){
     //set for every on resize
     canvas = document.getElementById("c");
     if (canvas.width < $(document).width())
@@ -64,8 +62,7 @@ set_canvas()
 ////////////////////////////
 // READ HTML //////////////
 ///////////////////////////
-function create_ruler()
-{
+function create_ruler(){
     var ruler = document.createElement('span');
     ruler.id = "ruler";
     ruler.style.cssText = "visibility:hidden;white-space:nowrap;";
@@ -75,8 +72,7 @@ function create_ruler()
 
 create_ruler();
 
-function get_text_width(obj)
-{
+function get_text_width(obj){
     //needs to check for fontsizes in classes
     //also note check for visivbility
     var text = $(obj)[0].innerHTML;
@@ -90,8 +86,7 @@ function get_text_width(obj)
 }
 
 
-function do_padding()
-{
+function do_padding(){
     var margin = $(document)[0].body.style.margin;
     console.log(margin);
     if(margin == "")
@@ -102,8 +97,7 @@ function do_padding()
 
 do_padding();
 
-function getLoc(obj)
-{
+function getLoc(obj){
     // Need an algorithim to go through number of characters
     //(including br's) and account for un-fixed width for p's
     obj = "#" + obj;
@@ -117,8 +111,7 @@ function getLoc(obj)
 
 
 
-function generate_bounds()
-{
+function generate_bounds(){
     
     //tag types that are completely ignored
     var ignored = ["SCRIPT",
@@ -198,8 +191,7 @@ function generate_bounds()
 // BOUNDS ///////////////
 /////////////////////////
 
-var bound = function(x,y,h,w,c,ctx)
-{
+var bound = function(x,y,h,w,c,ctx){
     //bounds represent physical platform, for COLLISION
     this.x=x;
     this.y=y;
@@ -210,8 +202,7 @@ var bound = function(x,y,h,w,c,ctx)
 }
 
 
-bound.prototype.draw = function()
-{
+bound.prototype.draw = function(){
     // this is used for drawing blocks around the identified elements
     this.ctx.fillStyle = this.c;
     this.ctx.strokeRect(this.x,this.y,this.w,this.h);
@@ -235,7 +226,7 @@ function get_bounds(){
 // DISC CHARACTER //////
 /////////////////////////
 
-var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
+var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump){
     this.x=x;
     this.y=y;
     this.h=h;
@@ -248,6 +239,8 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx){
     this.slowing=slowing;
     this.c1=c1;
     this.ctx=ctx;
+	this.jumpCount = jumpCount;
+	this.canJump = canJump;
 }
 
 ///////////////////////
@@ -366,14 +359,17 @@ $(document).keydown(
 		
 		if (e.keyCode == 87){
 			if(!wasDownW){
-				d1.dy=-2;
+				if(d1.canJump){
+					d1.dy=-2;
+					wasDownW=true;
+				}
 			}
-			wasDownW=true;
+			
 		}
 		if (e.keyCode == 83){
 			if (d1.dy == 0 && d1.collideUn()){
-			d1.dy = d1.h +1;
-			d1.falling = true;
+				d1.dy = d1.h +1;
+				d1.falling = true;
 			}
 		}
     }
@@ -385,19 +381,18 @@ $(document).keydown(
 
 $(document).keyup(
     function(e) {
-	if(e.keyCode == 68){
-		wasDownD=false;
-	    d1.slowing=true;
-    }
-	if(e.keyCode == 65){
-		wasDownA=false;
-	    d1.slowing=true;
-	}
-	if(e.keyCode == 87){
-		wasDownW=false;
-	    console.log('keyup');
-	    d1.jumpLevel = 0;
-	}
+		if(e.keyCode == 68){
+			wasDownD=false;
+			d1.slowing=true;
+		}
+		if(e.keyCode == 65){
+			wasDownA=false;
+			d1.slowing=true;
+		}
+		if(e.keyCode == 87){
+			wasDownW=false;
+			d1.canJump = false;
+		}
     }
 );
 
@@ -409,7 +404,7 @@ viewportHeight = $(window).height();
 
 function animate() {
     d1.erase();
-	//console.log(d1.slowing);
+	//ground friction
 	if(d1.slowing){
 		d1.ax=-.5*(d1.dx / Math.abs(d1.dx));
 		if(Math.abs(d1.dx) < 1){
@@ -438,6 +433,8 @@ function animate() {
 		d1.dy = 0;
 		d1.y = canvas.height-d1.h;
 		d1.falling=false;
+		d1.jump=0;
+		d1.canJump=true;
     }
     if ((d1.x <= 0) || d1.x >= canvas.width) {
 		d1.dx = 0 - d1.dx
@@ -447,7 +444,12 @@ function animate() {
     }
 	
 	if(wasDownW){
-		d1.dy=-15;
+		if(d1.jump<JUMPLIMIT){
+			d1.dy=-15;
+			d1.jump = d1.jump + 1;
+		}else{
+			d1.canJump = false;
+		}
 	}
 	if(wasDownD){
 		if(d1.dx<SPEEDLIMIT){
@@ -475,6 +477,8 @@ function animate() {
     if (d1.falling && d1.dy >= 0){
 		if(d1.collideUn()){
 			d1.falling = false;
+			d1.jump=0;
+			d1.canJump=true;
 			d1.dy = 0;
 			d1.ay = 0;
 		}
@@ -498,17 +502,18 @@ function animate() {
 			d1.falling = true;
 			d1.ay = 1;
 		}else{
-		if (d1.dy <= 0){
-			d1.dy = d1.collideUn() + d1.h;
-			d1.ay = 0;
-			d1.dy = 0;
-			d1.falling = false;
+			if (d1.dy <= 0){
+				d1.dy = d1.collideUn() + d1.h;
+				d1.ay = 0;
+				d1.dy = 0;
+				d1.falling = false;
+			}
 		}
-    }
     d1.draw();
  //  $(window).scrollTop((d1.y-500)*2);
  //   $(window).scrollLeft((d1.x-500)*2);
     //draw_bounds();
+	console.log(d1.jump);
 }
 
 
@@ -516,7 +521,7 @@ function animate() {
 $(document).ready(
     function(){
 	generate_bounds();
-	d1 = new disc(0,300,1,1,0,0,0,5,true,false,"#000000", ctx);
+	d1 = new disc(0,300,1,1,0,0,0,5,true,false,"#000000", ctx,0,true);
 	//zoom.to({x:0, y:0, height:300 , width:300});
 	d1.draw();
 	setInterval(animate,20);
