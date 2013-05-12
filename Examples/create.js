@@ -360,7 +360,7 @@ $(document).keydown(
 		if (e.keyCode == 87){
 			if(!wasDownW){
 				if(d1.canJump){
-					d1.dy=-2;
+					d1.dy=-1;
 					wasDownW=true;
 				}
 			}
