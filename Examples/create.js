@@ -500,6 +500,7 @@ function animate() {
 		*/
 		if (!d1.collideUn()){
 			d1.falling = true;
+			d1.canJump=false;
 			d1.ay = 1;
 		}else{
 			if (d1.dy <= 0){
@@ -507,12 +508,14 @@ function animate() {
 				d1.ay = 0;
 				d1.dy = 0;
 				d1.falling = false;
+				d1.jump=0;
+				d1.canJump=true;
 			}
 		}
     d1.draw();
  //  $(window).scrollTop((d1.y-500)*2);
  //   $(window).scrollLeft((d1.x-500)*2);
-    //draw_bounds();
+    draw_bounds();
 	console.log(d1.jump);
 }
 
