@@ -36,10 +36,17 @@ function create_canvas()
     return ctx;
 }
 
+//CONSTANTS
+const SPEEDLIMIT = 3;
+const WALKACCEL = .7;
+const FALLINGACCEL = .35;
+const GRAVITY = 2;
 //VARIABLES
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
-var wasDown = false;
+var wasDownW = false;
+var wasDownA = false;
+var wasDownD = false;
 
 function set_canvas()
 {
@@ -261,7 +268,8 @@ disc.prototype.draw = function() {
 ////////////////
 
 disc.prototype.erase = function() {
-    this.ctx.clearRect(this.x-5,this.y-19,this.w+9,this.h+19);
+    //this.ctx.clearRect(this.x-5,this.y-19,this.w+9,this.h+19);
+	this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 disc.prototype.collideUn = function(){
@@ -336,47 +344,38 @@ disc.prototype.collideL = function(){
 
 $(document).keydown(
     function(e) {
-	console.log(e.keyCode);
-	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR()){
-	    if(d1.dx<0){
-			d1.dx = 0;
-		}
-		if(d1.dx<5){
-			if(!d1.falling){
-				d1.ax=2;
-			}else{
-				d1.ax=1;
+		console.log(e.keyCode);
+		if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR()){
+			if(!wasDownD){
+				if(d1.dx<0){
+					d1.dx = 0;
+				}
 			}
-	    }
-	}
-	if (e.keyCode == 65 && d1.x !=0 && !d1.collideL()){
-		if(d1.dx>0){
-			d1.dx = 0;
+			wasDownD=true;
 		}
-	    if(d1.dx>-5){
-			if(!d1.falling){
-				d1.ax=-2;
-			}else{
-				d1.ax=-1;
+		
+		
+		if (e.keyCode == 65 && d1.x !=0 && !d1.collideL()){
+			if(!wasDownA){
+				if(d1.dx>0){
+					d1.dx = 0;
+				}
 			}
-	    }
-	}
-	if (e.keyCode == 87)
-	{
-		if(!wasDown){
-			d1.dy=-2;
-			console.log('dang-ass javascript');
+			wasDownA=true;
 		}
-		wasDown=true;
-	}
-	if (e.keyCode == 83)
-	{
-	    if (d1.dy == 0 && d1.collideUn())
-	    {
-		d1.dy = d1.h +1;
-		d1.falling = true;
-	    }
-	}
+		
+		if (e.keyCode == 87){
+			if(!wasDownW){
+				d1.dy=-2;
+			}
+			wasDownW=true;
+		}
+		if (e.keyCode == 83){
+			if (d1.dy == 0 && d1.collideUn()){
+			d1.dy = d1.h +1;
+			d1.falling = true;
+			}
+		}
     }
 );
 
@@ -386,12 +385,18 @@ $(document).keydown(
 
 $(document).keyup(
     function(e) {
-	if (e.keyCode == 68 || e.keyCode == 65){
+	if(e.keyCode == 68){
+		wasDownD=false;
 	    d1.ax=-1*(d1.ax / Math.abs(d1.ax));
 	    d1.slowing=true;
-        }
-	if (e.keyCode == 87){
-		wasDown=false;
+    }
+	if(e.keyCode == 65){
+		wasDownA=false;
+		d1.ax=-1*(d1.ax / Math.abs(d1.ax));
+	    d1.slowing=true;
+	}
+	if(e.keyCode == 87){
+		wasDownW=false;
 	    console.log('keyup');
 	    d1.jumpLevel = 0;
 	}
@@ -406,15 +411,20 @@ viewportHeight = $(window).height();
 
 function animate() {
     d1.erase();
-    if(d1.slowing && d1.dx == 0){
-		d1.slowing = false;
-		d1.ax = 0;
-    }
+	console.log(d1.slowing);
+	if(d1.slowing){
+		if(Math.abs(d1.dx) < 1){
+			d1.slowing = false;
+			d1.dx = 0;
+			d1.ax = 0;
+		}
+	}
+
+
     d1.dx = d1.dx + d1.ax;
     d1.x = d1.x + d1.dx;
     d1.dy = d1.dy + d1.ay;
     d1.y = d1.y + d1.dy;
-
     if (d1.x + d1.dx >= canvas.width && d1.dx > 0){
 		d1.dx = 0;
 		d1.ax = 0;
@@ -437,10 +447,27 @@ function animate() {
 		d1.dy = 0
     }
 	
-	if(wasDown){
+	if(wasDownW){
 		d1.dy=-15;
 	}
-	
+	if(wasDownD){
+		if(d1.dx<SPEEDLIMIT){
+			if(!d1.falling){
+				d1.ax=WALKACCEL;
+			}else{
+				d1.ax=FALLINGACCEL;
+			}
+		}
+	}
+	if(wasDownA){
+		if(d1.dx>-1*SPEEDLIMIT){
+			if(!d1.falling){
+				d1.ax=-1*WALKACCEL;
+			}else{
+				d1.ax=-1*FALLINGACCEL;
+			}
+		}
+	}
     // the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
 		if(d1.collideUn()){
@@ -478,7 +505,7 @@ function animate() {
     d1.draw();
  //  $(window).scrollTop((d1.y-500)*2);
  //   $(window).scrollLeft((d1.x-500)*2);
-    draw_bounds();
+    //draw_bounds();
 }
 
 
@@ -486,7 +513,6 @@ function animate() {
 $(document).ready(
     function(){
 	generate_bounds();
-	draw_bounds();
 	d1 = new disc(0,300,1,1,0,0,0,5,true,false,"#000000", ctx);
 	//zoom.to({x:0, y:0, height:300 , width:300});
 	d1.draw();
