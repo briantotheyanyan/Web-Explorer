@@ -37,7 +37,7 @@ function create_canvas()
 }
 
 //CONSTANTS
-const SPEEDLIMIT = 3;
+const SPEEDLIMIT = 5;
 const WALKACCEL = .7;
 const FALLINGACCEL = .35;
 const GRAVITY = 2;
@@ -387,12 +387,10 @@ $(document).keyup(
     function(e) {
 	if(e.keyCode == 68){
 		wasDownD=false;
-	    d1.ax=-1*(d1.ax / Math.abs(d1.ax));
 	    d1.slowing=true;
     }
 	if(e.keyCode == 65){
 		wasDownA=false;
-		d1.ax=-1*(d1.ax / Math.abs(d1.ax));
 	    d1.slowing=true;
 	}
 	if(e.keyCode == 87){
@@ -411,8 +409,9 @@ viewportHeight = $(window).height();
 
 function animate() {
     d1.erase();
-	console.log(d1.slowing);
+	//console.log(d1.slowing);
 	if(d1.slowing){
+		d1.ax=-.5*(d1.dx / Math.abs(d1.dx));
 		if(Math.abs(d1.dx) < 1){
 			d1.slowing = false;
 			d1.dx = 0;
@@ -457,6 +456,8 @@ function animate() {
 			}else{
 				d1.ax=FALLINGACCEL;
 			}
+		}else{
+			d1.ax=0;
 		}
 	}
 	if(wasDownA){
@@ -466,6 +467,8 @@ function animate() {
 			}else{
 				d1.ax=-1*FALLINGACCEL;
 			}
+		}else{
+			d1.ax = 0;
 		}
 	}
     // the next 3 if statements deal with collision to objects on screen, still flawed
