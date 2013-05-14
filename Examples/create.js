@@ -36,16 +36,17 @@ function create_canvas(){
 }
 
 //CONSTANTS
-const SPEEDLIMIT = 10;
-const WALKACCEL = .7;
-const FALLINGACCEL = .35;
-const JUMPLIMIT = 10;
+const SPEEDLIMIT = 10; //max horizontal speed
+const WALKACCEL = .7; //left and right accel
+const FALLINGACCEL = .35; //left and right accel while falling
+const JUMPLIMIT = 10; //number of loops of jump
 //VARIABLES
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
 var wasDownW = false;
 var wasDownA = false;
 var wasDownD = false;
+var wasDownSh = false;
 
 function set_canvas(){
     //set for every on resize
@@ -54,7 +55,6 @@ function set_canvas(){
         canvas.width = $(document).width();
     if (canvas.height < $(document).height())
         canvas.height = $(document).height();
-    //console.log("set_canvas");
 }
 
 set_canvas()
@@ -308,7 +308,7 @@ disc.prototype.collideR = function(){
 disc.prototype.collideL = function(){
     var listofBounds = get_bounds();
     for(var i = 0; i<listofBounds.length;i++){
-		if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h)){
+		if ((this.y >= listofBounds[i].y) && (this.y + this.h-19 <= listofBounds[i].y + listofBounds[i].h)){
 			if((this.x + this.dx <= listofBounds[i].x + listofBounds[i].w) && (this.x >= listofBounds[i].x + listofBounds[i].w)){
 				return true;
 			}else if((this.x + this.dx <= listofBounds[i].x) && (this.x >= listofBounds[i].x)){
@@ -327,6 +327,14 @@ disc.prototype.collideL = function(){
 $(document).keydown(
     function(e) {
 		console.log(e.keyCode);
+		if (e.keyCode == 16){
+			if(!wasDownSh){
+				if(d1.dx<0){
+					d1.dx = 0;
+				}
+			}
+			wasDownSh=true;
+		}
 		if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR()){
 			if(!wasDownD){
 				if(d1.dx<0){
@@ -335,8 +343,6 @@ $(document).keydown(
 			}
 			wasDownD=true;
 		}
-		
-		
 		if (e.keyCode == 65 && d1.x !=0 && !d1.collideL()){
 			if(!wasDownA){
 				if(d1.dx>0){
@@ -345,7 +351,6 @@ $(document).keydown(
 			}
 			wasDownA=true;
 		}
-		
 		if (e.keyCode == 87){
 			if(!wasDownW){
 				if(d1.canJump){
@@ -357,7 +362,7 @@ $(document).keydown(
 		}
 		if (e.keyCode == 83){
 			if (d1.dy == 0 && d1.collideUn()){
-				d1.dy = d1.h +1;
+				d1.dy = d1.h + 2;
 				d1.falling = true;
 			}
 		}
@@ -370,6 +375,10 @@ $(document).keydown(
 
 $(document).keyup(
     function(e) {
+		if(e.keyCode == 16){
+			wasDownSh=false;
+			d1.canJump = false;
+		}
 		if(e.keyCode == 68){
 			wasDownD=false;
 			d1.slowing=true;
@@ -403,11 +412,13 @@ function animate() {
 		}
 	}
 
-
+	//newtonian physics
     d1.dx = d1.dx + d1.ax;
     d1.x = d1.x + d1.dx;
     d1.dy = d1.dy + d1.ay;
     d1.y = d1.y + d1.dy;
+	
+	//window edge detection
     if (d1.x + d1.dx >= canvas.width && d1.dx > 0){
 		d1.dx = 0;
 		d1.ax = 0;
@@ -426,14 +437,15 @@ function animate() {
 		d1.canJump=true;
     }
     if ((d1.x <= 0) || d1.x >= canvas.width) {
-		d1.dx = 0 - d1.dx
+		d1.dx = 0 - d1.dx;
     }
     if (d1.y >= canvas.height) {
-		d1.dy = 0
+		d1.dy = 0;
 		d1.jump=0;
 		d1.canJump=true;
     }
 	
+	//button states
 	if(wasDownW){
 		if(d1.jump<JUMPLIMIT){
 			d1.dy=-15;
@@ -443,7 +455,7 @@ function animate() {
 		}
 	}
 	if(wasDownD){
-		if(d1.dx<SPEEDLIMIT){
+		if(d1.dx<SPEEDLIMIT && !d1.sliding){
 			if(!d1.falling){
 				d1.ax=WALKACCEL;
 			}else{
@@ -454,7 +466,7 @@ function animate() {
 		}
 	}
 	if(wasDownA){
-		if(d1.dx>-1*SPEEDLIMIT){
+		if(d1.dx>-1*SPEEDLIMIT && !d1.sliding){
 			if(!d1.falling){
 				d1.ax=-1*WALKACCEL;
 			}else{
@@ -464,16 +476,34 @@ function animate() {
 			d1.ax = 0;
 		}
 	}
+	/*if(wasDownSh){
+		if(d1.collideL()){
+			if(d1.dy<=0){
+				d1.dy = -.1;
+			}
+			d1.dx=0;
+			d1.sliding=true;
+		}
+		if(d1.collideR()){
+			if(d1.dy<=0){
+				d1.dy = -.1;
+			}
+			d1.dx=0;
+			d1.sliding=true;
+		}
+	}
+	*/
     // the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
 		if(d1.collideUn()){
 			d1.falling = false;
 			d1.jump=0;
 			d1.canJump=true;
+			d1.sliding=false;
 			d1.dy = 0;
 			d1.ay = 0;
 		}
-		}
+	}
 		/*if (d1.dx < 0){
 		if (d1.collideL()){
 			d1.slowing = false;
@@ -489,26 +519,30 @@ function animate() {
 		}
 		}
 		*/
-		if (!d1.collideUn()){
-			d1.falling = true;
-			if(d1.y<canvas.height-d1.h){
-				d1.canJump=false;
-			}
-			d1.ay = 1;
-		}else{
-			if (d1.dy <= 0){
-				d1.dy = d1.collideUn() + d1.h;
-				d1.ay = 0;
-				d1.dy = 0;
-				d1.falling = false;
-				d1.jump=0;
-				d1.canJump=true;
-			}
+		
+	if (!d1.collideUn()){
+		d1.falling = true;
+		if(d1.y<canvas.height-d1.h){
+			d1.canJump=false;
 		}
+		d1.ay = 1;
+	}else{
+		if (d1.dy <= 0){
+			d1.dy = d1.collideUn() + d1.h;
+			d1.ay = 0;
+			d1.dy = 0;
+			d1.falling = false;
+			d1.jump=0;
+			d1.canJump=true;
+			d1.sliding=false;
+		}
+	}
+	
     d1.draw();
 	//$(window).scrollTop(d1.y);
 	//$(window).scrollLeft(d1.x);
     draw_bounds();
+	console.log(d1.sliding);
 }
 
 
