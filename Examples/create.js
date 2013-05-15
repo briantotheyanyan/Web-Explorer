@@ -119,9 +119,10 @@ function getLoc(obj){
 function generate_bounds(){
     
     //tag types that are completely ignored
-    var ignored = ["SCRIPT",
-		   "DOCTYPE!"
-		  ];
+    var ignored = [	"SCRIPT",
+					"DOCTYPE!",
+					"DIV"
+				  ];
     
     
     
@@ -168,13 +169,12 @@ function generate_bounds(){
 	}
 
 	var tag = $(all[i]).prop("tagName");
-	//console.log(tag);
 	var tagcount = ($.inArray(tag,ignored));
-	//console.log(tagcount);
 
-	if ( elementID != "c" && tagcount == -1)
+	if ( elementID != "c" 
+		&& elementID != "ruler"
+		&& tagcount == -1)
 	{
-	    //console.log(all[i]);
 
 	    if(tag == "P")
 	    {
