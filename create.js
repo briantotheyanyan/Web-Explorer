@@ -16,8 +16,7 @@ var zoom=(function(){var level=1;var mouseX=1,mouseY=1;var panEngageTimeout=-1,p
 ////////////////////////////
 
 
-function create_canvas()
-{
+function create_canvas(){
     //generate a canvas that has the dimensions of the window
     //this is what will overlay the image of the background
     
@@ -36,20 +35,31 @@ function create_canvas()
     return ctx;
 }
 
+//CONSTANTS
+const SPEEDLIMIT = 10; //max horizontal speed
+const WALKACCEL = .7; //left and right accel
+const FALLINGACCEL = .35; //left and right accel while falling
+const JUMPLIMIT = 10; //number of loops of jump
 //VARIABLES
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
+var wasDownW = false;
+var wasDownA = false;
+var wasDownD = false;
+var wasDownSh = false;
+
+
 var current_link = "";
 
 function set_canvas()
 {
+
     //set for every on resize
     canvas = document.getElementById("c");
     if (canvas.width < $(document).width())
         canvas.width = $(document).width();
     if (canvas.height < $(document).height())
         canvas.height = $(document).height();
-    //console.log("set_canvas");
 }
 
 set_canvas()
@@ -57,8 +67,7 @@ set_canvas()
 ////////////////////////////
 // READ HTML //////////////
 ///////////////////////////
-function create_ruler()
-{
+function create_ruler(){
     var ruler = document.createElement('span');
     ruler.id = "ruler";
     ruler.style.cssText = "visibility:hidden;white-space:nowrap;";
@@ -68,8 +77,7 @@ function create_ruler()
 
 create_ruler();
 
-function get_text_width(obj)
-{
+function get_text_width(obj){
     //needs to check for fontsizes in classes
     //also note check for visivbility
     var text = $(obj)[0].innerHTML;
@@ -83,8 +91,7 @@ function get_text_width(obj)
 }
 
 
-function do_padding()
-{
+function do_padding(){
     var margin = $(document)[0].body.style.margin;
     console.log(margin);
     if(margin == "")
@@ -95,8 +102,7 @@ function do_padding()
 
 do_padding();
 
-function getLoc(obj)
-{
+function getLoc(obj){
     // Need an algorithim to go through number of characters
     //(including br's) and account for un-fixed width for p's
     obj = "#" + obj;
@@ -110,8 +116,7 @@ function getLoc(obj)
 
 
 
-function generate_bounds()
-{
+function generate_bounds(){
     
     //tag types that are completely ignored
     var ignored = ["SCRIPT",
@@ -189,21 +194,17 @@ function generate_bounds()
 		bounds.push(it);
 	}
 
-function go_link(){
-
-    window.location.href = current_link;
+    }
 }
 
 
 /////////////////////////
 // BOUNDS ///////////////
 /////////////////////////
-
 var bound = function(x,y,h,w,link,c,ctx)
 {
     this.link = link;
     console.log(this.link);
-   //bounds represent physical platform, for COLLISION
     this.x=x;
     this.y=y;
     this.h=h;
@@ -241,12 +242,16 @@ function get_bounds(){
     
 }
 
+function go_link(){
+
+    window.location.href = current_link;
+}
 
 //////////////////////////
 // DISC CHARACTER //////
 /////////////////////////
 
-var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
+var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump){
     this.x=x;
     this.y=y;
     this.h=h;
@@ -259,14 +264,12 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,jumpLevel,c1,ctx){
     this.slowing=slowing;
     this.c1=c1;
     this.ctx=ctx;
-    this.jumpLevel = jumpLevel;
+	this.jumpCount = jumpCount;
+	this.canJump = canJump;
 }
 
 ///////////////////////
 // INSTANTIATE DISC HERE
-//
-//
-//
 ///////////////////////
 
 
@@ -280,7 +283,8 @@ disc.prototype.draw = function() {
 ////////////////
 
 disc.prototype.erase = function() {
-    this.ctx.clearRect(this.x-5,this.y-19,this.w+9,this.h+19);
+    //this.ctx.clearRect(this.x-5,this.y-19,this.w+9,this.h+19);
+	this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 disc.prototype.collideUn = function(){
@@ -288,25 +292,20 @@ disc.prototype.collideUn = function(){
     var listofBounds = get_bounds();
     
     for(var i = 0; i < listofBounds.length; i++){
-	if((this.y + this.h + this.dy >= listofBounds[i].y) && this.y < listofBounds[i].y)
-	{
+	if((this.y + this.h + this.dy >= listofBounds[i].y) && this.y < listofBounds[i].y){
 	    if ((this.x >= listofBounds[i].x) && (this.x <= listofBounds[i].x + listofBounds[i].w)){
-		return listofBounds[i].y;
+			return listofBounds[i].y;
 	    }
 	    if ((this.x + this.w >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w)){
-		link = listofBounds[i].link;
-		return listofBounds[i].y;
+			return listofBounds[i].y;
 	    }
 	}
-	if((this.y + this.h + this.dy >= listofBounds[i].y + listofBounds[i].h) && (this.y < listofBounds[i].y + listofBounds[i].h))
-	{
+	if((this.y + this.h + this.dy >= listofBounds[i].y + listofBounds[i].h) && (this.y < listofBounds[i].y + listofBounds[i].h)){
 	    if ((this.x >= listofBounds[i].x) && (this.x <= listofBounds[i].x + listofBounds[i].w)){
-		link = listofBounds[i].link;
-		return listofBounds[i].y+listofBounds[i].h;
+			return listofBounds[i].y+listofBounds[i].h;
 	    }
 	    if ((this.x + this.w >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w)){
-		link = listofBounds[i].link;
-		return listofBounds[i].y+listofBounds[i].h;
+			return listofBounds[i].y+listofBounds[i].h;
 	    }
 	    
 	}
@@ -315,46 +314,41 @@ disc.prototype.collideUn = function(){
 }
 
 
+
 disc.prototype.collideR = function(){
     var listofBounds = get_bounds();
-    for(var i = 0;i<listofBounds.length;i++)
-    {
-	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h))
-	{
-	    if((this.x + this.w + this.dx >= listofBounds[i].x)&&(this.x + this.w <= listofBounds[i].x))
-	    {
-		link = listofBounds[i].link;
-		return true;
-	    }
-	    else if(((this.x + this.w + this.dx) >= (listofBounds[i].x + listofBounds[i].w)) && ((this.x + this.w) <= (listofBounds[i].x + listofBounds[i].w))){
-		link = listofBounds[i].link;
-		return true;
-		
-	    }
-	}
-    }
-    return false;
+
+
+    for(var i = 0;i<listofBounds.length;i++){
+		if ((this.y >= listofBounds[i].y) &&
+		    (this.y + this.h <= listofBounds[i].y + listofBounds[i].h)){
+		if((this.x + this.w + this.dx >= listofBounds[i].x) &&
+		   (this.x + this.w <= listofBounds[i].x)){
+			return true;
+		}else if(((this.x + this.w + this.dx) >= (listofBounds[i].x + listofBounds[i].w)) && 
+			 ((this.x + this.w) <= (listofBounds[i].x + listofBounds[i].w))){
+			return true;
+		}}}
+
+	return false;
 }
+
 disc.prototype.collideL = function(){
     var listofBounds = get_bounds();
-    for(var i = 0; i<listofBounds.length;i++)
-    {
-	if ((this.y >= listofBounds[i].y) && (this.y + this.h <= listofBounds[i].y + listofBounds[i].h))
-	{
-	    if((this.x + this.dx <= listofBounds[i].x + listofBounds[i].w) && (this.x >= listofBounds[i].x + listofBounds[i].w))
-	    {
-		link = listofBounds[i].link;
-		return true;
-	    }
-	    else if((this.x + this.dx <= listofBounds[i].x) && (this.x >= listofBounds[i].x))
-	    {
-		link = listofBounds[i].link;
-		return true;
-	    }
-	}
-    }
+
+    for(var i = 0; i<listofBounds.length;i++){
+		if ((this.y >= listofBounds[i].y) && 
+		    (this.y + this.h-19 <= listofBounds[i].y + listofBounds[i].h)){
+		if((this.x + this.dx <= listofBounds[i].x + listofBounds[i].w) && 
+		    (this.x >= listofBounds[i].x + listofBounds[i].w)){
+			return true;
+		}else if((this.x + this.dx <= listofBounds[i].x) &&
+			 (this.x >= listofBounds[i].x)){
+			return true;
+		}}}
     return false;
 }
+
 
 ///////////////////////
 ///MOVEMENT ///////////
@@ -364,64 +358,53 @@ disc.prototype.collideL = function(){
 $(document).keydown(
     function(e) {
 	console.log(e.keyCode);
-	if (e.keyCode == 68 && d1.x != canvas.width-d1.w && !d1.collideR())
-	{
-	    if(d1.dx<5)
-	    {
-		if(!d1.falling)
-		{
-		    d1.ax=2;
-		}
-		else
-		{
-		    d1.ax=1;
-		}
-	    }
-	}
-	if (e.keyCode == 65 && d1.x !=0 && !d1.collideL())
-	{
-	    if(d1.dx>-5){
-		if(!d1.falling)
-		{
-		    d1.ax=-2;
-		}else{
-		    d1.ax=-1;
-		}
-	    }
-	}
-	if (e.keyCode == 32)
-	{
-	    if (current_link != null)
-	    {
-		go_link();
-	    }
-	}
+	if (e.keyCode == 16){
+	if(!wasDownSh){
+	if(d1.dx<0){
+	    d1.dx = 0;
+	}}
 
-	if (e.keyCode == 87)
-	{
-	    //if (d1.jumpLevel == 0 && d1.dy == 0){
-		d1.dy = -20;
-		//d1.jumpLevel = d1.jumpLevel + 1;
-	   // }
-	   // else if (d1.jumpLevel < 5 && d1.dy <= 0)
-	  //  {
-		//d1.dy = d1.dy - 5;
-		//d1.jumpLevel = d1.jumpLevel + 1;
-	   // }
-	    //d1.dy = -25;
-	    //d1.falling=true;
-	    
+	wasDownSh=true;
+
 	}
-	if (e.keyCode == 83)
-	{
-	    if (d1.dy == 0 && d1.collideUn())
-	    {
-		d1.dy = d1.h +1;
-		d1.falling = true;
-	    }
+	
+
+	if (e.keyCode == 68 
+	    && d1.x != canvas.width-d1.w 
+	    && !d1.collideR()){
+	if(!wasDownD){
+	if(d1.dx<0){
+	    d1.dx = 0;
+	}}
+
+	wasDownD=true;
+
 	}
-    }
-);
+	
+	if (e.keyCode == 65 
+	    && d1.x !=0 
+	    && !d1.collideL()){
+	if(!wasDownA){
+	if(d1.dx>0){
+	    d1.dx = 0;
+		
+	}}
+	    wasDownA=true;
+	}
+	
+	if (e.keyCode == 87){
+		if(!wasDownW){
+		if(d1.canJump){
+		    d1.dy=-1;
+		    wasDownW=true;
+		}}}
+
+	if (e.keyCode == 83){
+		if (d1.dy == 0 
+		    && d1.collideUn()){		    
+		    d1.dy = d1.h + 2;
+		    d1.falling = true;
+			}}});
 
 
 
@@ -429,95 +412,184 @@ $(document).keydown(
 
 $(document).keyup(
     function(e) {
-	if (e.keyCode == 68 || e.keyCode == 65){
-	    d1.ax=-1*(d1.ax / Math.abs(d1.ax));
-	    d1.slowing=true;
-        }
-	if (e.keyCode == 87){
-	    console.log('keyup');
-	    d1.jumpLevel = 0;
+	if(e.keyCode == 16){
+	    wasDownSh=false;
+	    d1.canJump = false;
 	}
-    }
-);
+	if(e.keyCode == 68){
+	    wasDownD=false;
+	    d1.slowing=true;
+	}
+	if(e.keyCode == 65){
+	    wasDownA=false;
+	    d1.slowing=true;
+	}
+	if(e.keyCode == 87){
+	    wasDownW=false;
+	    d1.canJump = false;
+	}});
 
 ////////////////
 // ANIMATE ////
 ///////////////
+
+
 var viewportWidth = $(window).width(),
 viewportHeight = $(window).height();
 
 function animate() {
     d1.erase();
-    if(d1.slowing && d1.dx == 0){
-	d1.slowing = false;
-	d1.ax = 0;
-    }
+	//ground friction
+	if(d1.slowing){
+		d1.ax=-.5*(d1.dx / Math.abs(d1.dx));
+		if(Math.abs(d1.dx) < 1){
+			d1.slowing = false;
+			d1.dx = 0;
+			d1.ax = 0;
+		}
+	}
+
+	//newtonian physics
     d1.dx = d1.dx + d1.ax;
     d1.x = d1.x + d1.dx;
     d1.dy = d1.dy + d1.ay;
     d1.y = d1.y + d1.dy;
-
+	
+	//window edge detection
     if (d1.x + d1.dx >= canvas.width && d1.dx > 0){
-	d1.dx = 0;
-	d1.ax = 0;
-	d1.x = canvas.width-d1.w;
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = canvas.width-d1.w;
     }
     if (d1.x + d1.dx <= 0 && d1.dx < 0){
-	d1.dx = 0;
-	d1.ax = 0;
-	d1.x = 0;
+		d1.dx = 0;
+		d1.ax = 0;
+		d1.x = 0;
     }
     if (d1.y >= canvas.height-d1.h && d1.dy > 0){
-	d1.dy = 0;
-	d1.y = canvas.height-d1.h;
-	d1.falling=false;
+		d1.dy = 0;
+		d1.y = canvas.height-d1.h;
+		d1.falling=false;
+		d1.jump=0;
+		d1.canJump=true;
     }
     if ((d1.x <= 0) || d1.x >= canvas.width) {
-	d1.dx = 0 - d1.dx
+		d1.dx = 0 - d1.dx;
     }
     if (d1.y >= canvas.height) {
-	d1.dy = 0
+		d1.dy = 0;
+		d1.jump=0;
+		d1.canJump=true;
     }
+	
+	//button states
+	if(wasDownW){
+	if(d1.jump<JUMPLIMIT){	
+	    d1.dy=-15;
+	    d1.jump = d1.jump + 1;
+	}
+	
+	else{
+	    d1.canJump = false;
+	}}
+	
+        
+        if(wasDownD){
+	if(d1.dx<SPEEDLIMIT && !d1.sliding){
+	    if(!d1.falling){
+		d1.ax=WALKACCEL;
+		}
+	    else{
+		d1.ax=FALLINGACCEL;
+		}
+	}
+	
+	else{
+		d1.ax=0;
+	}}
+	
 
+        if(wasDownA){
+	if(d1.dx>-1*SPEEDLIMIT && !d1.sliding){
+	    if(!d1.falling){
+		d1.ax=-1*WALKACCEL;
+		}
+	    else{
+		d1.ax=-1*FALLINGACCEL;
+		}
+		
+	}
+	
+	else{
+		d1.ax = 0;
+	}}
+	/*if(wasDownSh){
+		if(d1.collideL()){
+			if(d1.dy<=0){
+				d1.dy = -.1;
+			}
+			d1.dx=0;
+			d1.sliding=true;
+		}
+		if(d1.collideR()){
+			if(d1.dy<=0){
+				d1.dy = -.1;
+			}
+			d1.dx=0;
+			d1.sliding=true;
+		}
+	}
+	*/
     // the next 3 if statements deal with collision to objects on screen, still flawed
     if (d1.falling && d1.dy >= 0){
-	if(d1.collideUn()){
-	    d1.falling = false;
-	    d1.dy = 0;
-	    d1.ay = 0;
+		if(d1.collideUn()){
+			d1.falling = false;
+			d1.jump=0;
+			d1.canJump=true;
+			d1.sliding=false;
+			d1.dy = 0;
+			d1.ay = 0;
+		}
 	}
-    }
-    /*if (d1.dx < 0){
-	if (d1.collideL()){
-	    d1.slowing = false;
-	    d1.dx = 0;
-	    d1.ax = 0;
+		/*if (d1.dx < 0){
+		if (d1.collideL()){
+			d1.slowing = false;
+			d1.dx = 0;
+			d1.ax = 0;
+		}
+		}
+		if (d1.dx > 0){
+		if (d1.collideR()){
+			d1.slowing = false;
+			d1.dx = 0;
+			d1.ax = 0;
+		}
+		}
+		*/
+		
+	if (!d1.collideUn()){
+		d1.falling = true;
+		if(d1.y<canvas.height-d1.h){
+			d1.canJump=false;
+		}
+		d1.ay = 1;
+	}else{
+		if (d1.dy <= 0){
+			d1.dy = d1.collideUn() + d1.h;
+			d1.ay = 0;
+			d1.dy = 0;
+			d1.falling = false;
+			d1.jump=0;
+			d1.canJump=true;
+			d1.sliding=false;
+		}
 	}
-    }
-    if (d1.dx > 0){
-	if (d1.collideR()){
-	    d1.slowing = false;
-	    d1.dx = 0;
-	    d1.ax = 0;
-	}
-    }
-    */
-    if (!d1.collideUn()){
-	d1.falling = true;
-	d1.ay = 1;
-    }
-    else{
-	if (d1.dy <= 0){
-	    d1.dy = d1.collideUn() + d1.h;
-	    d1.ay = 0;
-	    d1.dy = 0;
-	    d1.falling = false;
-	}
-    }
+	
     d1.draw();
- //  $(window).scrollTop((d1.y-500)*2);
- //   $(window).scrollLeft((d1.x-500)*2);
+	//$(window).scrollTop(d1.y);
+	//$(window).scrollLeft(d1.x);
     draw_bounds();
+	console.log(d1.sliding);
 }
 
 
@@ -525,9 +597,8 @@ function animate() {
 $(document).ready(
     function(){
 	generate_bounds();
-	draw_bounds();
-	d1 = new disc(0,300,1,1,0,0,0,5,true,false,0,"#000000", ctx);
-	//zoom.to({x:0, y:0, height:300 , width:300});
+	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true);
+	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
 	d1.draw();
 	setInterval(animate,20);
     }
