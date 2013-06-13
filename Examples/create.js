@@ -40,6 +40,7 @@ const SPEEDLIMIT = 10; //max horizontal speed
 const WALKACCEL = .7; //left and right accel
 const FALLINGACCEL = .35; //left and right accel while falling
 const JUMPLIMIT = 10; //number of loops of jump
+const WALKCYCLE = 50; //how many images are in the walk cycle
 //VARIABLES
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
@@ -251,7 +252,7 @@ function go_link(){
 // DISC CHARACTER //////
 /////////////////////////
 
-var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump){
+var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump,walkCount){
     this.x=x;
     this.y=y;
     this.h=h;
@@ -266,6 +267,7 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump
     this.ctx=ctx;
 	this.jumpCount = jumpCount;
 	this.canJump = canJump;
+	this.walkCount = walkCount;
 }
 
 ///////////////////////
@@ -275,7 +277,14 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump
 
 disc.prototype.draw = function() {
     this.ctx.fillStyle=this.c1;
-    this.ctx.fillRect(this.x-5,this.y-19,this.w+9,this.h+19);
+	if(d1.walkCounter == 0){
+		//draw the standing still image
+	}else if(wasDownD){
+	//switch case draw the walkCounter (from 1 to 50) for walking right
+	}else if(wasDownA){
+	//switch case draw the walkCounter (from 1 to 50) for walking left
+	}
+    //this.ctx.fillRect(this.x-5,this.y-19,this.w+9,this.h+19);
 }
 
 ////////////////
@@ -359,36 +368,35 @@ $(document).keydown(
     function(e) {
 	console.log(e.keyCode);
 	if (e.keyCode == 16){
-	if(!wasDownSh){
-	if(d1.dx<0){
-	    d1.dx = 0;
-	}}
-
-	wasDownSh=true;
-
+		if(!wasDownSh){
+			if(d1.dx<0){
+				d1.dx = 0;
+			}
+		}
+		wasDownSh=true;
 	}
 	
 
 	if (e.keyCode == 68 
 	    && d1.x != canvas.width-d1.w 
 	    && !d1.collideR()){
-	if(!wasDownD){
-	if(d1.dx<0){
-	    d1.dx = 0;
-	}}
-
-	wasDownD=true;
-
+		if(!wasDownD){
+			if(d1.dx<0){
+				d1.dx = 0;
+			}
+		}
+		wasDownD=true;
 	}
 	
 	if (e.keyCode == 65 
 	    && d1.x !=0 
 	    && !d1.collideL()){
-	if(!wasDownA){
-	if(d1.dx>0){
-	    d1.dx = 0;
+		if(!wasDownA){
+			if(d1.dx>0){
+				d1.dx = 0;
 		
-	}}
+			}
+		}
 	    wasDownA=true;
 	}
 	
@@ -406,10 +414,6 @@ $(document).keydown(
 		    d1.falling = true;
 			}}});
 
-
-
-
-
 $(document).keyup(
     function(e) {
 	if(e.keyCode == 16){
@@ -419,10 +423,12 @@ $(document).keyup(
 	if(e.keyCode == 68){
 	    wasDownD=false;
 	    d1.slowing=true;
+		d1.walkCounter = 0;
 	}
 	if(e.keyCode == 65){
 	    wasDownA=false;
 	    d1.slowing=true;
+		d1.walkCounter = 0;
 	}
 	if(e.keyCode == 87){
 	    wasDownW=false;
@@ -484,45 +490,49 @@ function animate() {
 	
 	//button states
 	if(wasDownW){
-	if(d1.jump<JUMPLIMIT){	
-	    d1.dy=-15;
-	    d1.jump = d1.jump + 1;
+		if(d1.jump<JUMPLIMIT){	
+			d1.dy=-15;
+			d1.jump = d1.jump + 1;
+		}else{
+			d1.canJump = false;
+		}
 	}
-	
-	else{
-	    d1.canJump = false;
-	}}
 	
         
-        if(wasDownD){
-	if(d1.dx<SPEEDLIMIT && !d1.sliding){
-	    if(!d1.falling){
-		d1.ax=WALKACCEL;
-		}
-	    else{
-		d1.ax=FALLINGACCEL;
-		}
-	}
-	
-	else{
-		d1.ax=0;
-	}}
-	
-
-        if(wasDownA){
-	if(d1.dx>-1*SPEEDLIMIT && !d1.sliding){
-	    if(!d1.falling){
-		d1.ax=-1*WALKACCEL;
-		}
-	    else{
-		d1.ax=-1*FALLINGACCEL;
+	if(wasDownD){
+		if(d1.walkCounter = WALKCYCLE){
+			d1.walkCounter = d1.walkCounter + 1;
+		}else{
+			d1.walkCounter = 1;
 		}
 		
+		if(d1.dx<SPEEDLIMIT && !d1.sliding){
+			if(!d1.falling){
+			d1.ax=WALKACCEL;
+			}else{
+			d1.ax=FALLINGACCEL;
+			}
+		}else{
+			d1.ax=0;
+		}
 	}
 	
-	else{
-		d1.ax = 0;
-	}}
+	if(wasDownA){
+		if(d1.walkCounter > WALKCYCLE){
+			d1.walkCounter = d1.walkCounter + 1;
+		}else{
+			d1.walkCounter = 1;
+		}
+		if(d1.dx>-1*SPEEDLIMIT && !d1.sliding){
+			if(!d1.falling){
+				d1.ax=-1*WALKACCEL;
+			}else{
+				d1.ax=-1*FALLINGACCEL;
+			}
+		}else{
+			d1.ax = 0;
+		}
+	}
 	/*if(wasDownSh){
 		if(d1.collideL()){
 			if(d1.dy<=0){
@@ -597,7 +607,7 @@ function animate() {
 $(document).ready(
     function(){
 	generate_bounds();
-	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true);
+	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0);
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
 	d1.draw();
 	setInterval(animate,20);
