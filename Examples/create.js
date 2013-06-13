@@ -252,7 +252,7 @@ function go_link(){
 // DISC CHARACTER //////
 /////////////////////////
 
-var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump,walkCount){
+var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump,walkCounter){
     this.x=x;
     this.y=y;
     this.h=h;
@@ -267,7 +267,7 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump
     this.ctx=ctx;
 	this.jumpCount = jumpCount;
 	this.canJump = canJump;
-	this.walkCount = walkCount;
+	this.walkCounter = walkCounter;
 }
 
 ///////////////////////
