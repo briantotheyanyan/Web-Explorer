@@ -40,7 +40,7 @@ const SPEEDLIMIT = 10; //max horizontal speed
 const WALKACCEL = .7; //left and right accel
 const FALLINGACCEL = .35; //left and right accel while falling
 const JUMPLIMIT = 10; //number of loops of jump
-const WALKCYCLE = 50; //how many images are in the walk cycle
+const WALKCYCLE = 14; //how many images are in the walk cycle
 //VARIABLES
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
