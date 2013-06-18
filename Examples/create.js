@@ -13,7 +13,6 @@ var zoom=(function(){var level=1;var mouseX=1,mouseY=1;var panEngageTimeout=-1,p
 // CANVAS //////////////////
 ////////////////////////////
 
-
 function create_canvas(){
     //generate a canvas that has the dimensions of the window
     //this is what will overlay the image of the background
@@ -600,10 +599,15 @@ function animate() {
 	console.log(d1.sliding);
 }
 
+function changeText(){
+    $('*').css('font-family','Comic Sans MS');
+}
+
 
 
 $(document).ready(
     function(){
+	changeText();
 	generate_bounds();
 	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0);
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
