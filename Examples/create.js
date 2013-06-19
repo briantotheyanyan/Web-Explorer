@@ -130,6 +130,7 @@ function generate_bounds(){
     
     for (var i = 0; i< all.length;i++)
     {
+	//used to deal with margins	
 	var midY = $(document).height()/2;
 	var midX = $(document).width()/2;
 	var offset = $(all[i]).offset();
@@ -153,7 +154,11 @@ function generate_bounds(){
 	    var y = offset.top;
 	}
 	
-	var height = $(all[i]).outerHeight();
+	var y = y - 10;
+	
+	var height = 10; 
+	
+	//$(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
 
         //SCALE IS ADJUSTABLE
@@ -277,7 +282,7 @@ disc.prototype.draw = function() {
     this.ctx.fillStyle=this.c1;
 	if(d1.walkCounter == 0){
 		//draw the standing still image
-		this.ctx.drawImage("../stickmangif/stickman[0]",this.x-5,this.y-19);
+		//this.ctx.drawImage("../stickmangif/stickman[0]",this.x-5,this.y-19);
 	}else if(wasDownD){
 	//switch case draw the walkCounter (from 1 to 50) for walking right
 		this.ctx.drawImage("../stickmangif/stickman["+walkCounter+"]",this.x-5,this.y-19);
