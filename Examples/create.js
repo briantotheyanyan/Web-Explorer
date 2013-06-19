@@ -277,10 +277,13 @@ disc.prototype.draw = function() {
     this.ctx.fillStyle=this.c1;
 	if(d1.walkCounter == 0){
 		//draw the standing still image
+		this.ctx.drawImage("../stickmangif/stickman[0]",this.x-5,this.y-19);
 	}else if(wasDownD){
 	//switch case draw the walkCounter (from 1 to 50) for walking right
+		this.ctx.drawImage("../stickmangif/stickman["+walkCounter+"]",this.x-5,this.y-19);
 	}else if(wasDownA){
 	//switch case draw the walkCounter (from 1 to 50) for walking left
+		this.ctx.drawImage("../stickmangif/stickman["+walkCounter+"]",this.x-5,this.y-19);
 	}
     this.ctx.fillRect(this.x-5,this.y-19,this.w+9,this.h+19);
 }
