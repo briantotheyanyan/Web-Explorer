@@ -33,12 +33,15 @@ function create_canvas(){
     return ctx;
 }
 
+
+
 //CONSTANTS
 const SPEEDLIMIT = 10; //max horizontal speed
 const WALKACCEL = .7; //left and right accel
 const FALLINGACCEL = .35; //left and right accel while falling
 const JUMPLIMIT = 10; //number of loops of jump
 const WALKCYCLE = 14; //how many images are in the walk cycle
+
 //VARIABLES
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
@@ -47,12 +50,15 @@ var wasDownA = false;
 var wasDownD = false;
 var wasDownSh = false;
 
+//IMGS
+var tile_img;
 
 var current_link = "";
 
 function set_canvas()
 {
-
+	tile_img = new Image();
+	tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
     //set for every on resize
     canvas = document.getElementById("c");
     if (canvas.width < $(document).width())
@@ -250,9 +256,11 @@ bound.prototype.draw = function()
 
 function draw_tile(x,y)
 {
-	console.log("tile_drew");
-	ctx.strokeStyle = "#FF0000";
-	ctx.strokeRect(x,y,10,10);
+//	console.log("tile_drew");
+	//ctx.strokeStyle = "#FF0000";
+	//ctx.strokeRect(x,y,10,10);
+	this.ctx.drawImage(tile_img,x,y);
+
 }
 
 
@@ -268,7 +276,7 @@ function draw_bounds(){
 				
 		for(var j = 0; j < b.num_tiles ; j++)
 		{
-			console.log(b.x);
+	//		console.log(b.x);
 			draw_tile(b.x + (j*10), b.y);
 		}
 	}
