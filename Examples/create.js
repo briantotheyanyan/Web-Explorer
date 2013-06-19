@@ -207,6 +207,17 @@ function generate_bounds(){
 /////////////////////////
 var bound = function(x,y,h,w,link,c,ctx)
 {
+	
+	//check length of last tile
+	if (w % 10 != 0) var end_tile_length = w%10;
+	else var end_tile_length = 0;
+	
+	//num_tiles includes the extra tile
+	var num_tiles = (w - end_tile_length)/10;
+	
+	this.num_tiles = num_tiles;
+	this.end_tile_length = end_tile_length;
+
     this.link = link;
     console.log(this.link);
     this.x=x;
@@ -220,10 +231,14 @@ var bound = function(x,y,h,w,link,c,ctx)
     }
 
     this.ctx =ctx;
-
+	console.log(this.num_tiles);
 }
 
-
+bound.prototype.get_num_tiles = function()
+{
+	var x = this.num_tiles;
+	console.log(x);
+}
 bound.prototype.draw = function()
 {
     this.ctx.strokeStyle = "#000000";
@@ -233,13 +248,31 @@ bound.prototype.draw = function()
     this.ctx.strokeRect(this.x,this.y,this.w,this.h);
 }
 
+function draw_tile(x,y)
+{
+	console.log("tile_drew");
+	ctx.strokeStyle = "#FF0000";
+	ctx.strokeRect(x,y,10,10);
+}
+
+
+
 function draw_bounds(){
     //draw black squares over all elements
     //mainly for testing
     for (var i = 0; i < bounds.length; i++)
-	bounds[i].draw();
+	{
+		//bounds[i].draw();
+		
+		var b = bounds[i];
+				
+		for(var j = 0; j < b.num_tiles ; j++)
+		{
+			console.log(b.x);
+			draw_tile(b.x + (j*10), b.y);
+		}
+	}
 }
-
 function get_bounds(){
     // returns an array of bounds for collision
     return bounds;
