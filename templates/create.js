@@ -283,33 +283,33 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump
 disc.prototype.draw = function() {
     this.ctx.fillStyle=this.c1;
 	if(d1.walkCounter == 0){
-		this.ctx.drawImage(charac,0,8*64,64,64,this.x-16,this.y-32,64,64);
+		this.ctx.drawImage(charac,0,8*64,64,64,this.x-32,this.y-64,64,64);
 	}else if(wasDownD){
 		d1.erase();
 		switch(d1.walkCounter){
 			case 1: case 2: case 3: case 4: case 5:
-				this.ctx.drawImage(charac,4*64,0,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(charac,4*64,0,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 6: case 7: case 8: case 9:case 10:
-				this.ctx.drawImage(charac,5*64,0,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(charac,5*64,0,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 11: case 12: case 13: case 14: case 15:
-				this.ctx.drawImage(charac,6*64,0,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(charac,6*64,0,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 16: case 17: case 18: case 19: case 20:
-				this.ctx.drawImage(charac,7*64,0,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(charac,7*64,0,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 21: case 22: case 23: case 24: case 25:
-				this.ctx.drawImage(charac,0*64,64,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(charac,0*64,64,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 26: case 27: case 28: case 29: case 30:
-				this.ctx.drawImage(charac,1*64,64,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(charac,1*64,64,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 31: case 32: case 33: case 34: case 35:
-				this.ctx.drawImage(charac,2*64,64,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(charac,2*64,64,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 36: case 37: case 38: case 39:case 40:
-				this.ctx.drawImage(charac,3*64,64,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(charac,3*64,64,64,64,this.x-32,this.y-64,64,64);
 				break;
 		}
 
@@ -317,28 +317,28 @@ disc.prototype.draw = function() {
 		d1.erase();
 		switch(d1.walkCounter){
 			case 1: case 2: case 3: case 4: case 5:
-				this.ctx.drawImage(rcharac,4*64,0,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(rcharac,4*64,0,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 6: case 7: case 8: case 9:case 10:
-				this.ctx.drawImage(rcharac,5*64,0,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(rcharac,5*64,0,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 11: case 12: case 13: case 14: case 15:
-				this.ctx.drawImage(rcharac,6*64,0,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(rcharac,6*64,0,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 16: case 17: case 18: case 19: case 20:
-				this.ctx.drawImage(rcharac,7*64,0,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(rcharac,7*64,0,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 21: case 22: case 23: case 24: case 25:
-				this.ctx.drawImage(rcharac,0*64,64,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(rcharac,0*64,64,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 26: case 27: case 28: case 29: case 30:
-				this.ctx.drawImage(rcharac,1*64,64,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(rcharac,1*64,64,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 31: case 32: case 33: case 34: case 35:
-				this.ctx.drawImage(rcharac,2*64,64,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(rcharac,2*64,64,64,64,this.x-32,this.y-64,64,64);
 				break;
 			case 36: case 37: case 38: case 39:case 40:
-				this.ctx.drawImage(rcharac,3*64,64,64,64,this.x-16,this.y-32,64,64);
+				this.ctx.drawImage(rcharac,3*64,64,64,64,this.x-32,this.y-64,64,64);
 				break;
 		}
 
