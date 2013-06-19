@@ -608,7 +608,7 @@ function changeText(){
 
 $(document).ready(
     function(){
-	changeText();
+	//changeText();
 	generate_bounds();
 	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0);
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
