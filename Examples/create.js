@@ -248,12 +248,19 @@ var bound = function(x,y,h,w,link,c,ctx)
 }
 var height = $(document).height();
 var width = $(document).width();
-console.log("HEIGHT"+height);
-console.log("WIDTH"+width);
+//console.log("HEIGHT"+height);
+//console.log("WIDTH"+width);
 
 var bottom = new bound(0,height,1,width,null,c,ctx);
 bounds.push(bottom);
 
+if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/CODE/Soft-Dev/NSYZ/Examples/Homepage.html")
+	{
+		var nsyz  = new bound(0,height-50,1,width,null,c,ctx);
+		console.log("NSYZ DETECTED");
+	
+		bounds.push(nsyz);
+	}
 function draw_tile(x,y)
 {
 //	console.log("DRAW");
