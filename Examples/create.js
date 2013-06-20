@@ -56,12 +56,16 @@ var wasDownSh = false;
 
 
 var current_link = "";
+
+
+
 var tile_img;
 
 function set_canvas()
 {
 	tile_img = new Image();
 	tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
+
     //set for every on resize
     canvas = document.getElementById("c");
     if (canvas.width < $(document).width())
@@ -70,7 +74,7 @@ function set_canvas()
         canvas.height = $(document).height();
 }
 
-set_canvas()
+set_canvas();
 
 ////////////////////////////
 // READ HTML //////////////
@@ -162,6 +166,7 @@ function generate_bounds(){
 	    var y = offset.top;
 	}
 
+
 	var y = y-4;
 	var height = 1;
 	
@@ -238,7 +243,12 @@ var bound = function(x,y,h,w,link,c,ctx)
     }
 
     this.ctx =ctx;
-	console.log(this.num_tiles);
+
+}
+function draw_tile(x,y)
+{
+	console.log("DRAW");
+	this.ctx.drawImage(tile_img,x,y);
 }
 
 function draw_bounds(){
@@ -254,18 +264,12 @@ function draw_bounds(){
 		}
 }
 			
-function draw_tile(x,y)
-{
-
-	this.ctx.drawImage(tile_img,x,y);
-}
 
 
-bound.prototype.get_num_tiles = function()
-{
-	var x = this.num_tiles;
-	console.log(x);
-}
+
+
+
+
 bound.prototype.draw = function()
 {
     this.ctx.strokeStyle = "#000000";
@@ -429,7 +433,8 @@ disc.prototype.draw = function() {
     //this.ctx.drawImage(charac, this.x-16, this.y-32, 32, 32);
 }
 
- ////////////////
+
+ /////////////
 //DISC COLLISION
 ////////////////
 
@@ -775,4 +780,3 @@ $(document).ready(
 	setInterval(animate,20);
     }
 );
-
