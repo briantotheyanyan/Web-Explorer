@@ -460,6 +460,7 @@ disc.prototype.collideUn = function(){
 		return listofBounds[i].y;
 	    }
 	    if ((this.x + this.w >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w)){
+		current_link = listofBounds[i].link;
 		return listofBounds[i].y;
 	    }
 	}
@@ -558,6 +559,14 @@ $(document).keydown(
 		    wasDownW=true;
 		}
 	    }
+	}
+	
+	if(e.keyCode == 122)
+	{
+		if (current_link != null)
+			{
+				go_link();
+			}
 	}
 
 	if (e.keyCode == 83){
