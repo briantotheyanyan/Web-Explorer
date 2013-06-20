@@ -257,11 +257,12 @@ bounds.push(bottom);
 
 if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/CODE/Soft-Dev/NSYZ/Examples/Homepage.html")
 	{
-		var nsyz  = new bound(0,height-50,1,width,null,c,ctx);
+		var nsyz  = new bound(0,height-47,1,width,null,c,ctx);
 		console.log("NSYZ DETECTED");
 	
 		bounds.push(nsyz);
 	}
+	
 function draw_tile(x,y)
 {
 //	console.log("DRAW");
