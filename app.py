@@ -19,11 +19,11 @@ def create():
 @app.route("/minecraftia.otf",methods=['GET','POST'])
 def motf():
     if request.method == "GET":
-        return render_template('minecraftia.otf',methods = ['GET','POST'])
+        return render_template('./minecraftia.otf',methods = ['GET','POST'])
 @app.route("/minecraftia.ttf",methods=['GET','POST'])
 def mttf():
     if request.method == "GET":
-        return render_template('minecraftia.ttf',methods = ['GET','POST'])
+        return render_template('./minecraftia.ttf',methods = ['GET','POST'])
 
 if __name__=="__main__":
     app.debug=True
