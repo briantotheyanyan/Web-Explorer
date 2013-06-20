@@ -93,11 +93,10 @@ function get_text_width(obj){
     //needs to check for fontsizes in classes
     //also note check for visivbility
     var text = $(obj)[0].innerHTML;
-    console.log(text);
     var ruler = $("#ruler")[0];
     ruler.innerHTML = text;
-    console.log(ruler);
-    console.log(ruler.offsetWidth);
+    //console.log(ruler);
+    //console.log(ruler.offsetWidth);
     return ruler.offsetWidth;
     
 }
@@ -105,7 +104,7 @@ function get_text_width(obj){
 
 function do_padding(){
     var margin = $(document)[0].body.style.margin;
-    console.log(margin);
+    //console.log(margin);
     if(margin == "")
 	$(document)[0].body.style.margin = "0px"
 
@@ -201,7 +200,7 @@ function generate_bounds(){
 	    var link = null;
 	    if(tag == "A")
 	    {
-		console.log(all[i]);
+		//console.log(all[i]);
 		link = all[i].href;
 	    }
 	    
@@ -231,7 +230,7 @@ var bound = function(x,y,h,w,link,c,ctx)
 	this.end_tile_length = end_tile_length;
 
     this.link = link;
-    console.log(this.link);
+   // console.log(this.link);
     this.x=x;
     this.y=y;
     this.h=h;
@@ -245,9 +244,17 @@ var bound = function(x,y,h,w,link,c,ctx)
     this.ctx =ctx;
 
 }
+var height = $(document).height();
+var width = $(document).width();
+console.log("HEIGHT"+height);
+console.log("WIDTH"+width);
+
+var bottom = new bound(0,height,1,width,null,c,ctx);
+bounds.push(bottom);
+
 function draw_tile(x,y)
 {
-	console.log("DRAW");
+//	console.log("DRAW");
 	this.ctx.drawImage(tile_img,x,y);
 }
 
@@ -322,7 +329,7 @@ var disc = function(x,y,h,w,dx,dy,ax,ay,falling,slowing,c1,ctx,jumpCount,canJump
 
 
 disc.prototype.draw = function() {
-    console.log(d1.dy);
+   // console.log(d1.dy);
     this.ctx.fillStyle=this.c1;
     if(wasDownW || d1.falling){
 	if(d1.dy<-14){
@@ -608,14 +615,14 @@ function animate() {
 	    d1.dx = 0;
 	    d1.dy = 5;
 	    d1.ay = 0
-	    console.log(d1.collideL());
+	 //   console.log(d1.collideL());
 	}
 	if (d1.collideR()){
 	    d1.x = d1.collideR();
 	    d1.dx = 0;
 	    d1.dy = 5
 	    d1.ay = 0
-	    console.log(d1.collideR());
+	    //console.log(d1.collideR());
 	}
     }
 
