@@ -53,6 +53,7 @@ var wasDownW = false;
 var wasDownA = false;
 var wasDownD = false;
 var wasDownSh = false;
+var togg = true;
 
 
 var current_link = "";
@@ -131,9 +132,9 @@ function generate_bounds(){
     
     //tag types that are completely ignored
     var ignored = [	"SCRIPT",
-			"DOCTYPE!",
-			"DIV"
-		  ];
+					"DOCTYPE!",
+					"DIV"
+				  ];
     
     
     
@@ -166,10 +167,9 @@ function generate_bounds(){
 	}
 
 
-	var y = y-4;
 	var height = 1;
 	
-	//var height = $(all[i]).outerHeight();
+	var lower_y = y + $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
 
         //SCALE IS ADJUSTABLE
@@ -205,8 +205,11 @@ function generate_bounds(){
 	    }
 	    
 	    var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,ctx);
+		var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,ctx);
 	    if ( !(it.w == 0 || it.h == 0))// If no dimensions, don't add to bounds
-		bounds.push(it);
+			bounds.push(it);
+		if ( !(ix.w == 0 || ix.h == 0))
+			bounds.push(ix);
 	}
 
     }
@@ -383,6 +386,9 @@ disc.prototype.draw = function() {
 	    }
 	}else if(wasDownD){
 	    d1.erase();
+		if(togg){
+			draw_bounds();
+		}
 	    switch(d1.walkCounter){
 	    case 1: case 2: case 3: case 4: case 5:
 		this.ctx.drawImage(charac,4*64,0,64,64,this.x-32,this.y-64,64,64);
@@ -412,6 +418,9 @@ disc.prototype.draw = function() {
 
 	}else if(wasDownA){
 	    d1.erase();
+		if(togg){
+			draw_bounds();
+		}
 	    switch(d1.walkCounter){
 	    case 1: case 2: case 3: case 4: case 5:
 		this.ctx.drawImage(rcharac,4*64,0,64,64,this.x-32,this.y-64,64,64);
@@ -534,7 +543,7 @@ disc.prototype.collideL = function(){
 
 $(document).keydown(
     function(e) {
-	//console.log(e.keyCode);
+	console.log(e.keyCode);
 	if (e.keyCode == 16){
 	    wasDownSh=true;
 	}
@@ -574,6 +583,13 @@ $(document).keydown(
 	    }
 	}
 	
+	if (e.keyCode == 81){
+	    if(togg){
+			togg=false;
+	    }else{
+			togg=true
+		}
+	}
 	if(e.keyCode == 90)
 	{
 		console.log("ZUOOO");
@@ -623,6 +639,9 @@ viewportHeight = $(window).height();
 
 function animate() {
     d1.erase();
+	if(togg){
+		draw_bounds();
+	}
     //ground friction
     if(d1.slowing){
 	d1.ax=-.5*(d1.dx / Math.abs(d1.dx));
@@ -791,7 +810,6 @@ function animate() {
     d1.draw();
     //$(window).scrollTop(d1.y);
     //$(window).scrollLeft(d1.x);
-    draw_bounds();
 }
 
 function changeText(){
