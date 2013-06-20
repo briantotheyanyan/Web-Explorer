@@ -131,9 +131,9 @@ function generate_bounds(){
     
     //tag types that are completely ignored
     var ignored = [	"SCRIPT",
-			"DOCTYPE!",
-			"DIV"
-		  ];
+					"DOCTYPE!",
+					"DIV"
+				  ];
     
     
     
@@ -166,10 +166,9 @@ function generate_bounds(){
 	}
 
 
-	var y = y-4;
 	var height = 1;
 	
-	//var height = $(all[i]).outerHeight();
+	var lower_y = y + $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
 
         //SCALE IS ADJUSTABLE
@@ -205,8 +204,11 @@ function generate_bounds(){
 	    }
 	    
 	    var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,ctx);
+		var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,ctx);
 	    if ( !(it.w == 0 || it.h == 0))// If no dimensions, don't add to bounds
-		bounds.push(it);
+			bounds.push(it);
+		if ( !(ix.w == 0 || ix.h == 0))
+			bounds.push(ix);
 	}
 
     }
