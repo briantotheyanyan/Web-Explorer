@@ -215,11 +215,11 @@ var bound = function(x,y,h,w,link,c,ctx)
 {
 	
 	//check length of last tile
-	if (w % 10 != 0) var end_tile_length = w%10;
+	if (w % 4 != 0) var end_tile_length = w%4;
 	else var end_tile_length = 0;
 	
 	//num_tiles includes the extra tile
-	var num_tiles = (w - end_tile_length)/10;
+	var num_tiles = (w - end_tile_length)/4;
 	
 	this.num_tiles = num_tiles;
 	this.end_tile_length = end_tile_length;
@@ -277,7 +277,7 @@ function draw_bounds(){
 		for(var j = 0; j < b.num_tiles ; j++)
 		{
 	//		console.log(b.x);
-			draw_tile(b.x + (j*10), b.y);
+			draw_tile(b.x + (j*4), b.y);
 		}
 	}
 }
