@@ -1,3 +1,4 @@
+
 // NSYZ
 // CREATE BOUNDS AND READ HTML PAGES
 //
@@ -57,8 +58,13 @@ var wasDownSh = false;
 var current_link = "";
 
 
+
+var tile_img;
+
 function set_canvas()
 {
+	tile_img = new Image();
+	tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
 
     //set for every on resize
     canvas = document.getElementById("c");
@@ -68,7 +74,7 @@ function set_canvas()
         canvas.height = $(document).height();
 }
 
-set_canvas()
+set_canvas();
 
 ////////////////////////////
 // READ HTML //////////////
@@ -159,8 +165,12 @@ function generate_bounds(){
 	    var x = offset.left;
 	    var y = offset.top;
 	}
+
+
+	var y = y-4;
+	var height = 1;
 	
-	var height = $(all[i]).outerHeight();
+	//var height = $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
 
         //SCALE IS ADJUSTABLE
@@ -209,6 +219,17 @@ function generate_bounds(){
 /////////////////////////
 var bound = function(x,y,h,w,link,c,ctx)
 {
+	
+	//check length of last tile
+	if (w % 4 != 0) var end_tile_length = w%4;
+	else var end_tile_length = 0;
+	
+	//num_tiles includes the extra tile
+	var num_tiles = (w - end_tile_length)/4;
+	
+	this.num_tiles = num_tiles;
+	this.end_tile_length = end_tile_length;
+
     this.link = link;
     console.log(this.link);
     this.x=x;
@@ -224,6 +245,29 @@ var bound = function(x,y,h,w,link,c,ctx)
     this.ctx =ctx;
 
 }
+function draw_tile(x,y)
+{
+	console.log("DRAW");
+	this.ctx.drawImage(tile_img,x,y);
+}
+
+function draw_bounds(){
+		for (var i = 0; i < bounds.length; i++)
+		{
+			var b = bounds[i];
+			
+			for (var j = 0; j <  b.num_tiles; j++)
+			{
+				draw_tile(b.x+(j*4),b.y);
+				
+			}
+		}
+}
+			
+
+
+
+
 
 
 bound.prototype.draw = function()
@@ -235,12 +279,8 @@ bound.prototype.draw = function()
     this.ctx.strokeRect(this.x,this.y,this.w,this.h);
 }
 
-function draw_bounds(){
-    //draw black squares over all elements
-    //mainly for testing
-    for (var i = 0; i < bounds.length; i++)
-	bounds[i].draw();
-}
+
+
 
 function get_bounds(){
     // returns an array of bounds for collision
@@ -393,7 +433,8 @@ disc.prototype.draw = function() {
     //this.ctx.drawImage(charac, this.x-16, this.y-32, 32, 32);
 }
 
-////////////////
+
+ /////////////
 //DISC COLLISION
 ////////////////
 
