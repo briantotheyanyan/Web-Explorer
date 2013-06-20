@@ -295,7 +295,8 @@ function get_bounds(){
     
 }
 
-function go_link(){
+function go_link()
+{
 
     window.location.href = current_link;
 }
@@ -457,6 +458,7 @@ disc.prototype.collideUn = function(){
     for(var i = 0; i < listofBounds.length; i++){
 	if((this.y + this.h + this.dy >= listofBounds[i].y) && this.y < listofBounds[i].y){
 	    if ((this.x >= listofBounds[i].x) && (this.x <= listofBounds[i].x + listofBounds[i].w)){
+		current_link = listofBounds[i].link;
 		return listofBounds[i].y;
 	    }
 	    if ((this.x + this.w >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w)){
@@ -466,10 +468,17 @@ disc.prototype.collideUn = function(){
 	}
 	if((this.y + this.h + this.dy >= listofBounds[i].y + listofBounds[i].h) && (this.y < listofBounds[i].y + listofBounds[i].h)){
 	    if ((this.x >= listofBounds[i].x) && (this.x <= listofBounds[i].x + listofBounds[i].w)){
+		
+		current_link = listofBounds[i].link;
 		return listofBounds[i].y+listofBounds[i].h;
+		
+			
 	    }
 	    if ((this.x + this.w >= listofBounds[i].x) && (this.x + this.w <= listofBounds[i].x + listofBounds[i].w)){
+		
+		current_link = listofBounds[i].link;
 		return listofBounds[i].y+listofBounds[i].h;
+	    
 	    }
 	    
 	}
@@ -561,8 +570,9 @@ $(document).keydown(
 	    }
 	}
 	
-	if(e.keyCode == 122)
+	if(e.keyCode == 90)
 	{
+		console.log("ZUOOO");
 		if (current_link != null)
 			{
 				go_link();
@@ -794,5 +804,6 @@ $(document).ready(
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
 	d1.draw();
 	setInterval(animate,20);
+    console.log(current_link);
     }
 );
