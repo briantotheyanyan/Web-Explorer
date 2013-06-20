@@ -255,19 +255,23 @@ bounds.push(bottom);
 function draw_tile(x,y)
 {
 //	console.log("DRAW");
-	this.ctx.drawImage(tile_img,x,y);
+//	this.ctx.drawImage(tile_img,x,y);
+
+
+
 }
 
 function draw_bounds(){
 		for (var i = 0; i < bounds.length; i++)
 		{
 			var b = bounds[i];
+			b.draw();
 			
-			for (var j = 0; j <  b.num_tiles; j++)
-			{
-				draw_tile(b.x+(j*4),b.y);
+			//for (var j = 0; j <  b.num_tiles; j++)
+			//{
+				//draw_tile(b.x+(j*4),b.y);
 				
-			}
+			//}
 		}
 }
 			
