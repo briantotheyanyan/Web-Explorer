@@ -66,7 +66,7 @@ function set_canvas()
 	tile_img = new Image();
 	tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
 
-    //set for every on resize
+    
     canvas = document.getElementById("c");
     if (canvas.width < $(document).width())
         canvas.width = $(document).width();
@@ -79,6 +79,8 @@ set_canvas();
 ////////////////////////////
 // READ HTML //////////////
 ///////////////////////////
+
+//create_ruler is used create a tool to measure the pixel length of strings
 function create_ruler(){
     var ruler = document.createElement('span');
     ruler.id = "ruler";
@@ -89,9 +91,12 @@ function create_ruler(){
 
 create_ruler();
 
+
+
+//returns the pixel length of the string in an object
+//ADD FONT TO RULER FOR PERCISE MEASUREMENT
 function get_text_width(obj){
-    //needs to check for fontsizes in classes
-    //also note check for visivbility
+ 
     var text = $(obj)[0].innerHTML;
     console.log(text);
     var ruler = $("#ruler")[0];
@@ -104,11 +109,14 @@ function get_text_width(obj){
 
 
 function do_padding(){
+    
     var margin = $(document)[0].body.style.margin;
-    console.log(margin);
+    
     if(margin == "")
-	$(document)[0].body.style.margin = "0px"
-
+		{
+		console.log("Padding Done");
+		$(document)[0].body.style.margin = "0px";
+		}
     
 }
 
@@ -127,27 +135,33 @@ function getLoc(obj){
 }
 
 
-
+//creates collison data for platforms based on position of key elements in HTML file 
 function generate_bounds(){
     
-    //tag types that are completely ignored
-    var ignored = [	"SCRIPT",
-			"DOCTYPE!",
-			"DIV"
-		  ];
+    
+    
+    //elements that will create extraneous bounds
+    var ignored = ["SCRIPT",
+				   "DOCTYPE!",
+				   "DIV" //DIV is temporary. need to consider css
+				  ];
     
     
     
-    //THIS IS USED TO READ HTML ELEMENTS AND CREATE BOUNDS . THEY ARE ADDED TO AN ARRAY
     var all = $("*",document.body);
+    
+    //the following code is an attempt adjust bound dimensions if the 
+    //element is visibly in a different position due to margin or scale 
     
     for (var i = 0; i< all.length;i++)
     {
+	//this is the adjustment for scale
 	var midY = $(document).height()/2;
 	var midX = $(document).width()/2;
 	var offset = $(all[i]).offset();
 	var margin = $(document)[0].body.style.margin;
 
+		
         if(margin != "0px"){
 	    var int_margin = parseInt(margin.substring(0,margin.length-2));
 	    console.log(int_margin);
