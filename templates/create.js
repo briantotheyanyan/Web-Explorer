@@ -17,10 +17,9 @@ var zoom=(function(){var level=1;var mouseX=1,mouseY=1;var panEngageTimeout=-1,p
 var charac;
 var rcharac;
 
-function create_canvas(){
-    //generate a canvas that has the dimensions of the window
-    //this is what will overlay the image of the background
-    
+//creates a canvas to overlap the webpage where the graphics gameplay will be displayed
+//sets up image source for our hero
+function create_canvas(){    
     var world = document.createElement('canvas');
     world.id = 'c';
     world.height = $(document).height();
@@ -31,13 +30,29 @@ function create_canvas(){
     
     charac = new Image();
     rcharac = new Image();
-
-    charac.src = "http://s16.postimg.org/458w6pmpx/platformer_sprites_pixelized.png"
-    rcharac.src = "http://s1.postimg.org/6yvevlev3/spritesheet.png"
+	
+    charac.src = "http://s20.postimg.org/94lrhr5yl/spritesheet.png"
+    rcharac.src = "http://s24.postimg.org/gh2n3z25h/spritesheetr.png"
     
     this.ctx = world.getContext("2d");
     this.bounds = new Array();
     return ctx;
+}
+
+function create_back_canvas(){
+	var world2 = document.createElement('canvas');
+    world2.id = 'b';
+    world2.height = $(document).height();
+    world2.width = $(document).width();
+    world2.style.cssText = "margin:0px;position:absolute;top:0;left:0;z-index:0;";
+    
+    document.body.appendChild(world2);
+	this.bctx = world2.getContext("2d");
+	return bctx;
+}
+
+function themeing(){
+	$('body').css('background-color', '#5c94fc')
 }
 
 //CONSTANTS
@@ -48,38 +63,47 @@ const JUMPLIMIT = 10; //number of loops of jump
 const WALKCYCLE = 40; //how many images are in the walk cycle
 //VARIABLES
 var ctx = create_canvas();
+var bctx = create_back_canvas();
+themeing();
+
 var canvas = document.getElementById("c");
+
+//used in detecting movement and frame in animation cycles
 var wasDownW = false;
 var wasDownA = false;
 var wasDownD = false;
 var wasDownSh = false;
-var togg = true;
+var togg = false;
 
-
+//this variable is what is used to transfer to another webpage
+// updates upon contact with different links
 var current_link = "";
 
 
-
+//set image of the tile to be displayed where bounds are
 var tile_img;
+tile_img = new Image();
+tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
 
-function set_canvas()
+
+//sets canvas to match window sizes
+function set_canvas(x)
 {
-	tile_img = new Image();
-	tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
-
-    //set for every on resize
-    canvas = document.getElementById("c");
+    canvas = document.getElementById(x);
     if (canvas.width < $(document).width())
         canvas.width = $(document).width();
     if (canvas.height < $(document).height())
         canvas.height = $(document).height();
 }
 
-set_canvas();
-
+set_canvas("b");
+set_canvas("c");
 ////////////////////////////
 // READ HTML //////////////
 ///////////////////////////
+
+//this is a tool to measure pixel length of strings
+//NOTE: if font/size isn't consistent adjust
 function create_ruler(){
     var ruler = document.createElement('span');
     ruler.id = "ruler";
@@ -90,136 +114,151 @@ function create_ruler(){
 
 create_ruler();
 
+//returns the pixel length of a HTML elements string
 function get_text_width(obj){
-    //needs to check for fontsizes in classes
-    //also note check for visivbility
+	
     var text = $(obj)[0].innerHTML;
     var ruler = $("#ruler")[0];
     ruler.innerHTML = text;
-    //console.log(ruler);
-    //console.log(ruler.offsetWidth);
     return ruler.offsetWidth;
     
 }
 
-
+//overrides default margin values that are used if none are manually added
 function do_padding(){
     var margin = $(document)[0].body.style.margin;
-    //console.log(margin);
     if(margin == "")
-	$(document)[0].body.style.margin = "0px"
-
+		$(document)[0].body.style.margin = "0px";
     
 }
 
 do_padding();
 
+//returns an array containing coordinates and dimensions of an object
+//NOTE: height isn't nessecary using current platform style but could have other uses
 function getLoc(obj){
-    // Need an algorithim to go through number of characters
-    //(including br's) and account for un-fixed width for p's
+    
     obj = "#" + obj;
-    var loc = new Array();
-    loc[0] = $(obj).position().left,
-    loc[1] = $(obj).position().top;
-    loc[2] = $(obj).height();
-    loc[3] = $(obj).width();
-    return loc;
+    var dims = new Array();
+    
+    dims[0] = $(obj).position().left,
+    dims[1] = $(obj).position().top;
+    dims[2] = $(obj).height();
+    dims[3] = $(obj).width();
+    return dims;
 }
 
+//elements of these tag types will be ignored
+var ignored_tags = ["SCRIPT",
+					"DOCTYPE!",
+					"IMG",
+					"DIV"//need to check visibility
+					];
 
+//elements with these id's will be ignored			
+var ignored_ids = [ "c",
+					"b",
+					"ruler"
+					];
 
+//generate collision data for bounds based on coordinates and dimensions of HTML elements
+//NOTE: needs more CSS reading
 function generate_bounds(){
     
-    //tag types that are completely ignored
-    var ignored = [	"SCRIPT",
-					"DOCTYPE!",
-					"DIV"
-				  ];
+
     
-    
-    
-    //THIS IS USED TO READ HTML ELEMENTS AND CREATE BOUNDS . THEY ARE ADDED TO AN ARRAY
+	//all html elements
     var all = $("*",document.body);
-    
-    for (var i = 0; i< all.length;i++)
-    {
+		
+	//center of web page used for zoom adjustments/margin issues
 	var midY = $(document).height()/2;
 	var midX = $(document).width()/2;
-	var offset = $(all[i]).offset();
-	var margin = $(document)[0].body.style.margin;
+    
+    for (var i = 0; i< all.length;i++)
+    {	
+		// get offset of object for coordinates and dimensions
+		var offset = $(all[i]).offset();
 
-        if(margin != "0px"){
-	    var int_margin = parseInt(margin.substring(0,margin.length-2));
-	    console.log(int_margin);
-	    if(offset.left < midX){
-		var x = offset.left - int_margin;}
-	    else{
-		var x = offset.left + int_margin;}
-	    if(offset.top < midY){
-		var y = offset.top - int_margin;}
-	    else{
-		var y = offset.top + int_margin;}
+		var margin = $(document)[0].body.style.margin;
 
-	}
-	else{
-	    var x = offset.left;
-	    var y = offset.top;
-	}
+		//get margin as int value
+        if(margin != "0px")
+        {	
+			var int_margin = parseInt(margin.substring(0,margin.length-2));
+	    
+	    //adjust for a bounds coordinates if margin effects it visibally 
+			if(offset.left < midX)
+				var x = offset.left - int_margin;
+			else
+				var x = offset.left + int_margin;
+	   
+			if(offset.top < midY)
+				var y = offset.top - int_margin;
+			else
+				var y = offset.top + int_margin;
+		}
+		//this needs fixing?
+		else
+		{
+			var x = offset.left;
+			var y = offset.top;
+		}
 
 
+	//collision data for platforms now represents lines rather than  so height = 1
 	var height = 1;
-	
-	var lower_y = y + $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
 
-        //SCALE IS ADJUSTABLE
-        var scale = 1;
-	try
-	{
-	    var elementID = all[i].id;
+	//two bounds are created from an element based on it's top and bottom horizontal lines
+	var lower_y = y + $(all[i]).outerHeight();
+    var scale = 1;
+	
+	//get the elements id if there is one, this could be useful if have CSS data
+	try{
+		var elementID = all[i].id;
 	}
-	catch(err)
-	{
+	
+	catch(err){
 	    var elementID = null;
 	}
 
+	//check if id or tag is in the ignored list
+	var valid_id = ($.inArray(elementID,ignored_ids));
+	
 	var tag = $(all[i]).prop("tagName");
-	var tagcount = ($.inArray(tag,ignored));
+	var valid_tag = ($.inArray(tag,ignored_tags));
+	
+	// if element id or tag is valid continue
+	if ( valid_id == -1 && valid_tag == -1){
+		
 
-	if ( elementID != "c" 
-	     && elementID != "ruler"
-	     && tagcount == -1)
-	{
-
+		//get true string width
 	    if(tag == "P")
-	    {
-		console.log(all[i]);
-		//text elements have diferent width
-		width = get_text_width(all[i]);
-	    }
-	    var link = null;
-	    if(tag == "A")
-	    {
-		//console.log(all[i]);
-		link = all[i].href;
-	    }
-	    
-	    var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,ctx);
-		var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,ctx);
-	    if ( !(it.w == 0 || it.h == 0))// If no dimensions, don't add to bounds
-			bounds.push(it);
-		if ( !(ix.w == 0 || ix.h == 0))
-			bounds.push(ix);
-	}
+			width = get_text_width(all[i]); 	    
+		
+		
+		//set link val as null incase not a link
+		var link = null;
+	    if(tag == "A")			
+			link = all[i].href;
 
-    }
+		if ( width != 0){
+			//instantiate both bounds
+			var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,bctx);
+			var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,bctx);
+			bounds.push(ix);
+			bounds.push(it);
+
+		}
+	}
+}
 }
 
 
 /////////////////////////
 // BOUNDS ///////////////
 /////////////////////////
-var bound = function(x,y,h,w,link,c,ctx)
+var bound = function(x,y,h,w,link,c,_ctx)
 {
 	
 	//check length of last tile
@@ -233,7 +272,6 @@ var bound = function(x,y,h,w,link,c,ctx)
 	this.end_tile_length = end_tile_length;
 
     this.link = link;
-   // console.log(this.link);
     this.x=x;
     this.y=y;
     this.h=h;
@@ -244,7 +282,7 @@ var bound = function(x,y,h,w,link,c,ctx)
 	this.c  = "#000000";
     }
 
-    this.ctx =ctx;
+    this.ctx = _ctx;
 
 }
 var height = $(document).height();
@@ -252,12 +290,12 @@ var width = $(document).width();
 //console.log("HEIGHT"+height);
 //console.log("WIDTH"+width);
 
-var bottom = new bound(0,height,1,width,null,c,ctx);
+var bottom = new bound(0,height,1,width,null,c,bctx);
 bounds.push(bottom);
 
 if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/CODE/Soft-Dev/NSYZ/Examples/Homepage.html")
 	{
-		var nsyz  = new bound(0,height-47,1,width,null,c,ctx);
+		var nsyz  = new bound(0,height-47,1,width,null,c,bctx);
 		console.log("NSYZ DETECTED");
 	
 		bounds.push(nsyz);
@@ -266,7 +304,7 @@ if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/
 function draw_tile(x,y)
 {
 //	console.log("DRAW");
-//	this.ctx.drawImage(tile_img,x,y);
+	this.bctx.drawImage(tile_img,x,y);
 
 
 
@@ -276,13 +314,13 @@ function draw_bounds(){
 		for (var i = 0; i < bounds.length; i++)
 		{
 			var b = bounds[i];
-			b.draw();
+			//b.draw();
 			
-			//for (var j = 0; j <  b.num_tiles; j++)
-			//{
-				//draw_tile(b.x+(j*4),b.y);
+			for (var j = 0; j <  b.num_tiles; j++)
+			{
+				draw_tile(b.x+(j*4),b.y);
 				
-			//}
+			}
 		}
 }
 			
@@ -394,9 +432,6 @@ disc.prototype.draw = function() {
 	    }
 	}else if(wasDownD){
 	    d1.erase();
-		if(togg){
-			draw_bounds();
-		}
 	    switch(d1.walkCounter){
 	    case 1: case 2: case 3: case 4: case 5:
 		this.ctx.drawImage(charac,4*64,0,64,64,this.x-32,this.y-64,64,64);
@@ -426,9 +461,6 @@ disc.prototype.draw = function() {
 
 	}else if(wasDownA){
 	    d1.erase();
-		if(togg){
-			draw_bounds();
-		}
 	    switch(d1.walkCounter){
 	    case 1: case 2: case 3: case 4: case 5:
 		this.ctx.drawImage(rcharac,4*64,0,64,64,this.x-32,this.y-64,64,64);
@@ -594,7 +626,9 @@ $(document).keydown(
 	if (e.keyCode == 81){
 	    if(togg){
 			togg=false;
+			bctx.clearRect(0,0,canvas.height,canvas.width)
 	    }else{
+			draw_bounds();
 			togg=true
 		}
 	}
@@ -645,10 +679,12 @@ $(document).keyup(
 var viewportWidth = $(window).width(),
 viewportHeight = $(window).height();
 
+
+
 function animate() {
     d1.erase();
 	if(togg){
-		draw_bounds();
+		//console.log("test");
 	}
     //ground friction
     if(d1.slowing){
@@ -834,6 +870,7 @@ $(document).ready(
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
 	d1.draw();
 	setInterval(animate,20);
-    console.log(current_link);
     }
 );
+
+

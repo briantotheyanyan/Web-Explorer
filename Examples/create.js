@@ -51,6 +51,9 @@ function create_back_canvas(){
 	return bctx;
 }
 
+function themeing(){
+	$('body').css('background-color', '#5c94fc')
+}
 
 //CONSTANTS
 const SPEEDLIMIT = 10; //max horizontal speed
@@ -61,6 +64,7 @@ const WALKCYCLE = 40; //how many images are in the walk cycle
 //VARIABLES
 var ctx = create_canvas();
 var bctx = create_back_canvas();
+themeing();
 
 var canvas = document.getElementById("c");
 
