@@ -129,17 +129,23 @@ function getLoc(obj){
     return dims;
 }
 
+//elements of these tag types will be ignored
+var ignored_tags = ["SCRIPT",
+					"DOCTYPE!",
+					"IMG",
+					"DIV"//need to check visibility
+					];
+
+//elements with these id's will be ignored			
+var ignored_ids = [ "c",
+					"ruler"
+					];
 
 //generate collision data for bounds based on coordinates and dimensions of HTML elements
 //NOTE: needs more CSS reading
 function generate_bounds(){
     
-    //elements of these types will not have platforms
-    var ignored = [	"SCRIPT",
-					"DOCTYPE!",
-					"DIV"//need to check visibility
-				  ];
-    
+
     
 	//all html elements
     var all = $("*",document.body);
@@ -196,33 +202,27 @@ function generate_bounds(){
 	    var elementID = null;
 	}
 
-	//get tag and see if it's in the ignored list
+	//check if id or tag is in the ignored list
+	var valid_id = ($.inArray(elementID,ignored_ids));
+	
 	var tag = $(all[i]).prop("tagName");
-	var validity = ($.inArray(tag,ignored));
-
+	var valid_tag = ($.inArray(tag,ignored_tags));
 	
-	// if the object's id isn't c (the canvas) or the ruler
-	// and it's tag isn't to be ignored continue with creation
-	
-	// NOTE: this could be replaced with a check against a list of element ID's
-	// that were modified by a CSS parser
-	if ( elementID != "c" 
-	     && elementID != "ruler"
-	     && validity == -1
-	    ){
+	// if element id or tag is valid continue
+	if ( valid_id == -1 && valid_tag == -1){
 		
 
 		//get true string width
 	    if(tag == "P")
 			width = get_text_width(all[i]); 	    
 		
+		
 		//set link val as null incase not a link
 		var link = null;
 	    if(tag == "A")			
 			link = all[i].href;
 
-		if ( width != 0)
-		{
+		if ( width != 0){
 			//instantiate both bounds
 			var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,ctx);
 			var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,ctx);
@@ -231,7 +231,6 @@ function generate_bounds(){
 
 		}
 	}
-
 }
 }
 
