@@ -69,7 +69,7 @@ var wasDownW = false;
 var wasDownA = false;
 var wasDownD = false;
 var wasDownSh = false;
-var togg = true;
+var togg = false;
 
 //this variable is what is used to transfer to another webpage
 // updates upon contact with different links
@@ -428,9 +428,6 @@ disc.prototype.draw = function() {
 	    }
 	}else if(wasDownD){
 	    d1.erase();
-		if(togg){
-		draw_bounds();
-		}
 	    switch(d1.walkCounter){
 	    case 1: case 2: case 3: case 4: case 5:
 		this.ctx.drawImage(charac,4*64,0,64,64,this.x-32,this.y-64,64,64);
@@ -460,9 +457,6 @@ disc.prototype.draw = function() {
 
 	}else if(wasDownA){
 	    d1.erase();
-		if(togg){
-		draw_bounds();
-		}
 	    switch(d1.walkCounter){
 	    case 1: case 2: case 3: case 4: case 5:
 		this.ctx.drawImage(rcharac,4*64,0,64,64,this.x-32,this.y-64,64,64);
@@ -628,7 +622,9 @@ $(document).keydown(
 	if (e.keyCode == 81){
 	    if(togg){
 			togg=false;
+			bctx.clearRect(0,0,canvas.height,canvas.width)
 	    }else{
+			draw_bounds();
 			togg=true
 		}
 	}
@@ -866,11 +862,11 @@ $(document).ready(
     function(){
 	//changeText();
 	generate_bounds();
-	draw_bounds();
 	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0,true);
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
 	d1.draw();
 	setInterval(animate,20);
-    console.log(current_link);
     }
 );
+
+
