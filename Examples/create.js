@@ -39,6 +39,19 @@ function create_canvas(){
     return ctx;
 }
 
+function create_back_canvas(){
+	var world2 = document.createElement('canvas');
+    world2.id = 'b';
+    world2.height = $(document).height();
+    world2.width = $(document).width();
+    world2.style.cssText = "margin:0px;position:absolute;top:0;left:0;z-index:0;";
+    
+    document.body.appendChild(world2);
+	this.bctx = world2.getContext("2d");
+	return bctx;
+}
+
+
 //CONSTANTS
 const SPEEDLIMIT = 10; //max horizontal speed
 const WALKACCEL = .7; //left and right accel
@@ -47,6 +60,8 @@ const JUMPLIMIT = 10; //number of loops of jump
 const WALKCYCLE = 40; //how many images are in the walk cycle
 //VARIABLES
 var ctx = create_canvas();
+var bctx = create_back_canvas();
+
 var canvas = document.getElementById("c");
 
 //used in detecting movement and frame in animation cycles
@@ -68,17 +83,17 @@ tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.j
 
 
 //sets canvas to match window sizes
-function set_canvas()
+function set_canvas(x)
 {
-    canvas = document.getElementById("c");
+    canvas = document.getElementById(x);
     if (canvas.width < $(document).width())
         canvas.width = $(document).width();
     if (canvas.height < $(document).height())
         canvas.height = $(document).height();
 }
 
-set_canvas();
-
+set_canvas("b");
+set_canvas("c");
 ////////////////////////////
 // READ HTML //////////////
 ///////////////////////////
@@ -138,6 +153,7 @@ var ignored_tags = ["SCRIPT",
 
 //elements with these id's will be ignored			
 var ignored_ids = [ "c",
+					"b",
 					"ruler"
 					];
 
@@ -224,8 +240,8 @@ function generate_bounds(){
 
 		if ( width != 0){
 			//instantiate both bounds
-			var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,ctx);
-			var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,ctx);
+			var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,bctx);
+			var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,bctx);
 			bounds.push(ix);
 			bounds.push(it);
 
@@ -238,7 +254,7 @@ function generate_bounds(){
 /////////////////////////
 // BOUNDS ///////////////
 /////////////////////////
-var bound = function(x,y,h,w,link,c,ctx)
+var bound = function(x,y,h,w,link,c,_ctx)
 {
 	
 	//check length of last tile
@@ -252,7 +268,6 @@ var bound = function(x,y,h,w,link,c,ctx)
 	this.end_tile_length = end_tile_length;
 
     this.link = link;
-   // console.log(this.link);
     this.x=x;
     this.y=y;
     this.h=h;
@@ -263,7 +278,7 @@ var bound = function(x,y,h,w,link,c,ctx)
 	this.c  = "#000000";
     }
 
-    this.ctx =ctx;
+    this.ctx = _ctx;
 
 }
 var height = $(document).height();
@@ -271,12 +286,12 @@ var width = $(document).width();
 //console.log("HEIGHT"+height);
 //console.log("WIDTH"+width);
 
-var bottom = new bound(0,height,1,width,null,c,ctx);
+var bottom = new bound(0,height,1,width,null,c,bctx);
 bounds.push(bottom);
 
 if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/CODE/Soft-Dev/NSYZ/Examples/Homepage.html")
 	{
-		var nsyz  = new bound(0,height-47,1,width,null,c,ctx);
+		var nsyz  = new bound(0,height-47,1,width,null,c,bctx);
 		console.log("NSYZ DETECTED");
 	
 		bounds.push(nsyz);
@@ -285,7 +300,7 @@ if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/
 function draw_tile(x,y)
 {
 //	console.log("DRAW");
-//	this.ctx.drawImage(tile_img,x,y);
+	this.bctx.drawImage(tile_img,x,y);
 
 
 
@@ -295,13 +310,13 @@ function draw_bounds(){
 		for (var i = 0; i < bounds.length; i++)
 		{
 			var b = bounds[i];
-			b.draw();
+			//b.draw();
 			
-			//for (var j = 0; j <  b.num_tiles; j++)
-			//{
-				//draw_tile(b.x+(j*4),b.y);
+			for (var j = 0; j <  b.num_tiles; j++)
+			{
+				draw_tile(b.x+(j*4),b.y);
 				
-			//}
+			}
 		}
 }
 			
@@ -414,7 +429,7 @@ disc.prototype.draw = function() {
 	}else if(wasDownD){
 	    d1.erase();
 		if(togg){
-			draw_bounds();
+		draw_bounds();
 		}
 	    switch(d1.walkCounter){
 	    case 1: case 2: case 3: case 4: case 5:
@@ -446,7 +461,7 @@ disc.prototype.draw = function() {
 	}else if(wasDownA){
 	    d1.erase();
 		if(togg){
-			draw_bounds();
+		draw_bounds();
 		}
 	    switch(d1.walkCounter){
 	    case 1: case 2: case 3: case 4: case 5:
@@ -664,10 +679,12 @@ $(document).keyup(
 var viewportWidth = $(window).width(),
 viewportHeight = $(window).height();
 
+
+
 function animate() {
     d1.erase();
 	if(togg){
-		draw_bounds();
+		//console.log("test");
 	}
     //ground friction
     if(d1.slowing){
@@ -849,6 +866,7 @@ $(document).ready(
     function(){
 	//changeText();
 	generate_bounds();
+	draw_bounds();
 	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0,true);
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
 	d1.draw();
