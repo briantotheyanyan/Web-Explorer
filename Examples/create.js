@@ -31,8 +31,8 @@ function create_canvas(){
     charac = new Image();
     rcharac = new Image();
 	
-    charac.src = "http://s16.postimg.org/458w6pmpx/platformer_sprites_pixelized.png"
-    rcharac.src = "http://s1.postimg.org/6yvevlev3/spritesheet.png"
+    charac.src = "http://s20.postimg.org/94lrhr5yl/spritesheet.png"
+    rcharac.src = "http://s24.postimg.org/gh2n3z25h/spritesheetr.png"
     
     this.ctx = world.getContext("2d");
     this.bounds = new Array();
