@@ -17,10 +17,9 @@ var zoom=(function(){var level=1;var mouseX=1,mouseY=1;var panEngageTimeout=-1,p
 var charac;
 var rcharac;
 
-function create_canvas(){
-    //generate a canvas that has the dimensions of the window
-    //this is what will overlay the image of the background
-    
+//creates a canvas to overlap the webpage where the graphics gameplay will be displayed
+//sets up image source for our hero
+function create_canvas(){    
     var world = document.createElement('canvas');
     world.id = 'c';
     world.height = $(document).height();
@@ -31,7 +30,7 @@ function create_canvas(){
     
     charac = new Image();
     rcharac = new Image();
-
+	
     charac.src = "http://s16.postimg.org/458w6pmpx/platformer_sprites_pixelized.png"
     rcharac.src = "http://s1.postimg.org/6yvevlev3/spritesheet.png"
     
@@ -49,25 +48,28 @@ const WALKCYCLE = 40; //how many images are in the walk cycle
 //VARIABLES
 var ctx = create_canvas();
 var canvas = document.getElementById("c");
+
+//used in detecting movement and frame in animation cycles
 var wasDownW = false;
 var wasDownA = false;
 var wasDownD = false;
 var wasDownSh = false;
 var togg = true;
 
-
+//this variable is what is used to transfer to another webpage
+// updates upon contact with different links
 var current_link = "";
 
 
-
+//set image of the tile to be displayed where bounds are
 var tile_img;
+tile_img = new Image();
+tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
 
+
+//sets canvas to match window sizes
 function set_canvas()
 {
-	tile_img = new Image();
-	tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
-
-    //set for every on resize
     canvas = document.getElementById("c");
     if (canvas.width < $(document).width())
         canvas.width = $(document).width();
@@ -80,6 +82,9 @@ set_canvas();
 ////////////////////////////
 // READ HTML //////////////
 ///////////////////////////
+
+//this is a tool to measure pixel length of strings
+//NOTE: if font/size isn't consistent adjust
 function create_ruler(){
     var ruler = document.createElement('span');
     ruler.id = "ruler";
@@ -90,129 +95,144 @@ function create_ruler(){
 
 create_ruler();
 
+//returns the pixel length of a HTML elements string
 function get_text_width(obj){
-    //needs to check for fontsizes in classes
-    //also note check for visivbility
+	
     var text = $(obj)[0].innerHTML;
     var ruler = $("#ruler")[0];
     ruler.innerHTML = text;
-    //console.log(ruler);
-    //console.log(ruler.offsetWidth);
     return ruler.offsetWidth;
     
 }
 
-
+//overrides default margin values that are used if none are manually added
 function do_padding(){
     var margin = $(document)[0].body.style.margin;
-    //console.log(margin);
     if(margin == "")
-	$(document)[0].body.style.margin = "0px"
-
+		$(document)[0].body.style.margin = "0px";
     
 }
 
 do_padding();
 
+//returns an array containing coordinates and dimensions of an object
+//NOTE: height isn't nessecary using current platform style but could have other uses
 function getLoc(obj){
-    // Need an algorithim to go through number of characters
-    //(including br's) and account for un-fixed width for p's
+    
     obj = "#" + obj;
-    var loc = new Array();
-    loc[0] = $(obj).position().left,
-    loc[1] = $(obj).position().top;
-    loc[2] = $(obj).height();
-    loc[3] = $(obj).width();
-    return loc;
+    var dims = new Array();
+    
+    dims[0] = $(obj).position().left,
+    dims[1] = $(obj).position().top;
+    dims[2] = $(obj).height();
+    dims[3] = $(obj).width();
+    return dims;
 }
 
 
-
+//generate collision data for bounds based on coordinates and dimensions of HTML elements
+//NOTE: needs more CSS reading
 function generate_bounds(){
     
-    //tag types that are completely ignored
+    //elements of these types will not have platforms
     var ignored = [	"SCRIPT",
 					"DOCTYPE!",
-					"DIV"
+					"DIV"//need to check visibility
 				  ];
     
     
-    
-    //THIS IS USED TO READ HTML ELEMENTS AND CREATE BOUNDS . THEY ARE ADDED TO AN ARRAY
+	//all html elements
     var all = $("*",document.body);
-    
-    for (var i = 0; i< all.length;i++)
-    {
+		
+	//center of web page used for zoom adjustments/margin issues
 	var midY = $(document).height()/2;
 	var midX = $(document).width()/2;
-	var offset = $(all[i]).offset();
-	var margin = $(document)[0].body.style.margin;
+    
+    for (var i = 0; i< all.length;i++)
+    {	
+		// get offset of object for coordinates and dimensions
+		var offset = $(all[i]).offset();
 
-        if(margin != "0px"){
-	    var int_margin = parseInt(margin.substring(0,margin.length-2));
-	    console.log(int_margin);
-	    if(offset.left < midX){
-		var x = offset.left - int_margin;}
-	    else{
-		var x = offset.left + int_margin;}
-	    if(offset.top < midY){
-		var y = offset.top - int_margin;}
-	    else{
-		var y = offset.top + int_margin;}
+		var margin = $(document)[0].body.style.margin;
 
-	}
-	else{
-	    var x = offset.left;
-	    var y = offset.top;
-	}
+		//get margin as int value
+        if(margin != "0px")
+        {	
+			var int_margin = parseInt(margin.substring(0,margin.length-2));
+	    
+	    //adjust for a bounds coordinates if margin effects it visibally 
+			if(offset.left < midX)
+				var x = offset.left - int_margin;
+			else
+				var x = offset.left + int_margin;
+	   
+			if(offset.top < midY)
+				var y = offset.top - int_margin;
+			else
+				var y = offset.top + int_margin;
+		}
+		//this needs fixing?
+		else
+		{
+			var x = offset.left;
+			var y = offset.top;
+		}
 
 
+	//collision data for platforms now represents lines rather than  so height = 1
 	var height = 1;
-	
-	var lower_y = y + $(all[i]).outerHeight();
 	var width = $(all[i]).outerWidth();
 
-        //SCALE IS ADJUSTABLE
-        var scale = 1;
-	try
-	{
-	    var elementID = all[i].id;
+	//two bounds are created from an element based on it's top and bottom horizontal lines
+	var lower_y = y + $(all[i]).outerHeight();
+    var scale = 1;
+	
+	//get the elements id if there is one, this could be useful if have CSS data
+	try{
+		var elementID = all[i].id;
 	}
-	catch(err)
-	{
+	
+	catch(err){
 	    var elementID = null;
 	}
 
+	//get tag and see if it's in the ignored list
 	var tag = $(all[i]).prop("tagName");
-	var tagcount = ($.inArray(tag,ignored));
+	var validity = ($.inArray(tag,ignored));
 
+	
+	// if the object's id isn't c (the canvas) or the ruler
+	// and it's tag isn't to be ignored continue with creation
+	
+	// NOTE: this could be replaced with a check against a list of element ID's
+	// that were modified by a CSS parser
 	if ( elementID != "c" 
 	     && elementID != "ruler"
-	     && tagcount == -1)
-	{
+	     && validity == -1
+	    ){
+		
 
+		//get true string width
 	    if(tag == "P")
-	    {
-		console.log(all[i]);
-		//text elements have diferent width
-		width = get_text_width(all[i]);
-	    }
-	    var link = null;
-	    if(tag == "A")
-	    {
-		//console.log(all[i]);
-		link = all[i].href;
-	    }
-	    
-	    var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,ctx);
-		var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,ctx);
-	    if ( !(it.w == 0 || it.h == 0))// If no dimensions, don't add to bounds
-			bounds.push(it);
-		if ( !(ix.w == 0 || ix.h == 0))
+			width = get_text_width(all[i]); 	    
+		
+		//set link val as null incase not a link
+		var link = null;
+	    if(tag == "A")			
+			link = all[i].href;
+
+		if ( width != 0)
+		{
+			//instantiate both bounds
+			var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,ctx);
+			var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,ctx);
 			bounds.push(ix);
+			bounds.push(it);
+
+		}
 	}
 
-    }
+}
 }
 
 
