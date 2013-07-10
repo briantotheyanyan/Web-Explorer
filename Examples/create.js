@@ -20,11 +20,11 @@ rcharac.src = "http://s24.postimg.org/gh2n3z25h/spritesheetr.png"
 
 //creates a canvas to overlap the webpage where the graphics gameplay will be displayed
 //sets up image source for our hero
+
 function create_canvas(){    
     var world = document.createElement('canvas');
     world.id = 'c';
     world.height = $(document).height();
-	console.log($(document).height());
     world.width = $(document).width();
     world.style.cssText = "margin:0px;position:absolute;top:0;left:0;z-index:1;";
     document.body.appendChild(world);
@@ -67,9 +67,7 @@ const JUMPLIMIT = 10; //number of loops of jump
 const WALKCYCLE = 40; //how many images are in the walk cycle
 
 //VARIABLES
-var ctx = create_canvas();
-var bctx = create_back_canvas();
-var canvas = document.getElementById("c");
+var ctx, bctx,canvas;
 
 //used in detecting movement and frame in animation cycles
 var wasDownW = false;
@@ -102,8 +100,7 @@ function set_canvas(x)
         canvas.height = $(document).height();
 }
 
-set_canvas("b");
-set_canvas("c");
+
 ////////////////////////////
 // READ HTML //////////////
 ///////////////////////////
@@ -170,9 +167,6 @@ var ignored_ids = [ "c",
 //generate collision data for bounds based on coordinates and dimensions of HTML elements
 //NOTE: needs more CSS reading
 function generate_bounds(){
-    
-
-    
 	//all html elements
     var all = $("*",document.body);
 		
@@ -180,8 +174,7 @@ function generate_bounds(){
 	var midY = $(document).height()/2;
 	var midX = $(document).width()/2;
     
-    for (var i = 0; i< all.length;i++)
-    {	
+    for (var i = 0; i< all.length;i++){	
 		// get offset of object for coordinates and dimensions
 		var offset = $(all[i]).offset();
 
@@ -211,53 +204,61 @@ function generate_bounds(){
 		}
 
 
-	//collision data for platforms now represents lines rather than  so height = 1
-	var height = 1;
-	var width = $(all[i]).outerWidth();
+		//collision data for platforms now represents lines rather than  so height = 1
+		var height = 1;
+		var width = $(all[i]).outerWidth();
 
-	//two bounds are created from an element based on it's top and bottom horizontal lines
-	var lower_y = y + $(all[i]).outerHeight();
-    var scale = 1;
-	
-	//get the elements id if there is one, this could be useful if have CSS data
-	try{
-		var elementID = all[i].id;
-	}
-	
-	catch(err){
-	    var elementID = null;
-	}
-
-	//check if id or tag is in the ignored list
-	var valid_id = ($.inArray(elementID,ignored_ids));
-	
-	var tag = $(all[i]).prop("tagName");
-	var valid_tag = ($.inArray(tag,ignored_tags));
-	
-	// if element id or tag is valid continue
-	if ( valid_id == -1 && valid_tag == -1){
+		//two bounds are created from an element based on it's top and bottom horizontal lines
+		var lower_y = y + $(all[i]).outerHeight();
+		var scale = 1;
 		
-
-		//get true string width
-	    if(tag == "P")
-			width = get_text_width(all[i]); 	    
+		//get the elements id if there is one, this could be useful if have CSS data
+		try{
+			var elementID = all[i].id;
+		}
 		
+		catch(err){
+			var elementID = null;
+		}
+
+		//check if id or tag is in the ignored list
+		var valid_id = ($.inArray(elementID,ignored_ids));
 		
-		//set link val as null incase not a link
-		var link = null;
-	    if(tag == "A")			
-			link = all[i].href;
+		var tag = $(all[i]).prop("tagName");
+		var valid_tag = ($.inArray(tag,ignored_tags));
+		
+		// if element id or tag is valid continue
+		if ( valid_id == -1 && valid_tag == -1){
+			
 
-		if ( width != 0){
-			//instantiate both bounds
-			var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,bctx);
-			var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,bctx);
-			bounds.push(ix);
-			bounds.push(it);
+			//get true string width
+			if(tag == "P")
+				width = get_text_width(all[i]); 	    
+			
+			
+			//set link val as null incase not a link
+			var link = null;
+			if(tag == "A")			
+				link = all[i].href;
 
+			if ( width != 0){
+				//instantiate both bounds
+				var it = new bound(x/scale,y/scale,height/scale,width/scale,link,c,bctx);
+				var ix = new bound(x/scale,lower_y/scale,height/scale,width/scale,link,c,bctx);
+				bounds.push(ix);
+				bounds.push(it);
+
+			}
 		}
 	}
-}
+	var bottom = new bound(0,$(document).height(),1,$(document).width(),null,c,bctx);
+	bounds.push(bottom);
+	if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/CODE/Soft-Dev/NSYZ/Examples/Homepage.html"){
+		var nsyz  = new bound(0,height-47,1,width,null,c,bctx);
+		console.log("NSYZ DETECTED");
+	
+		bounds.push(nsyz);
+	}
 }
 
 
@@ -291,21 +292,9 @@ var bound = function(x,y,h,w,link,c,_ctx)
     this.ctx = _ctx;
 
 }
-var height = $(document).height();
-var width = $(document).width();
-//console.log("HEIGHT"+height);
-//console.log("WIDTH"+width);
 
-var bottom = new bound(0,height,1,width,null,c,bctx);
-bounds.push(bottom);
 
-if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/CODE/Soft-Dev/NSYZ/Examples/Homepage.html")
-	{
-		var nsyz  = new bound(0,height-47,1,width,null,c,bctx);
-		console.log("NSYZ DETECTED");
-	
-		bounds.push(nsyz);
-	}
+
 	
 function draw_tile(x,y,img)
 {
@@ -316,13 +305,9 @@ function draw_tile(x,y,img)
 }
 
 function draw_bounds(){
-		for (var i = 0; i < bounds.length; i++)
-		{
+		for (var i = 0; i < bounds.length; i++){
 			var b = bounds[i];
-			
-			
-			for (var j = 0; j <  b.num_tiles; j++)
-			{
+			for (var j = 0; j <  b.num_tiles; j++){
 				if (b.link != null)
 					draw_tile(b.x+(j*4),b.y,tile_img2);
 				else
@@ -681,14 +666,8 @@ $(document).keyup(
 ////////////////
 // ANIMATE ////
 ///////////////
-
-
-var viewportWidth = $(window).width(),
-viewportHeight = $(window).height();
-
-
-
 function animate() {
+console.log($(document).height());
     d1.erase();
 	if(togg){
 		//console.log("test");
@@ -867,11 +846,18 @@ function changeText(){
     $('*').css('font-family','Comic Sans MS');
 }
 
-
+var lim;
 $(document).ready(
 	function(){
-	//changeText();
 	themeing();
+	lim = $(document).height();
+	while(lim == $(document).height()){
+	}
+	ctx = create_canvas();
+	bctx = create_back_canvas();
+	canvas = document.getElementById("c");
+	set_canvas("b");
+	set_canvas("c");
 	generate_bounds();
 	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0,true);
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
