@@ -47,12 +47,12 @@ function create_back_canvas(){
 function themeing(){
 	$('body').css('background-color','#5c94fc');
 	try{
-		$("body:nth-child(odd)").css('background-color','#80D010').css('color','#FFFFFF');
+		$("body:nth-child(odd)").removeAttr('background-color').css('background-color','#80D010').css('color','#FFFFFF');
 	}catch(err){
 		console.log(err.message);
 	}
 	try{
-		$("body:nth-child(even)").css('background-color','#5c94fc').css('color','#FFFFFF');
+		$("body:nth-child(even)").removeAttr('background-color').css('background-color','#5c94fc').css('color','#FFFFFF');
 	}catch(err){
 		console.log(err.message);
 	}
