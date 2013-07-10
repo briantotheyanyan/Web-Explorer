@@ -677,7 +677,6 @@ $(document).keyup(
 // ANIMATE ////
 ///////////////
 function animate() {
-console.log($(document).height());
     d1.erase();
 	if(togg){
 		//console.log("test");

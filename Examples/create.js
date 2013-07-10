@@ -45,7 +45,17 @@ function create_back_canvas(){
 }
 
 function themeing(){
-	$('body').css('background-color', '#5c94fc');
+	$('body').css('background-color','#5c94fc');
+	try{
+		$("body:nth-child(even)").css('background-color','#80D010');
+	}catch(err){
+		console.log(err.message);
+	}
+	try{
+		$("body:nth-child(odd)").css('background-color','#5c94fc');
+	}catch(err){
+		console.log(err.message);
+	}
 	$('*').css('color', '#ffffff');
 	$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +
@@ -667,7 +677,6 @@ $(document).keyup(
 // ANIMATE ////
 ///////////////
 function animate() {
-console.log($(document).height());
     d1.erase();
 	if(togg){
 		//console.log("test");
@@ -842,18 +851,11 @@ console.log($(document).height());
     //$(window).scrollLeft(d1.x);
 }
 
-function changeText(){
-    $('*').css('font-family','Comic Sans MS');
-}
-
 var lim;
-themeing();
+
 $(document).ready(function(){
 	themeing();
-	//lim = $(document).height();
-	//while(lim == $(document).height()){}
-	document.onreadystatechange = function() {
-		if (document.readyState === 'complete') {
+		setTimeout(function(){
 			ctx = create_canvas();
 			bctx = create_back_canvas();
 			canvas = document.getElementById("c");
@@ -864,6 +866,5 @@ $(document).ready(function(){
 			//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
 			d1.draw();
 			setInterval(animate,20);
-		}
-	}
+		},5000);
 });
