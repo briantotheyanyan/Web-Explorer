@@ -52,7 +52,18 @@ function create_back_canvas(){
 }
 
 function themeing(){
-	$('body').css('background-color', '#5c94fc')
+	$('body').css('background-color', '#5c94fc');
+	$('*').css('color', '#ffffff');
+	$("head").prepend("<style type=\"text/css\">" + 
+                                "@font-face {\n" +
+                                    "\tfont-family: \"myFont\";\n" + 
+                                    "\tsrc: local('?'), url('https://github.com/stuycs-softdev/NSYZ/blob/master/static/css/fonts/minecraftia.otf?raw=true') format('opentype');\n" + 
+                                "}\n" + 
+                                    "\t*{\n" + 
+                                    "\tfont-family: myFont !important;\n" + 
+                                "}\n" + 
+                            "</style>");
+	
 }
 
 //CONSTANTS
