@@ -136,6 +136,7 @@ function get_text_width(obj){
     
 }
 
+
 //overrides default margin values that are used if none are manually added
 function do_padding(){
     var margin = $(document)[0].body.style.margin;
@@ -876,12 +877,33 @@ function changeText(){
 
 $(document).ready(
 	function(){
-	//changeText();
+		
+	var test_text = document.createElement('p');
+	test_text.style.cssText = "visibility:hidden;";
+	test_text.innerHTML = "aaaaaaaaaaaaaaaa";
+	document.body.appendChild(test_text);
+	var lim = get_text_width(test_text);
+	console.log("lim:"+lim);
 	themeing();
+	
+	while (true){
+		if (lim == get_text_width(test_text))
+			console.log("noob");
+			
+		else{
+			
+			console.log(get_text_width(test_text));
+			init();
+			break;
+	}
+}
+}
+);
+	
+function init(){
 	generate_bounds();
 	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0,true);
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
 	d1.draw();
 	setInterval(animate,20);
 	}
-);
