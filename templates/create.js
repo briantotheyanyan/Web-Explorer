@@ -47,12 +47,12 @@ function create_back_canvas(){
 function themeing(){
 	$('body').css('background-color','#5c94fc');
 	try{
-		$("p:nth-child(even)").css('background-color','#80D010');
+		$("body:nth-child(even)").css('background-color','#80D010');
 	}catch(err){
 		console.log(err.message);
 	}
 	try{
-		$("p:nth-child(odd)").css('background-color','#5c94fc');
+		$("body:nth-child(odd)").css('background-color','#5c94fc');
 	}catch(err){
 		console.log(err.message);
 	}
