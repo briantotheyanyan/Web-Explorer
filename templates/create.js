@@ -856,7 +856,7 @@ var lim;
 
 $(document).ready(function(){
 	themeing();
-		setTimeOut(function(){
+		setTimeout(function(){
 			ctx = create_canvas();
 			bctx = create_back_canvas();
 			canvas = document.getElementById("c");
