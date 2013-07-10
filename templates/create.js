@@ -849,20 +849,17 @@ function changeText(){
 var lim;
 themeing();
 $(document).ready(function(){
-	//lim = $(document).height();
-	//while(lim == $(document).height()){}
-	document.onreadystatechange = function() {
-		if (document.readyState === 'complete') {
-			ctx = create_canvas();
-			bctx = create_back_canvas();
-			canvas = document.getElementById("c");
-			set_canvas("b");
-			set_canvas("c");
-			generate_bounds();
-			d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0,true);
-			//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
-			d1.draw();
-			setInterval(animate,20);
-		}
-	}
+	themeing();
+	setTimeout(function(){
+		ctx = create_canvas();
+		bctx = create_back_canvas();
+		canvas = document.getElementById("c");
+		set_canvas("b");
+		set_canvas("c");
+		generate_bounds();
+		d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0,true);
+		//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
+		d1.draw();
+		setInterval(animate,20);
+	},5000);
 });
