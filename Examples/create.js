@@ -75,8 +75,6 @@ const WALKCYCLE = 40; //how many images are in the walk cycle
 //VARIABLES
 var ctx = create_canvas();
 var bctx = create_back_canvas();
-themeing();
-
 var canvas = document.getElementById("c");
 
 //used in detecting movement and frame in animation cycles
@@ -876,16 +874,14 @@ function changeText(){
 }
 
 
-
 $(document).ready(
-    function(){
+	function(){
 	//changeText();
+	themeing();
 	generate_bounds();
 	d1 = new disc(0,0,1,1,0,0,0,5,true,false,"#000000", ctx,0,true,0,true);
 	//zoom.to({x:0, y:0, height:$(window).height() / 2, width:$(window).width() /2})
 	d1.draw();
 	setInterval(animate,20);
-    }
+	}
 );
-
-
