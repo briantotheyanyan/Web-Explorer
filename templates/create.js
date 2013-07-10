@@ -847,7 +847,6 @@ function changeText(){
 }
 
 var lim;
-themeing();
 $(document).ready(function(){
 	themeing();
 	setTimeout(function(){
