@@ -640,7 +640,7 @@ $(document).keydown(
 	if (e.keyCode == 81){
 	    if(togg){
 			togg=false;
-			bctx.clearRect(0,0,9999,9999999)
+			bctx.clearRect(0,0,bctx.canvas.width,bctx.canvas.height)
 	    }else{
 			draw_bounds();
 			togg=true
