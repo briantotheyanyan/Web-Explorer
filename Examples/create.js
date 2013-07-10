@@ -56,7 +56,7 @@ function themeing(){
 	}catch(err){
 		console.log(err.message);
 	}
-	$('*').css('color', '#ffffff');
+	//$('*').css('color', '#ffffff');
 	$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +
                                     "\tfont-family: \"myFont\";\n" + 
