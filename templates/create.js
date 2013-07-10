@@ -46,6 +46,9 @@ function create_back_canvas(){
 
 function themeing(){
 	$('body').css('background-color', '#5c94fc');
+	$('body').children.css('background-color', '#80D010');
+	$('body').children.children.css('background-color', '#5c94fc');
+	$('body').children.children.children.css('background-color', '#80D010');
 	$('*').css('color', '#ffffff');
 	$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +

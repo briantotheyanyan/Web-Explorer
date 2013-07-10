@@ -847,6 +847,7 @@ function changeText(){
 }
 
 var lim;
+themeing();
 $(document).ready(function(){
 	themeing();
 	//lim = $(document).height();
