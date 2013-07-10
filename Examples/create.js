@@ -49,8 +49,7 @@ function themeing(){
 	try{
 		$("body").children().removeAttr('background-color')
 		.css('background-color','#5c94fc')
-		.css('color','#000000')
-		.css('outline', '4px solid black');
+		.css('color','#000000');
 	}catch(err){
 		console.log(err.message);
 	}
@@ -65,8 +64,7 @@ function themeing(){
 	try{
 		$("body").children().children().children().removeAttr('background-color')
 		.css('background-color','#80D010')
-		.css('color','#FFFFFF')
-		.css('outline', '4px solid black');
+		.css('color','#FFFFFF');
 	}catch(err){
 		console.log(err.message);
 	}
