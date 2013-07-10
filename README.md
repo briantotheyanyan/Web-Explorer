@@ -7,8 +7,11 @@ and drag the NSYZ button into your bookmarks, and from there, on many pages, all
 
 Press W to Jump, A to move left, D to move right and S to fall through platforms.
 
-The Team and their current assingment:
+The Team:
 
-Team Leader: Shan Shi 
+Shan Shi : a455898334@gmail.com
+Eli Nass : eliftw@gmail.com
+Brian Yan : byan4695@gmail.com
+Brian Zhang: bzhang1670@gmail.com
 
 
