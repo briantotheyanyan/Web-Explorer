@@ -48,8 +48,10 @@ function themeing(){
 	$('body').css('background-color', '#5c94fc');
 	var chi=$('body').children();
 	for(var i=0;i<chi.length;i++){
-		if(chi[i].nodeName != 'script' && chi[i].nodeName != 'style' && chi[i].nodeName != 'div'){
+		try{
 			chi[i].css('background-color','#80D010');
+		}catch(err){
+			console.log(err.message);
 		}
 	}
 	$('*').css('color', '#ffffff');
