@@ -515,7 +515,7 @@ disc.prototype.draw = function() {
 
 disc.prototype.erase = function() {
     //this.ctx.clearRect(this.x-5,this.y-19,this.w+9,this.h+19);
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.ctx.clearRect(0, 0, 9999, 9999);
 }
 
 disc.prototype.collideUn = function(){
@@ -640,7 +640,7 @@ $(document).keydown(
 	if (e.keyCode == 81){
 	    if(togg){
 			togg=false;
-			bctx.clearRect(0,0,canvas.height,canvas.width)
+			bctx.clearRect(0,0,9999,9999)
 	    }else{
 			draw_bounds();
 			togg=true
