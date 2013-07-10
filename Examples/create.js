@@ -52,7 +52,9 @@ function create_back_canvas(){
 }
 
 function themeing(){
-	$('body').css('background-color', '#5c94fc')
+	$('body').css('background-color', '#5c94fc');
+	$('body').css('fontFamily','arial');
+
 }
 
 //CONSTANTS
@@ -85,6 +87,9 @@ var tile_img;
 tile_img = new Image();
 tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
 
+var tile_img2;
+tile_img2 = new Image()
+tile_img2.src = "https://raw.github.com/stuycs-softdev/NSYZ/master/static/css/img/brickblue.jpg";
 
 //sets canvas to match window sizes
 function set_canvas(x)
@@ -301,10 +306,10 @@ if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/
 		bounds.push(nsyz);
 	}
 	
-function draw_tile(x,y)
+function draw_tile(x,y,img)
 {
-//	console.log("DRAW");
-	this.bctx.drawImage(tile_img,x,y);
+	
+	this.bctx.drawImage(img,x,y);
 
 
 
@@ -314,12 +319,15 @@ function draw_bounds(){
 		for (var i = 0; i < bounds.length; i++)
 		{
 			var b = bounds[i];
-			//b.draw();
+			var img = b.link;
+			 
 			
 			for (var j = 0; j <  b.num_tiles; j++)
 			{
-				draw_tile(b.x+(j*4),b.y);
-				
+				if (img != null)
+					draw_tile(b.x+(j*4),b.y,tile_img2);
+				else	
+					draw_tile(b.x+(j*4),b.y,tile_img);
 			}
 		}
 }
