@@ -8,9 +8,9 @@
 // CANVAS //////////////////
 ////////////////////////////
 
-var chromeurl = $('meta[name=Chrome-Extension-URL]').attr('content');
-console.log(chromeurl);
 
+
+var chromeurl = $("#Chrome-Extension-URL").attr('content');
 
 var charac = new Image();
 var rcharac = new Image();
