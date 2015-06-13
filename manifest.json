@@ -1,0 +1,19 @@
+{
+		"manifest_version": 2,
+		"name": "Web Explorer",
+		"version": "1.0",
+		"description": "As featured at NYTM July 2013. This extension will turn any webpage into a platform video game",
+		"web_accessible_resources": ["img/*", "fonts/*", "js/zoom.js", "js/create.js", "js/jquery-2.1.4.min.js"],
+		"content_scripts":
+		[
+				{
+						"matches": ["*://*/*"],
+						"js": ["js/jquery-2.1.4.min.js", "js/scripts.js"],
+						"run_at": "document_start",
+						"all_frames": false
+				}
+		],
+		"browser_action":{
+				"default_icon": "img/spritesheet.png"
+		}
+}
