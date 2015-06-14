@@ -15,8 +15,8 @@ var chromeurl = $("#Chrome-Extension-URL").attr('content');
 var charac = new Image();
 var rcharac = new Image();
 //console.log($('#Chrome-Extension-URL').attr('content'));
-charac.src = chromeurl+'img/spritesheet.png';
-rcharac.src = chromeurl+'img/spritesheetr.png';
+charac.src = chromeurl+'css/img/spritesheet.png';
+rcharac.src = chromeurl+'css/img/spritesheetr.png';
 
 
 //creates a canvas to overlap the webpage where the graphics gameplay will be displayed
@@ -73,7 +73,7 @@ function themeing(){
 	$("head").prepend("<style type=\"text/css\">" + 
 					  "@font-face {\n" +
 					  "\tfont-family: \"myFont\";\n" + 
-					  "\tsrc: local('?'), url('" + chromeurl+"fonts/minecraftia.otf" + "?raw=true') format('opentype');\n" + 
+					  "\tsrc: local('?'), url('" + chromeurl+"css/fonts/minecraftia.otf" + "?raw=true') format('opentype');\n" + 
 					  "}\n" + 
 					  "\t*{\n" + 
 					  "\tfont-family: myFont !important;\n" + 
@@ -107,11 +107,11 @@ var current_link = "";
 //set image of the tile to be displayed where bounds are
 var tile_img;
 tile_img = new Image();
-tile_img.src = chromeurl+"img/brick10.jpg";
+tile_img.src = chromeurl+"css/img/brick10.jpg";
 
 var tile_img2;
 tile_img2 = new Image();
-tile_img2.src = chromeurl+"img/brickblue.jpg";
+tile_img2.src = chromeurl+"css/img/brickblue.jpg";
 
 //sets canvas to match window sizes
 function set_canvas(x)

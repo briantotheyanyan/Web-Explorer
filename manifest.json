@@ -6,7 +6,7 @@
 		"permissions":[
 				"storage", "tabs", "activeTab"
 		],
-		"web_accessible_resources": ["img/*", "fonts/*", "js/zoom.js", "js/create.js", "js/jquery-2.1.4.min.js"],
+		"web_accessible_resources": ["css/img/*", "css/fonts/*", "js/zoom.js", "js/create.js", "js/jquery-2.1.4.min.js"],
 		"background":{
 				"scripts": ["js/browseraction.js"]
 		},
@@ -20,6 +20,5 @@
 				}
 		],
 		"browser_action":{
-				"default_icon": "img/spritesheet.png"
 		}
 }
