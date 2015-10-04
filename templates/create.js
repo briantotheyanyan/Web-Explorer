@@ -69,6 +69,7 @@ function themeing(){
 		console.log(err.message);
 	}
 	//$('*').css('color', '#ffffff');
+	/*
 	$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +
                                     "\tfont-family: \"myFont\";\n" + 
@@ -78,7 +79,7 @@ function themeing(){
                                     "\tfont-family: myFont !important;\n" + 
                                 "}\n" + 
                             "</style>");
-	
+	*/
 }
 
 //CONSTANTS
