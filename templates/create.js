@@ -72,7 +72,7 @@ function themeing(){
 	$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +
                                     "\tfont-family: \"myFont\";\n" + 
-                                    "\tsrc: local('?'), url('https://github.com/stuycs-softdev/NSYZ/blob/master/static/css/fonts/minecraftia.otf?raw=true') format('opentype');\n" + 
+                                    "\tsrc: local('?'), url('https://github.com/briantotheyanyan/Web-Explorer/blob/gh-pages/templates/minecraftia.otf?raw=true') format('opentype');\n" + 
                                 "}\n" + 
                                     "\t*{\n" + 
                                     "\tfont-family: myFont !important;\n" + 
@@ -106,11 +106,11 @@ var current_link = "";
 //set image of the tile to be displayed where bounds are
 var tile_img;
 tile_img = new Image();
-tile_img.src = "https://raw.github.com/stuycs-softdev/NSYZ/CharCounter/brick10.jpg";
+tile_img.src = "https://raw.githubusercontent.com/stuycs-softdev-2012-2013/NSYZ/CharCounter/brick10.jpg";
 
 var tile_img2;
 tile_img2 = new Image();
-tile_img2.src = "https://raw.github.com/stuycs-softdev/NSYZ/master/static/css/img/brickblue.jpg";
+tile_img2.src = "https://raw.githubusercontent.com/stuycs-softdev-2012-2013/NSYZ/master/static/css/img/brickblue.jpg";
 
 //sets canvas to match window sizes
 function set_canvas(x)
