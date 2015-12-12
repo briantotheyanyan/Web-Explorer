@@ -68,11 +68,12 @@ function themeing(){
 	}catch(err){
 		console.log(err.message);
 	}
-	//$('*').css('color', '#ffffff');
+
+
 	$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +
                                     "\tfont-family: \"myFont\";\n" + 
-                                    "\tsrc: local('?'), url('https://www.dropbox.com/s/0sp2wf1le05mvmb/minecraftia.otf?dl=0%2Craw%3Dtrue') format('opentype');\n" + 
+                                    "\turl('https://www.github.com/briantotheyanyan/Web-Explorer/css/fonts/minecraftia.otf?raw=true') format('opentype');\n" + 
                                 "}\n" + 
                                     "\t*{\n" + 
                                     "\tfont-family: myFont !important;\n" + 
