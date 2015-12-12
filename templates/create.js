@@ -15,8 +15,13 @@ var zoom=(function(){var level=1;var mouseX=1,mouseY=1;var panEngageTimeout=-1,p
 
 var charac = new Image();
 var rcharac = new Image();
+/*
 charac.src = "http://s20.postimg.org/94lrhr5yl/spritesheet.png"
 rcharac.src = "http://s24.postimg.org/gh2n3z25h/spritesheetr.png"
+*/
+
+charac.src = "https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/css/img/spritesheet.png"
+rcharac.src = "https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/css/img/spritesheetr.png"
 
 //creates a canvas to overlap the webpage where the graphics gameplay will be displayed
 //sets up image source for our hero
