@@ -62,18 +62,16 @@ function themeing(){
 //		console.log(err.message);
 	}
 	try{
-		$("body").children().children().children().removeAttr('background-color')
-		.css('background-color','#80D010')
-		.css('color','#FFFFFF');
+		$("body").children().children().children().removeAttr('background-color').css('background-color','#80D010').css('color','#FFFFFF');
 	}catch(err){
 //		console.log(err.message);
 	}
-
+	$("head").prepend("hello");
 
 	$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +
                                     "\tfont-family: \"myFont\";\n" + 
-                                    "\turl('https://www.github.com/briantotheyanyan/Web-Explorer/css/fonts/minecraftia.otf?raw=true') format('opentype');\n" + 
+                                    "\turl('http://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/css/fonts/minecraftia.otf') format('opentype');\n" +  "\turl('http://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/css/fonts/minecraftia.ttf' format('truetype');\n" + 
                                 "}\n" + 
                                     "\t*{\n" + 
                                     "\tfont-family: myFont !important;\n" + 
