@@ -1,6 +1,6 @@
 @font-face{
        font-family: pixel;
-       src: local(my_custom_font), url('./fonts/minecraftia.ttf')    
+       src: local(my_custom_font), url('../fonts/minecraftia.ttf')    
              format('opentype');
 }
 body {

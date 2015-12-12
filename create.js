@@ -20,8 +20,8 @@ charac.src = "http://s20.postimg.org/94lrhr5yl/spritesheet.png"
 rcharac.src = "http://s24.postimg.org/gh2n3z25h/spritesheetr.png"
 */
 
-charac.src = "https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/css/img/spritesheet.png"
-rcharac.src = "https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/css/img/spritesheetr.png"
+charac.src = "https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/img/spritesheet.png"
+rcharac.src = "https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/img/spritesheetr.png"
 
 //creates a canvas to overlap the webpage where the graphics gameplay will be displayed
 //sets up image source for our hero
@@ -75,7 +75,7 @@ function themeing(){
 	$("head").prepend("<style type=\"text/css\">" +
 					  "@font-face {\n" +
 					  "\tfont-family: \"myFont\";\n" +
-					  "\tsrc: local('?'), url('https://cdn.rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/css/fonts/minecraftia.otf?raw=true') format('opentype');\n" +
+					  "\tsrc: local('?'), url('https://cdn.rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/fonts/minecraftia.otf?raw=true') format('opentype');\n" +
 					  "}\n" +
 					  "\t*{\n" +
 					  "\tfont-family: myFont !important;\n" +
