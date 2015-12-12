@@ -51,7 +51,7 @@ function themeing(){
 		.css('background-color','#5c94fc')
 		.css('color','#000000');
 	}catch(err){
-		console.log(err.message);
+//		console.log(err.message);
 	}
 	try{
 		$("body").children().children().removeAttr('background-color')
@@ -59,14 +59,14 @@ function themeing(){
 		.css('color','#FFFFFF')
 		.css('outline', '4px solid black');
 	}catch(err){
-		console.log(err.message);
+//		console.log(err.message);
 	}
 	try{
 		$("body").children().children().children().removeAttr('background-color')
 		.css('background-color','#80D010')
 		.css('color','#FFFFFF');
 	}catch(err){
-		console.log(err.message);
+//		console.log(err.message);
 	}
 
 
@@ -275,9 +275,9 @@ function generate_bounds(){
 	}
 	var bottom = new bound(0,$(document).height(),1,$(document).width(),null,c,bctx);
 	bounds.push(bottom);
-	if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/CODE/Soft-Dev/NSYZ/Examples/Homepage.html"){
+	if ( document.URL == "ml7.stuycs.org:1999" || document.URL == "file:///home/eli/CODE/Soft-Dev/NSYZ/Examples/Homepage.html" || document.URL == "brianyan.com/Web-Explorer"){
 		var nsyz  = new bound(0,height-47,1,width,null,c,bctx);
-		console.log("NSYZ DETECTED");
+//		console.log("NSYZ DETECTED");
 	
 		bounds.push(nsyz);
 	}
@@ -597,7 +597,7 @@ disc.prototype.collideL = function(){
 
 $(document).keydown(
     function(e) {
-	console.log(e.keyCode);
+//	console.log(e.keyCode);
 	if (e.keyCode == 16){
 	    wasDownSh=true;
 	}
@@ -648,7 +648,7 @@ $(document).keydown(
 	}
 	if(e.keyCode == 90)
 	{
-		console.log("ZUOOO");
+//		console.log("ZUOOO");
 		if (current_link != null)
 			{
 				go_link();
