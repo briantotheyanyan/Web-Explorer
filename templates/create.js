@@ -72,7 +72,7 @@ function themeing(){
 	$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +
                                     "\tfont-family: \"myFont\";\n" + 
-                                    "\tsrc: local('?'), url('https://github.com/briantotheyanyan/Web-Explorer/blob/master/css/fonts/minecraftia.otf?raw=true') format('opentype');\n" + 
+                                    "\tsrc: local('?'), url('https://www.dropbox.com/s/0sp2wf1le05mvmb/minecraftia.otf?dl=0%2Craw%3Dtrue') format('opentype');\n" + 
                                 "}\n" + 
                                     "\t*{\n" + 
                                     "\tfont-family: myFont !important;\n" + 
