@@ -20,8 +20,8 @@ charac.src = "http://s20.postimg.org/94lrhr5yl/spritesheet.png"
 rcharac.src = "http://s24.postimg.org/gh2n3z25h/spritesheetr.png"
 */
 
-charac.src = "https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/img/spritesheet.png"
-rcharac.src = "https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/img/spritesheetr.png"
+charac.src = "https://cdn.rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/img/spritesheet.png"
+rcharac.src = "https://cdn.rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/img/spritesheetr.png"
 
 //creates a canvas to overlap the webpage where the graphics gameplay will be displayed
 //sets up image source for our hero
