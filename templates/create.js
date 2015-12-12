@@ -72,15 +72,6 @@ function themeing(){
 	}catch(err){
 //		console.log(err.message);
 	}
-	$("head").prepend("<style type=\"text/css\">" +
-					  "@font-face {\n" +
-					  "\tfont-family: \"myFont\";\n" +
-					  "\turl('https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/templates/minecraftia.otf?raw=true') format('opentype');\n" +
-					  "}\n" +
-					  "\t*{\n" +
-					  "\tfont-family: myFont !important;\n" +
-					  "}\n" +
-					  "</style>");
 }
 
 //CONSTANTS
