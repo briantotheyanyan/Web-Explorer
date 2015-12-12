@@ -71,7 +71,7 @@ function themeing(){
 	$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +
                                     "\tfont-family: \"myFont\";\n" + 
-                                    "\turl('http://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/css/fonts/minecraftia.otf') format('opentype');\n" +  "\turl('http://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/static/css/fonts/minecraftia.ttf' format('truetype');\n" + 
+                                    "\turl('http://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/templates/minecraftia.otf') format('opentype');\n" +  "\turl('http://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/templates/minecraftia.ttf' format('truetype');\n" + 
                                 "}\n" + 
                                     "\t*{\n" + 
                                     "\tfont-family: myFont !important;\n" + 
