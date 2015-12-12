@@ -4,7 +4,7 @@
              format('opentype');
 }
 body {
-	background-image:url('./img/clouds.png');
+	background-image:url('../img/clouds.png');
 	color: #ffffff;
 	font-family: pixel;
 }
@@ -37,7 +37,7 @@ tr{
 	background-color:#000084;
 	text-align:left;
 	border: 11px double orange;
-	border-image:url('./img/borders.png') 110 110 110 110 round;
+	border-image:url('../img/borders.png') 110 110 110 110 round;
 }
 #content2{
 	max-width:339px;
@@ -45,7 +45,7 @@ tr{
 	background-color:#000084;
 	text-align:left;
 	border: 11px double orange;
-	border-image:url('./img/borders.png') 110 110 110 110 round;
+	border-image:url('../img/borders.png') 110 110 110 110 round;
 }
 
 #button{
@@ -65,7 +65,7 @@ tr{
 	height:50px;
 	left:0;
 	bottom:0; 
-	background-image: url('./img/brick.jpg');
+	background-image: url('../img/brick.jpg');
 	font-size:90%;
 	text-align:right;
 }
