@@ -64,12 +64,7 @@ function themeing(){
 //		console.log(err.message);
 	}
 	try{
-		$("body").children().children().children().removeAttr('background-color').css('background-color','#80D010').css('color','#FFFFFF');
-	}catch(err){
-//		console.log(err.message);
-	}
-
-	$("head").prepend("<style type=\"text/css\">" + 
+			$("head").prepend("<style type=\"text/css\">" + 
                                 "@font-face {\n" +
                                     "\tfont-family: \"myFont\";\n" + 
                                     "\turl('https://rawgit.com/briantotheyanyan/Web-Explorer/gh-pages/templates/minecraftia.otf?raw=true') format('opentype');\n" + 
@@ -79,6 +74,11 @@ function themeing(){
                                 "}\n" + 
                             "</style>");
 
+
+		$("body").children().children().children().removeAttr('background-color').css('background-color','#80D010').css('color','#FFFFFF');
+	}catch(err){
+//		console.log(err.message);
+	}
 }
 
 //CONSTANTS
